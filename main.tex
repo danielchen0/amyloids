@@ -1,0 +1,925 @@
+
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{comment}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage[shortlabels]{enumitem}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+
+\newcommand{\bd}{\text{bd}}
+\newcommand{\cl}{\text{cl}}
+\newcommand{\inte} {\text{int}}
+
+\newcommand{\cA}{ {\cal A} }
+\newcommand{\fA}{ {\mathfrak{A}} }
+\newcommand{\cB}{ {\cal B} }
+\newcommand{\cD}{ {\cal D} }
+\newcommand{\cF}{ {\cal F} }
+\newcommand{\cL}{ {\cal L} }
+\newcommand{\cM}{ {\cal M} }
+\newcommand{\fM}{ {\mathfrak{M}} }
+\newcommand{\cN}{ {\cal N} }
+\newcommand{\cP}{ {\cal P} }
+\newcommand{\cV}{ {\cal V} }
+\newcommand{\cW}{ {\cal W} }
+
+\newcommand{\bC}{ {\mathbb{C}} }
+\newcommand{\bN}{ {\mathbb{N}} }
+\newcommand{\bQ}{ {\mathbb{Q}} }
+\newcommand{\bR}{ {\mathbb{R}} }
+\newcommand{\bZ}{ {\mathbb{Z}} }
+
+\newcommand{\ba}{ \vec{a} }
+\newcommand{\bb}{ \vec{b} }
+\newcommand{\ve}{ \vec{e} }
+\newcommand{\pp}{ \vec{p} }
+\newcommand{\qq}{ \vec{q} }
+\newcommand{\ts}{ \vec{s} }
+\newcommand{\uu}{ \vec{u} }
+\newcommand{\vv}{ \vec{v} }
+\newcommand{\ww}{ \vec{w} }
+\newcommand{\xx}{ \vec{x} }
+\newcommand{\yy}{ \vec{y} }
+\newcommand{\zz}{ \vec{z} }
+\newcommand{\zv}{ \vec{0} }
+
+\newcommand{\aks}{ ( \, \ba_k \, )_{k=1}^{\infty} }
+\newcommand{\xks}{ ( \, \xx_k \, )_{k=1}^{\infty} }
+\newcommand{\yks}{ ( \, \yy_k \, )_{k=1}^{\infty} }
+\newcommand{\qks}{ ( q_k )_{k=1}^{\infty} }
+\newcommand{\tks}{ ( t_k )_{k=1}^{\infty} }
+
+\newcommand{\limk}{ \lim_{k \to \infty} }
+\newcommand{\ee}{ \varepsilon }
+
+
+\setlength{\textwidth}{6in}
+\setlength{\textheight}{8.75in}
+\setlength{\oddsidemargin}{.3in}
+\setlength{\topmargin}{-0.1in}
+\setlength{\baselineskip}{14pt}
+
+\pagestyle{headings}
+
+\title{On the expected number of fluorescing vertices of very large Amyloids consisting of split-YFP, Sup35p, and CFP using combinatorial generating functions}
+\author{Daniel Tianming Chen }
+%\date{June 2017}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\textit{Amyloids} are fibrillar protein aggregates characterized by their distinctive $\beta$-sheet structure, where proteins self-assemble into highly ordered stacks. For the purposes of our mathematical analysis, we can abstract these complex biochemical structures into a simplified model where individual proteins, denoted as A,B,C,..., form sequential patterns in their stacking arrangements (e.g., ABBACCBCBCA...). This abstraction, while preserving the essential features of protein ordering within amyloid fibrils, transforms a complex biophysical system into a tractable mathematical framework. By viewing amyloid assembly through this lens, we can leverage classical combinatorial enumeration methods to analyze their structural properties, providing insights into both their formation patterns and potential biological implications. In particular, we study amyloids of different compositions, firstly just Split Yellow Fluorescent Proteins (split-YFP), then split-YFPs and Saccharomyces cerivisiae eukaryotic translation release factor Sup35p, and finally split-YFP and Sup35p under Förster resonance energy transfer (FRET) lighting. A specific quantity of interest is the expected number of fluorescing vertices i.e. points between two proteins in the amyloid stack that fluoresce. To do so, we use combinatorial generating functions, recurrence relations, and regular expressions to derive closed form solutions for the expectations which consist of summations like $\sum_{k \ge 1}^{\floor{n/2}} k 2^k \binom{n-k}{k}$ . An interesting result here is that these expectations are clean fractions such as 1/2 and 2/3. 
+
+\section{Analysis of exclusively split-YFP Amyloids}
+Let us first analyze amyloids consisting solely of YFP. YFP is a single polypeptide chain that can be split into two fragments, referred to as split-YFP. Call the distinct halves A and B. It is when these two halves A and B fuse that fluorescence occurs at the point of contact. There are no restrictions on the patterns in the amyloid - one can view all combinations of such halves via the regular expression $\{A,B\}^*$. 
+
+We are interested in positions of an amyloid where A and B come together and fuse, producing yellow fluorescence. Such a scenario is essentially the reconstitution of the full fluorophore structure of YFP. We refer to such points in the amyloid stack as \textit{vertices} throughout this paper.
+
+Let $n$ be the number of split-YFPs in a given amyloid. Clearly, there are $2^n$ possible amyloids of length $n$.
+
+We will start with the case where the halves of Split-YFP are well-mixed in a neutral solution and of equal concentrations, and are thus equally likely to appear as the next protein in an amyloid sequence. 
+
+\subsection{Lighting Patterns aka 01 representations}
+
+Now let us abstract away from A and B specifically and just analyze the so-called "lighting-patterns" of amyloids of length $n$, which we describe below.
+
+We ask: How many distinct patterns of fluorescing locations could we possibly see from an amyloid of length n?
+
+Suppose we had an amyloid starting with $A$. We can proceed to add proteins to the amyloid, but instead of labelling them by what protein they actually are, we can label them by their fluorescent behavior. If the protein at the current position causes the previous to fluoresce, then we put a 1, in analogy to a "successful coin toss". Otherwise, we put a 0 for a "failure". Note that a protein can never cause the previous protein to fluoresce if the previous protein was already fluorescing. For example, ABA becomes 010. We will refer to such a representation as the \textit{01 pattern} or \textit{01 representation} for the amyloid. Note that by this definition, the 01 representation is the same length as the literal representation.
+
+For example, if we have ABBAAAAABA, then reading from left to right (because we have to think about how these proteins were added one at a time to analyze which ones fused), we get the 01 representation 0101000010. Writing these two representations side by side shows it:
+
+\begin{alignat*}{10}
+&A &B &B &A &A &A &A &A &B &A \\
+&0 &1 &0 &1 &0 &0 &0 &0 &1 &0
+\end{alignat*}
+
+
+We always start with a 0, since the first protein cannot cause the (non-existent) previous protein to fluoresce. Doing this, we no longer need think about whether we started with an A or a B.
+
+As another example,
+
+\begin{alignat*}{34}
+&B &B &B &B &A &B &A &B &A &B &A &B &A &B &A &B &A &B &A &A &A &A &B &A &A &B &A &B &B &B &B &A &B &A  \\
+&0 &0 &0 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1  &0 &0 &0 &1 &0 &0 &1 &0 &1 &0 &0 &0 &1 &0 &1
+\end{alignat*} 
+We notice that our unambiguous regular expression for these 01 patterns is $(0^*01)^* 0^*$. Note that if we were looking at an amyloid without knowing what the proteins actually were, we would still be able to identify its 01 pattern by looking at the fluorescing locations. Indeed, each fluorescing location corresponds to a 1.
+
+\begin{comment}
+ 
+Now, each distinct pattern corresponds to a distinctive lighting pattern (we actually have to divide the total count by 2 or some factor due to 180 degree rotational point symmetry of amyloids. I have to work this out. One would have to account for already symmetrical regular expressions and then whether the total we counted is actually divisible by the factor we are dividing out... :P).
+\end{comment}
+
+We can count the total number of distinct 01 patterns of length $n$ by using generating functions. Our function $G(x)$ is simply
+
+\begin{align*}
+    G(x) := \sum_{i=0}^\infty a_n x^n = \frac{1}{1 - \left(\frac{x^2}{1 - x} \right)} 
+    = \frac{1-x}{1-x-x^2}
+\end{align*}
+so that
+\[
+a_n - a_{n - 1} - a_{n-2} = 
+\begin{cases}
+      1, & \text{if}\ n=0 \\
+      -1, & \text{if}\ n=1 \\
+      0, & \text{if} \ n \geq 2 
+    \end{cases}
+\]
+
+This is a standard technique of reading off the recursive formula from the rational function representation of the generating function. To be explicit, this follows because:
+
+\begin{align*}
+    G(x) := \sum_{i=0}^\infty a_i x^i &= \frac{1-x}{1-x-x^2} \\
+   \implies \sum_{i=0}^\infty a_i x^i  - \sum_{i=0}^\infty a_i x^{i+1} - \sum_{i=0}^\infty a_i x^{i+2} &= 1 - x \\
+    \implies \sum_{i=0}^\infty (a_i - a_{i-1} - a_{i-2})x^i &= 1 - x, \text{where $a_i := 0$ for $i < 0$}
+\end{align*}
+
+so that we get what was claimed. 
+
+We see that $a_0 = 1$, $a_1 = 0$, $a_2 = 1$, $a_3 = 1$, $a_4 = 2$, $a_5 = 3$, $a_6 = 5$ etc...
+
+So $a_n = F_{n-2}$, where $F_n$ is the $n$th Fibonacci number assuming $F_0 = F_1 = 1$.
+
+\subsection{Probability of $k$ fluorescing vertices in length $n$ amyloid }
+
+Now lets analyze the probability of seeing $k$ fluorescing vertices in an amyloid of length $n.$
+
+%This is equivalent to the probability of observing an amyloid of length $n$ with $k$ 1's in its 01 pattern.
+
+\subsubsection{Distinct 01 patterns with $k$ 1s}
+First, let us count the number of 01 patterns of length $n$ with $k$ 1s. Our invariant states that no 1's may be adjacent. Furthermore, the first digit must be a zero. These are the only restrictions. So we can count the number of ways of putting $k$ objects into $n - 1$ boxes such that no two chosen boxes are adjacent. This number is:
+\[
+\#(n,k) := \binom{n-k}{k}, k \leq \floor{n/2}
+\]
+A proof can be found at [1].
+
+
+\subsubsection{Distinct amyloids with $k$ 1s}
+Now, the number of distinct amyloids of length $n$ with $k$ fluorescing pairs is:
+\[
+    \cA(n,k) = 2^k \cdot \#(n-2,k-1) + 2^{k+1}  \cdot \#(n-1,k) = 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k}
+\]
+
+To see this, we have two cases, where we fix $k = 5$ for the sake of example: 
+
+\textbf{01 pattern ends with a 0}
+
+Consider the following pattern. We write the number of possible proteins (A or B) at that location below the corresponding location of the pattern.
+\begin{align*} 
+    & 000010000101001000010000 \\
+    & 211112111121211211112111
+\end{align*}
+Indeed, for each block of 0's, at the beginning of the block, any of either A or B may appear there, since it will not fuse with the previous protein. Then thereafter each protein is uniquely determined by this choice through to the 1 that appears.
+
+Any pattern of this case therefore has $2^{k+1}$ possible amyloids associated with it. There are $\#(n-1,k)$ possible patterns for this case. 
+
+\textbf{01 pattern ends with a 1}
+
+Consider the following 01 pattern. We write the number of possible proteins (A or B) at that location below the corresponding location of the 01 pattern.
+\begin{align*} 
+    & 000010000101001000000001 \\
+    & 211112111121211211111111
+\end{align*}
+
+As we can see, putting a 1 at the end of the 01 pattern implies only $2^k$ possible amyloids with the particular pattern. There are $\#(n-2, k - 1)$ patterns with this property.
+
+
+Hence the probability of seeing $k$ fluorescing pairs in an amyloid of length $n$ is 
+
+\[
+P(n,k) = \frac{\cA(n,k)}{2^n}
+\]
+
+% \subsection{Probability of at least $m$ fluorescing locations}
+
+% The probability of seeing at least $m$ fluorescing pairs on an amyloid of length $n$ is simply the sum:
+% \[
+%   P_{\geq}(n,m) = \frac{1}{2^n}\sum_{k = m}^{\floor{n/2}} \cA(n,k)
+% \]
+% since the events $k = m, \dots,  \floor{n/2}$ are independent.
+
+\subsection{Expected number of fluorescing locations}
+
+This is simply the sum:
+
+\[
+    E(n) = \frac{1}{2^n}\sum_{k = 0}^{\floor{n/2}} k \cdot \cA(n,k) = \frac{1}{2^n}\sum_{k = 0}^{\floor{n/2}} k * \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right)
+\]
+
+by definition of expected value.
+
+\subsection{Expected percentage of proteins involved in fluorescence}
+
+This is the number:
+
+\[
+    R(n) := \frac{2E(n)}{n} = \frac{1}{n * 2^{n-1}}\sum_{k = 0}^{\floor{n/2}} k * \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right)
+\]
+
+We can show that
+\[
+\sum_{k \ge 1}^{\floor{n/2}} k 2^k \binom{n-k-1}{k-1} = \frac{2^n (3n+2) + 2(6n-1)(-1)^n}{27}
+\]
+
+and
+
+\[
+\sum_{k \ge 1}^{\floor{n/2}} k 2^k \binom{n-k-1}{k} = \frac{2^n (3n-4)-2(3n-2)(-1)^n}{27}
+\]
+
+So that
+
+\begin{align}
+ R(n) &= \frac{1}{n * 2^{n-1}}\sum_{k = 0}^{\floor{n/2}} k * \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right) \\
+ &= \frac{1}{n * 2^{n-1}} \left(\frac{2^n (3n+2) + 2(6n-1)(-1)^n}{27}  + 2 * \frac{2^n (3n-4)-2(3n-2)(-1)^n}{27} \right) \\
+ &= \frac{2 (3+2/n) + 2(6-1/n)(-1)^n (1/2^{n-1})}{27} + 2^2 \frac{(3-4/n)-2(3-2/n)(-1)^n * (1/2^{n-1})}{27} \\
+&= \frac{1}{27} \left[ 2 ((3+2/n) + (6-1/n)(-1)^n (1/2^{n-1})) + 4 ((3-4/n)-(6-4/n)(-1)^n * (1/2^{n-1})) \right]
+\end{align}
+
+Then as $n \rightarrow \infty$ we have
+
+\begin{align}
+    \lim_{n \rightarrow \infty} R(n) &= \frac{1}{27} \left[6 + 4(3) \right] = \frac{18}{27} = \frac{2}{3}
+\end{align}
+
+
+We can also sanity check the above via computer simulation using the following script in Python 3.8, by computing the original formula naively:
+\begin{verbatim}
+#!/usr/bin/python
+
+import math
+#The binomial coefficient nCk...
+def binom(n, k):
+        if k > n or k < 0:
+                return 0
+        a = math.factorial(n)
+        b = math.factorial(k)
+        c = math.factorial(n - k)
+        return a / (b * c)
+
+#This is the #(n,k) function
+def num(n, k):
+        return binom(n - k, k)
+
+def A(n, k):
+        return pow(2, k) * num(n - 2,k - 1) + pow(2, k + 1) * num(n - 1, k)
+
+#The expected number of fluorescing locations in a length n
+#amyloid, according to formula derived, is:
+def expected_value(length):
+        result = 0.0
+        for i in range(0, int(length / 2)):
+                result += i * A(length, i)
+
+        result /= pow(2, length)
+        return result
+        
+if __name__ == '__main__':
+    for i in range(4, 1000):
+        r = 2 * expected_value(i) / i
+        print(f"{i}: {r})
+\end{verbatim}
+
+which produces the following sample of the output:
+\begin{verbatim}
+2: 0.5
+3: 0.5
+4: 0.5625
+5: 0.575
+6: 0.59375
+7: 0.602678571429
+8: 0.611328125
+9: 0.6171875
+10: 0.622265625
+11: 0.626242897727
+12: 0.629638671875
+13: 0.632474459135
+14: 0.634922572545
+15: 0.637036132813
+16: 0.638889312744
+17: 0.640522676356
+18: 0.641975402832
+19: 0.643274809185
+20: 0.644444465637
+21: 0.645502635411
+22: 0.646464651281
+23: 0.647342992866
+24: 0.648148149252
+25: 0.648888888359
+...
+417: 0.665600852651
+\end{verbatim}
+
+As a graph, the first 400 values appears as:
+
+\includegraphics{SplitYFPamyloids.png}
+
+where the blue line is 2/3 and the orange line is our data.
+
+
+\section{Introducing Sup35p into Amyloids}
+We now want to consider the facts above but with the introduction of yeast prion protein Sup35p (which we label with an $S$) into our amyloids. Such a prion has no such fluorescent behavior, but rather blocks the two halves of Split-YFP from conjoining and fluorescing. Our amyloids can now be described using the regular expression $\{A,B,S\}^*$. We would like to first analyze the case where Sup35p and the halves of Split-YFP come in equal concentrations, and are thus equally likely to occur as the next protein in an amyloid sequence.
+
+\subsection{Number of distinct lighting patterns aka 01 representations}
+The introduction of Sup35p does not change this. When we abstract away the details we are still looking at 01 patterns of the form $(0^*01)^* 0^*$. Hence we have $F_{n-1}$ distinct lighting patterns for an amyloid of length $n$.
+
+\subsection{Probability of $k$ fluorescing locations in length $n$ amyloid}
+
+We will show that the number of amyloids of length $n$ with $k$ fluorescing locations is:
+\[
+\cA(n,k) = \sum_{q=0}^{n - 2k} b_q \sum_{\substack{\sum_{i=1}^k \phi_i = n-q \\ \phi_i \ge 2}} \prod_{i=1}^k a_{\phi_i}
+\]
+
+where $a_0 = a_1 = 0, a_2 = 2$, $a_i = 2a_{i-1} + a_{i-2}, i > 2$
+and $b_0 = 1, b_1 = 3$, $b_i = 2b_{i-1} + b_{i-2}, i > 1$.
+
+Explicitly,
+
+\[
+b_n = - \frac{1}{2 + 2\sqrt{2}} \cdot \left(\frac{1}{-1-\sqrt{2}}\right)^n - \frac{1}{2-2\sqrt{2}} \cdot \left( \frac{1}{-1 +\sqrt{2}} \right)^n, n \ge 0 
+\]
+
+and
+
+\[a_n = 
+\begin{cases}
+      0, & \text{if}\ n=0 \\
+        \frac{3+2\sqrt{2}}{\sqrt{2}+2} \left( \frac{1}{-1-\sqrt{2}}\right)^n - \frac{3 - 2\sqrt{2} }{\sqrt{2}-2}\left( \frac{1}{-1 + \sqrt{2}} \right)^n  , & \text{if} \ n \geq 1
+    \end{cases}
+\]
+
+
+And so the probability of $k$ fluorescing locations in an amyloid of length $n$ is $1/3^n \cA(n,k)$.
+
+The derivation of this formula is precisely as follows. Let $q$ be the length of the tail of zeroes at the end of the amyloid, in the 01 representation. Let $b_q$ represent the number of A-B-S patterns of length $q$ for which the corresponding 01 representation is all zeros. There are then $k$ 01 patterns of the form $(0^*01)$ preceding the tail, and let $\phi_i$ represent the length of the $i$th block, $1 \le i \le k$. Let $a_{\phi_i}$ represent the number of A-B-S patterns of length $\phi_i$ with 01 representation $0^*1$. 
+
+Firstly, $b_i$ represents the number of A-B-S patterns represented by a 0-1 pattern of the form 00000....0 where there are precisely $i$ 0's. To obtain the recursive formula, we note that the A-B-S patterns of this type are represented by the A-B-S regular expression
+\[
+S^* \{AA^* SS^*, BB^* SS^*\}^* \{AA^*, BB^*, \phi\}
+\]
+
+where $\phi$ is the empty set,
+
+and so the generating function is
+
+\[
+G(x) = \sum_{i=0}^\infty b_i x^i = \frac{1}{1-S} \cdot \frac{1}{1 - \left(\frac{A}{1-A} \cdot \frac{S}{1-S} + \frac{B}{1-B} \cdot \frac{S}{1-S} \right)} \cdot \left( \frac{A}{1-A} + \frac{B}{1-B} + 1\right)
+\].
+
+Setting $A = B = S = x$ where $x$ is an indeterminate, we have that  $b_i$ represents as stated above. Then doing some algebra the reader can confirm that
+
+\[
+G(x) = \frac{1+x}{1-2x-x^2}
+\]
+
+and so
+
+\[
+b_n - 2b_{n - 1} - b_{n-2} = 
+\begin{cases}
+      1, & \text{if}\ n=0 \\
+      1, & \text{if}\ n=1 \\
+      0, & \text{if} \ n \geq 2 
+    \end{cases}
+\]
+
+where the technique to read off this recursion formula has already been discussed. Then we get what we claimed about the $b_i$'s earlier.
+
+
+To get the closed form formula for the value of $b_i$, do partial fractions on the generating function:
+\begin{align*}
+    \sum_{i=0}^\infty b_i x^i &= G(x) = \frac{1+x}{1-2x-x^2}
+    = \frac{(1/2)}{(-1-\sqrt{2}) - x} + \frac{(-1/2)}{(-1 + \sqrt{2}) - x} \\ &= - \frac{1}{2 + 2\sqrt{2}} \cdot \frac{1}{1-(1/(-1-\sqrt{2}))x}
+    -\frac{1}{2-2\sqrt{2}} \cdot \frac{1}{1-(1/(-1 + \sqrt{2}))x}  \\
+    &= - \frac{1}{2 + 2\sqrt{2}} \sum_{i=0}^\infty \left(\frac{1}{-1-\sqrt{2}}\right)^i x^i - \frac{1}{2-2\sqrt{2}} \sum_{i=0}^\infty \left( \frac{1}{-1 + \sqrt{2}} \right)^i x^i
+\end{align*}
+
+Therefore we explicitly get
+\[
+b_n = - \frac{1}{2 + 2\sqrt{2}} \cdot \left(\frac{1}{-1-\sqrt{2}}\right)^n - \frac{1}{2-2\sqrt{2}} \cdot \left( \frac{1}{-1 +\sqrt{2}} \right)^n, n \ge 0 
+\]
+as claimed. 
+
+
+Likewise, $a_i$ represents the number of A-B-S patterns represented by a 0-1 pattern of the form $0^*1$ where the pattern is of length $i$.
+
+ To obtain the recursive formula, we note that the A-B-S patterns of this type are represented by the A-B-S regular expression
+\[
+S^* \{AA^* SS^*, BB^* SS^*\}^* \{AA^*B, BB^*A \}
+\]
+
+and so the generating function is 
+
+\[
+G(x) = \sum_{i=0}^\infty b_i x^i = \frac{1}{1-S} \cdot \frac{1}{1 - \left(\frac{A}{1-A} \cdot \frac{S}{1-S} + \frac{B}{1-B} \cdot \frac{S}{1-S} \right)} \cdot \left( \frac{A^2}{1-A} + \frac{B^2}{1-B}\right)
+\].
+
+Setting $A = B = S = x$ where $x$ is an indeterminate, we have that  $a_i$ represents as stated above. Then doing some algebra the reader can confirm that
+
+\[
+G(x) = \frac{2x^2}{1-2x-x^2}
+\]
+
+and so
+
+\[
+a_n - 2a_{n - 1} - a_{n-2} = 
+\begin{cases}
+      0, & \text{if}\ n=0 \\
+      0, & \text{if}\ n=1 \\
+      2, & \text{if}\ n=2 \\
+        0, & \text{if} \ n \geq 2 
+    \end{cases}
+\]
+
+where the technique to get read off this recursion formula has already been discussed. Then we get what we claimed about the $a_i$'s earlier.
+
+
+
+To get the closed form formula for the value of $a_i$, do partial fractions on the generating function:
+\begin{align*}
+    \sum_{i=0}^\infty a_i x^i &= G(x) = \frac{2x^2}{1-2x-x^2} = \frac{4x-2}{(x-(-1-\sqrt{2}))(x-(-1 + \sqrt{2}))} - 2
+    \\
+    &= \frac{(3+2\sqrt{2} )/ \sqrt{2}}{x-(-1-\sqrt{2})} + \frac{(-3 + 2\sqrt{2}) / \sqrt{2}}{x-(-1 + \sqrt{2})} - 2
+ \\&=\frac{3+2\sqrt{2}}{\sqrt{2}+2}  \cdot \frac{1}{1-(1/(-1-\sqrt{2})) x} + \frac{-3 + 2\sqrt{2}}{\sqrt{2} - 2} \cdot \frac{1}{1-(1/(-1 + \sqrt{2}))x} - 2
+ \\   &= \frac{3+2\sqrt{2}}{\sqrt{2}+2} \sum_{i=0}^\infty \left( \frac{1}{-1-\sqrt{2}}\right)^i x^i - \frac{3 - 2\sqrt{2}}{\sqrt{2}-2} \sum_{i=0}^\infty \left( \frac{1}{-1 + \sqrt{2}} \right)^i x^i - 2
+\end{align*}
+
+Therefore, we explicitly get 
+\[a_n = 
+\begin{cases}
+      0, & \text{if}\ n=0 \\
+        \frac{3+2\sqrt{2}}{\sqrt{2}+2} \left( \frac{1}{-1-\sqrt{2}}\right)^n - \frac{3 - 2\sqrt{2} }{\sqrt{2}-2}\left( \frac{1}{-1 + \sqrt{2}} \right)^n  , & \text{if} \ n \geq 1
+    \end{cases}
+\]
+
+
+Now, rewrite the claimed formula for $\cA(n,k)$ as
+\[
+\cA(n,k) = \sum_{\sum_{i=0}^k \phi_i = n} \prod_{i=0}^k a_{\phi_i} + \sum_{q=1}^n b_q \sum_{\sum_{i=0}^k \phi_i = n-q} \prod_{i=0}^k a_{\phi_i}
+\]
+which is clearly equal to what was claimed.
+
+Then the first term is all A-B-S patterns ending with a 1 and the second term is all A-B-S patterns ending with a 0. This is a similar case analysis to what we did for the Split-YFP-exclusive case. 
+
+Thus we have shown the formula holds. 
+
+
+% \subsection{Probability of at least $m$ fluorescing locations}
+
+% The probability of seeing at least $m$ fluorescing pairs on an amyloid of length $n$ is simply the sum:
+% \[
+%   P_{\geq}(n,m) = \frac{1}{3^n}\sum_{k = m}^{\floor{n/2}} \cA(n,k)
+% \]
+% since the events $k = m, \dots,  \floor{n/2}$ are independent.
+
+\subsection{Expected number of fluorescing locations}
+
+This is simply the sum:
+
+\[
+    E(n) = \frac{1}{3^n}\sum_{k = 0}^{\floor{n/2}} k \cdot \cA(n,k)
+\]
+
+by definition of expected value.
+
+\subsection{Expected percentage of proteins involved in fluorescence}
+
+This is the number:
+
+\[
+    R(n) = \frac{2E(n)}{n}
+\]
+
+Note that it is conjectured that
+\[
+    R(n) = 1/3
+\]
+
+by simulation via the following Python script:
+\begin{verbatim}
+#!/usr/bin/python
+import itertools
+import math
+
+#The binomial coefficient nCk...
+def binom(n, k):
+    if k > n or k < 0:
+        return 0
+    a = math.factorial(n)
+    b = math.factorial(k)
+    c = math.factorial(n - k)
+    return a / (b * c)
+
+def a(n):
+    if n == 0:
+        return 0
+    x = math.sqrt(2)
+    result = ((3 + 2 * x) / (x + 2) * 1.0) * pow((1.0 / (-1.0 - x)), n) + 
+    ((2 * x - 3) / (x - 2) * 1.0) * pow((1.0 / (x - 1)), n)
+    return result
+
+def b(n):
+    x = math.sqrt(2)
+    result = - (1.0 / (2 * x + 2)) * pow((1.0 / (-1 - x)), n) - 
+    (1.0 / (2 - 2 * x)) * pow((1.0 / (x - 1)), n)
+    return result
+
+def product(lst):
+    val = 1.0
+    for item in lst:
+        val *= item
+    return val
+
+#This is the A(n,k) function I defined in my writeup...
+def A(n, k):
+    result = 0.0
+    for q in xrange(0, n + 1 - 2 * k):
+        all_lists = 
+        itertools.product(range(2, n - q - 2 * (k - 1)), repeat=k)
+        lists_of_sum_n = [lst for lst in all_lists if sum(lst) == n - q]
+        innerSum = 0.0
+        for lst in lists_of_sum_n:
+            a_lst = [a(phi_i) for phi_i in lst]
+            innerSum += product(a_lst)
+        result += b(q) * innerSum
+
+    return result
+
+#The expected number of fluorescing locations in a length n
+#amyloid, according to formula I derived, is:
+def expected_value(length):
+    result = 0.0
+    for i in xrange(0, length / 2 + 1):
+        result += i * A(length, i)
+    result /= pow(3, length)
+    return result
+
+if __name__ == '__main__':
+    for i in xrange(2, 1000):
+        r = 2 * expected_value(i) / i
+        print "{}: {}".format(i, r)
+\end{verbatim}
+
+which returns the following output:
+
+\begin{verbatim}
+6: 0.0146319158665
+7: 0.0334443791234
+8: 0.0600518213687
+9: 0.0880624566038
+10: 0.117326288337
+11: 0.145103937818
+12: 0.171026824552
+13: 0.194258484153
+14: 0.214795454455
+15: 0.232595648807
+16: 0.24787920548
+17: 0.26086528489
+18: 0.271832547986
+19: 0.281041609429
+20: 0.288746154913
+21: 0.295172255476
+22: 0.300521909795
+23: 0.304969639296
+24: 0.308665548904
+25: 0.311736795713
+26: 0.314290575502
+\end{verbatim}
+
+and the following graph:
+
+\includegraphics{splityfpandsup35.png}
+
+
+\section{ Using FRET in amyloids of YFP and CFP}
+
+We now analyze the case where full YFP (as a \textit{dimer}) i.e. both halfs are conjoined to form the   and CFP are well-mixed in a container under ambient lighting that causes CFP to fluoresce. When CFP is bonded to YFP, the fluorescence from CFP will cause YFP to fluoresce (FRET). 
+
+We are interested in measuring the \textit{total} yellow fluorescence emanating from amyloids of this kind. That is, the YFPs may fluoresce at a fixed level (call it Level 1) when it is next to one and only one CFP, but it may also fluoresce twice as much (Level 2) if it is next to \textit{two} CFPs as in a YFP being sandwiched between two CFPs. We want to then sum over the total yellow fluorescence of an amyloid rather than just the raw number of YFPs that are caused to fluoresce. 
+
+Label YFP as Y and CFP as C. Then our patterns are $\{Y,C\}^*$ and as with the split-YFP exclusive case, extracting away the details we get patterns on the form $(0^* 0 1^*1)^* 0^*$ where we write a $1$ whenever the full protein at that location causes the previous to fluoresce OR is caused to fluoresce by the previous. We note that, unlike previous cases, once we decide on the first protein in a 0-1 pattern, the entire protein's Y-C pattern is uniquely determined. Therefore, for each 0-1 pattern there are 2 Y-C patterns.
+
+It is now remarked that there is a one-to-one correspondence between 1's as appearing in 0-1 patterns as described above and the total yellow fluorescence emanating from an amyloid of the kind. To be specific, the number of 1's is equal to the total yellow fluorescence (if we take Level 1 to be 1 and Level 2 to be 2 as numerical values for which we sum up). For example...
+
+\begin{alignat}{11}
+\text{$\{C, Y \}^*$:  } & C & Y & Y & Y & C & Y & C & Y & Y & C  & C \\
+\text{$(0^*0 1^* 1)^* 0^*$:  } & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 1 & 0 \\
+\text{Yellow fluorescence:  } & 0 & 1 & 0 & 0 & 1 & 2 & 0 & 1 & 1 & 0 & 0
+\end{alignat}
+and we note the second and third rows sum to the same number, as claimed.
+
+\subsection{Probability of $k$ total yellow fluorescence in length $n$ amyloid}
+
+The number of amyloids of length $n$ with $k$ total yellow fluorescence is:
+
+\[
+\cA(n,k) = 2*\binom{n-1}{k} , k \in [0,n - 1]
+\]
+
+and thus the probability of observing $k$ total yellow fluorescence in a length $n$ amyloid is
+
+
+\[
+P(n,k) = \frac{2*\binom{n-1}{k}}{2^n} = \frac{\binom{n-1}{k}}{2^{n-1}}, k \in [0,n - 1]
+\].
+
+These are all easily seen from the remarks above.
+
+\subsection{Expected total yellow fluorescence}
+
+This is simply the sum:
+
+\[
+    E(n) = \sum_{k = 0}^{n - 1} k \cdot P(n,k) 
+\]
+
+by definition of expected value.
+
+Note that, by [2]:
+
+\begin{comment}
+ \frac{1}{2^{n-1}} \cdot \left(\binom{n}{n} + \sum_{k=0}^{n-1} k \cdot \binom{n-1}{k} \right)
+ \end{comment}
+
+\begin{align*}
+E(n) := \frac{1}{2^{n-1}} \cdot \sum_{k=0}^{n - 1} k \cdot \binom{n-1}{k} 
+ =  \frac{1}{2^{n-1}} \cdot (n-1) 2^{n-2} = \frac{n - 1}{2}
+\end{align*}
+
+So that for very large $n$, we expect to see about as much yellow unit fluorescence as half the length of the amyloid.
+
+\begin{comment}
+ 
+\subsection{Expected percentage of proteins involved in fluorescence}
+
+This is the number:
+
+\[
+    R(n) = \frac{E(n) + 1 }{n}  = 1/2 - n/2
+\]
+
+So we expect to see all of the proteins involved in yellow fluorescence for very large $n$.
+
+
+\end{comment}
+
+Note that the quantity:
+\[
+R(n) := E(n) / n
+\]
+
+goes to $1/2$ as $n$ goes to infinity.
+
+
+\section{Using FRET in amyloids of YFP, CFP, and Sup35p}
+As with section 3, we will now analyze the case of introducing Sup35p to the system in Section 4. That is, we have Sup35p, YFP, and CFP well mixed and of equal concentrations in a container under ambient lighting which causes CFP to fluoresce. The cyan fluorescence of a CFP will cause an adjacent YFP to fluoresce yellow due to FRET, and this fluorescence can be stacked so that a YFP sandwiched between two CFPs will fluoresce twice as much as in the case where a YFP is next to only 1 CFP. The presence of Sup35p will block the YFPs and CFPs from interacting under FRET.
+
+Our pattern becomes $\{C,Y,S \}^*$ where $C$ represents CFP, $Y$ represents YFP, and $S$ represents Sup35p. The 01 pattern is still $(0^* 0 1^*1)^* 0^*$ as before. 
+
+\subsection{Probability of $k$ total yellow fluorescence in length $n$ amyloid}
+
+We remark that the number of amyloids of length $n$ with $k$ total yellow unit fluorescence is:
+
+
+\[
+    \cA(n,k) = \sum_{q=0}^{n-k} b_q \sum_{i = 1}^k \sum_{\substack{\sum_{j=1}^i \phi_j = n - q \\ \phi_j \in [2,n-q] \cap \bZ}} \sum_{\substack{\sum_{j=1}^i \psi_j = k \\ \psi_j \in [1, \phi_j] \cap \bZ}} \prod_{j=1}^i a_{\phi_j,\psi_j}
+\]
+
+where 
+
+\begin{align*}
+b_0 &= 1, \\
+b_1 &= 3, \\
+b_i &= 2b_{i-1} + b_{i-2} \text{ for } i > 1,
+\end{align*}
+
+and 
+
+\begin{align*}
+a_{n,y} &= 0, \text{ for } n < y + 1 \\
+a_{y+1,y} &= 2\\
+a_{y+2,y} &= 2\\
+a_{n,y} &= 2a_{n-1,y} + a_{n-2,y}, \text{ for } n > y + 2
+\end{align*}
+
+Explicitly,
+
+\[
+b_n = - \frac{1}{2 + 2\sqrt{2}} \cdot \left(\frac{1}{-1-\sqrt{2}}\right)^n - \frac{1}{2-2\sqrt{2}} \cdot \left( \frac{1}{-1 +\sqrt{2}} \right)^n, n \ge 0 
+\]
+
+which is the same $b_n$ in section 3, and
+
+\[
+a_{n,y} =
+\begin{cases}
+      0, \text{if} \  n \le y \\
+      -\frac{4+3\sqrt{2}}{2+\sqrt{2}} \left( \frac{1}{-1-\sqrt{2}}  \right)^{n-y}   + \frac{4-3\sqrt{2}}{2-\sqrt{2}} \left(\frac{1}{-1 + \sqrt{2}} \right)^{n-y}, \text{if} \ n > y \\ 
+\end{cases}
+\]
+
+Now let us show all of this...
+
+As before in Section 3, the argument is to let $b_q$ represent the tail of zeros of length $q$ (which corresponds to the tail $0^*$ in our functional regular expression), $i$ the number of blocks of the form $(0^* 0 1^* 1)$ (as per our functional regular expression), $\phi_j$ is the length of the $j$th block of the form  $(0^* 0 1^* 1)$ , $\psi_j$ is the number of $1$'s in the $j$th block of the form $(0^* 0 1^* 1)$, and $a_{x,y}$ is the total number of $C-Y-S$ patterns corresponding to a 01 block of the form $(0^* 0 1^* 1)$ of length $x$ and with $y$ 1's. Given these, the reader can see why the formula must hold true. It is a similar construction to the formula of $\cA(n,k)$ in Section 3.
+
+Now we must justify the formulas themselves.
+
+For $b_i$, note that it represents the number of C-Y-S patterns represented by a 0-1 pattern of the form 000...0 where there are precisely $i$ 0's. To obtain the recursive formula, we note that the C-Y-S patterns of this type are represented by the C-Y-S regular expression
+\[
+S^* \{CC^* SS^*, YY^* SS^*\}^* \{CC^*, YY^*, \phi\}
+\]
+where $\phi$ is the empty set.
+Notice that this is the same as in Section 3 where $b_i$ represented the number of A-B-S patterns represented by a 0-1 pattern of the form 000...0 where there are precisely $i$ 0's -- the regular expression is equivalent by replacing C with A and Y with B. Thus, this is why we get the same formula for $b_i$ here as we did in Section 3 and do not need to show any new details.
+
+As for $a_{n,y}$, consider that it represents the number of C-Y-S patterns corresponding to a 0-1 functional pattern of length $n$ and with $y$ 1's, and looks like 00000...00011111...111. We fix $y = j$. Then for each $n \in \bN$, a regular expression is as follows:
+
+\[
+S^* \{CC^* SS^*, YY^* SS^*\}^* \{C(YCY...), Y(CYC...) \}
+\]
+
+where for the last term the patterns C(YCY...) or Y(CYC...) are of length $j + 1$.
+
+Our generating function is thus:
+
+
+\[
+G(x) = \sum_{i=0}^\infty a_{i,j} x^i = \frac{1}{1-S} \cdot \frac{1}{1 - \left(\frac{C}{1-C} \cdot \frac{S}{1-S} + \frac{Y}{1-Y} \cdot \frac{S}{1-S} \right)} \cdot 2x^{j+1}
+\].
+
+Setting $A = B = S = x$ where $x$ is an indeterminate, doing some algebra the reader can confirm that
+
+\[
+G(x) = \frac{2x^{j+1}(1-x)}{1-2x-x^2}
+\]
+
+and so
+
+\[
+a_{n,j} - 2a_{n - 1,j} - a_{n-2,j} = 
+\begin{cases}
+      0, & \text{if}\ n < j + 1 \\
+      2, & \text{if}\ n= j + 1 \\
+      -2, & \text{if}\ n= j + 2 \\
+        0, & \text{if} \ n > j + 2  
+    \end{cases}
+\]
+
+where the technique to get read off this recursion formula has already been discussed. Then we get what we claimed about the $a_{n,y}$'s earlier.
+
+To get the explicit formula, note that we cannot do partial fractions on $G(x)$ directly, however we can notice that the values of $a_{n,y}$ is simply a translation in the positive direction along $\bR$ of the values $a_{n,0}$ in its first index by $y$ -- the second index. That is, given that the recursive formula is:
+\begin{align*}
+a_{n,y} &= 0, \text{ for } n < y + 1 \\
+a_{y+1,y} &= 2\\
+a_{y+2,y} &= 2\\
+a_{n,y} &= 2a_{n-1,y} + a_{n-2,y}, \text{ for } n > y + 2,
+\end{align*}
+one should notice that $y$ determines when the sequence formally starts to have non-zero values and thus becomes non-trivial. With that in regard, $a_{n,y}$ is essentially a class of sequences in terms of $y$ which all have essentially the same sequence of values for all $n \in \bN$, modulo the zeroes at the beginning. Hence the notion of the second index $y$ being a "translation" factor. The translation factor rule is formally 
+\[a_{n,j} = a_{n+i,j-i}
+\]
+With this in mind, consider that we have the generating function in terms of $j$ which is the second index. Setting $j = 0$ gives a generating function for $a_{n,0}$ which we can do partial fractions on:
+
+\begin{align*}
+    G(x) &= \frac{2x(1-x)}{1-2x-x^2} = 2 + \frac{6x-2}{1-2x-x^2} = 2 +  \frac{(4+ 3\sqrt{2})/\sqrt{2}}{(-1-\sqrt{2}) - x} - \frac{(4-3\sqrt{2})/\sqrt{2}}{(-1+\sqrt{2}) - x} \\
+    &=2  - \frac{4+3\sqrt{2}}{2+\sqrt{2}} \cdot \frac{1}{1-\frac{1}{-1-\sqrt{2}} x} + \frac{4-3\sqrt{2}}{2-\sqrt{2}} \cdot \frac{1}{1- \frac{1}{-1+\sqrt{2}}x} \\
+    &= 2  - \frac{4+3\sqrt{2}}{2+\sqrt{2}}  \sum_{i=0}^\infty \left( \frac{1}{-1-\sqrt{2}}  \right)^i x^i  + \frac{4-3\sqrt{2}}{2- \sqrt{2}} \sum_{i=0}^\infty \left(\frac{1}{-1+\sqrt{2}} \right)^i x^i
+\end{align*}
+
+Hence we get that 
+\[
+a_{n,0} = 
+\begin{cases}
+      0, \text{if} \  n \le 0 \\
+      -\frac{4+3\sqrt{2}}{2+\sqrt{2}} \left( \frac{1}{-1-\sqrt{2}}  \right)^n   + \frac{4-3\sqrt{2}}{2-\sqrt{2}} \left(\frac{1}{-1 + \sqrt{2}} \right)^n, \text{if} \ n > 0 \\ 
+\end{cases}
+\]
+
+Hence by the translation rule,
+
+\[
+a_{n,y} =
+\begin{cases}
+      0, \text{if} \  n \le y \\
+      -\frac{4+3\sqrt{2}}{2+\sqrt{2}} \left( \frac{1}{-1-\sqrt{2}}  \right)^{n-y}   + \frac{4-3\sqrt{2}}{2-\sqrt{2}} \left(\frac{1}{-1 + \sqrt{2}} \right)^{n-y}, \text{if} \ n > y \\ 
+\end{cases}
+\]
+which is what was required.
+
+A simulation of the quantity 
+\[
+R(n) := E(n)/n
+\]
+is done using the following Python script: 
+
+\begin{verbatim}
+#!/usr/bin/python
+import itertools
+import math
+
+#The binomial coefficient nCk...
+def binom(n, k):
+    if k > n or k < 0:
+        return 0
+    a = math.factorial(n)
+    b = math.factorial(k)
+    c = math.factorial(n - k)
+    return a / (b * c)
+
+def a(n,y):
+    if n <= y:
+        return 0
+    x = math.sqrt(2)
+    result = - ((4 + 3 * x) / (x + 2) * 1.0) * pow((1.0/(-1.0-x)),n-y) - 
+    ((4 - 3 * x) / (2 - x) * 1.0) * pow((1.0 / (x - 1)), n - y)
+    return result
+
+def b(n):
+    x = math.sqrt(2)
+    result = - (1.0 / (2 * x + 2)) * pow((1.0 / (-1 - x)), n) - 
+    (1.0 / (2 - 2 * x)) * pow((1.0 / (x - 1)), n)
+    return result
+
+def product(lst):
+    val = 1.0
+    for item in lst:
+        val *= item
+    return val
+
+#This is the A(n,k) function I defined in my writeup...
+def A(n, k):
+    result = 0.0
+    for q in xrange(0, n - k + 1):
+        innerSum = 0.0
+        for i in xrange(1, k + 1):
+            all_lists = itertools.product(xrange(1, n - q + 1), repeat=i)
+            lists_of_psi = [lst for lst in all_lists if sum(lst) == k]
+            all_lists = itertools.product(xrange(2, n - q + 1), repeat=i)
+            lists_of_sum_n=[lst for lst in all_lists if sum(lst)==n - q]
+            for lst in lists_of_sum_n:
+                for lst2 in lists_of_psi:
+                    fin = zip(lst,lst2)
+                    a_lst = [a(x,y) for x,y in fin]
+                    innerSum += product(a_lst)
+        result += b(q) * innerSum
+    return result
+
+#The expected number of fluorescing locations in a length n
+#amyloid, according to formula I derived, is:
+def expected_value(length):
+    result = 0.0
+    for i in xrange(0, length / 2 + 1):
+        result += i * A(length, i)
+    result /= pow(3.0, length)
+    return result
+
+if __name__ == '__main__':
+    for i in xrange(1, 1000):
+        r = expected_value(i) / i
+        print "{}: {}".format(i, r)
+
+\end{verbatim}
+
+which yields the following results up to $n=15$ before becoming computationally inviable:
+
+\begin{verbatim}
+2: 0.111111111111
+3: 0.0987654320988
+4: 0.154320987654
+5: 0.141563786008
+6: 0.177411979881
+7: 0.168005748253
+8: 0.192805974699
+9: 0.185721462966
+10: 0.203698623177
+11: 0.198284219013
+12: 0.211710236884
+13: 0.207558366105
+14: 0.217786065517
+15: 0.214599388418
+\end{verbatim}
+
+which when graphed appears as the following:
+
+
+\includegraphics{FretandSup35.png}
+
+The data provided is qualitatively inconclusive to give an estimate of the steady-state value of $R(n)$.
+
+\bibliographystyle{plain}
+\nocite{*}
+\bibliography{references}
+\end{document}
