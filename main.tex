@@ -230,71 +230,97 @@ This is the number:
     R(n) := \frac{2E(n)}{n} = \frac{1}{n * 2^{n-1}}\sum_{k = 0}^{\floor{n/2}} k * \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right)
 \]
 
-We can show that
-\[
+We claim that
+\begin{equation}\label{eq:sum1}
 \sum_{k \ge 1}^{\floor{n/2}} k 2^k \binom{n-k-1}{k-1} = \frac{2^n (3n+2) + 2(6n-1)(-1)^n}{27}
-\]
+\end{equation}
 
 and
 
-\[
+\begin{equation}\label{eq:sum2}
 \sum_{k \ge 1}^{\floor{n/2}} k 2^k \binom{n-k-1}{k} = \frac{2^n (3n-4)-2(3n-2)(-1)^n}{27}
+\end{equation}
+
+We prove both identities using ordinary generating functions.
+
+We will use the standard identity that for any fixed $j \ge 0$,
+\begin{equation}\label{eq:binom-ogf}
+\sum_{n \ge 2j} \binom{n-j}{j} x^n = \frac{x^{2j}}{(1-x)^{j+1}}
+\end{equation}
+which follows from the substitution $m = n - j$ and the known generating function $\sum_{m \ge j} \binom{m}{j} x^m = x^j/(1-x)^{j+1}$.
+
+\textbf{Proof of (\ref{eq:sum1}).} Let $S_1(n) := \sum_{k \ge 1}^{\floor{n/2}} k\, 2^k \binom{n-k-1}{k-1}$. We derive the ordinary generating function $G_1(x) = \sum_{n \ge 0} S_1(n) x^n$.
+
+Using the substitution $j = k - 1$,
+\[
+S_1(n) = \sum_{j \ge 0} (j+1)\, 2^{j+1} \binom{n - j - 2}{j}
 \]
+Interchanging the order of summation and applying (\ref{eq:binom-ogf}) with a shift $n \mapsto n - 2$:
+\[
+G_1(x) = \sum_{j \ge 0}(j+1)\, 2^{j+1} \cdot \frac{x^{2j+2}}{(1-x)^{j+1}}
+= \frac{2x^2}{1-x} \sum_{j \ge 0} (j+1) \left( \frac{2x^2}{1-x} \right)^j
+\]
+Setting $u = 2x^2/(1-x)$ and using $\sum_{j \ge 0}(j+1) u^j = 1/(1-u)^2$, we have
+\[
+G_1(x) = \frac{2x^2}{1-x} \cdot \frac{1}{(1-u)^2}
+\]
+Since $1 - u = (1 - x - 2x^2)/(1-x) = (1-2x)(1+x)/(1-x)$, this simplifies to
+\[
+G_1(x) = \frac{2x^2(1-x)}{(1-2x)^2(1+x)^2}
+\]
+We now perform a partial fraction decomposition:
+\[
+G_1(x) = \frac{\alpha}{1-2x} + \frac{\beta}{(1-2x)^2} + \frac{\gamma}{1+x} + \frac{\delta}{(1+x)^2}
+\]
+Multiplying both sides by $(1-2x)^2(1+x)^2$ and evaluating at $x = 1/2$ gives $\beta = 1/9$, and at $x = -1$ gives $\delta = 4/9$. Expanding the right-hand side and comparing coefficients of $x^0$ and $x^1$ then yields $\alpha = -1/27$ and $\gamma = -14/27$. Now, using the standard power series
+\begin{align*}
+\frac{1}{1-2x} &= \sum_{n \ge 0} 2^n x^n, &
+\frac{1}{(1-2x)^2} &= \sum_{n \ge 0} (n+1)\, 2^n x^n \\
+\frac{1}{1+x} &= \sum_{n \ge 0} (-1)^n x^n, &
+\frac{1}{(1+x)^2} &= \sum_{n \ge 0} (n+1)(-1)^n x^n
+\end{align*}
+we extract the coefficient of $x^n$:
+\begin{align*}
+S_1(n) &= -\frac{1}{27} \cdot 2^n + \frac{1}{9}(n+1)\, 2^n - \frac{14}{27}(-1)^n + \frac{4}{9}(n+1)(-1)^n \\
+&= \frac{1}{27}\left[ 2^n(-1 + 3n + 3) + (-1)^n(-14 + 12n + 12) \right] \\
+&= \frac{2^n(3n+2) + 2(6n-1)(-1)^n}{27}
+\end{align*}
+as claimed. $\square$
 
-So that
+\textbf{Proof of (\ref{eq:sum2}).} Let $S_2(n) := \sum_{k \ge 1}^{\floor{n/2}} k\, 2^k \binom{n-k-1}{k}$. As before, applying (\ref{eq:binom-ogf}):
+\[
+G_2(x) = \sum_{n \ge 0} S_2(n) x^n = \sum_{k \ge 1} k \cdot 2^k \cdot \frac{x^{2k+1}}{(1-x)^{k+1}} = \frac{x}{1-x} \cdot \frac{u}{(1-u)^2}
+\]
+where $u = 2x^2/(1-x)$ as before. This simplifies to
+\[
+G_2(x) = \frac{2x^3}{(1-2x)^2(1+x)^2}
+\]
+Performing partial fractions, evaluating at $x = 1/2$ gives $\beta = 1/9$ and at $x = -1$ gives $\delta = -2/9$. Comparing coefficients of $x^0$ and $x^1$ yields $\alpha = -7/27$ and $\gamma = 10/27$. Extracting coefficients:
+\begin{align*}
+S_2(n) &= -\frac{7}{27}\cdot 2^n + \frac{1}{9}(n+1)\,2^n + \frac{10}{27}(-1)^n - \frac{2}{9}(n+1)(-1)^n \\
+&= \frac{1}{27}\left[2^n(-7+3n+3) + (-1)^n(10-6n-6)\right] \\
+&= \frac{2^n(3n-4) - 2(3n-2)(-1)^n}{27}
+\end{align*}
+as claimed. $\square$
+
+Substituting (\ref{eq:sum1}) and (\ref{eq:sum2}):
 
 \begin{align}
- R(n) &= \frac{1}{n * 2^{n-1}}\sum_{k = 0}^{\floor{n/2}} k * \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right) \\
- &= \frac{1}{n * 2^{n-1}} \left(\frac{2^n (3n+2) + 2(6n-1)(-1)^n}{27}  + 2 * \frac{2^n (3n-4)-2(3n-2)(-1)^n}{27} \right) \\
- &= \frac{2 (3+2/n) + 2(6-1/n)(-1)^n (1/2^{n-1})}{27} + 2^2 \frac{(3-4/n)-2(3-2/n)(-1)^n * (1/2^{n-1})}{27} \\
-&= \frac{1}{27} \left[ 2 ((3+2/n) + (6-1/n)(-1)^n (1/2^{n-1})) + 4 ((3-4/n)-(6-4/n)(-1)^n * (1/2^{n-1})) \right]
+ R(n) &= \frac{1}{n \cdot 2^{n-1}}\sum_{k = 0}^{\floor{n/2}} k \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right) \\
+ &= \frac{1}{n \cdot 2^{n-1}} \left(\frac{2^n (3n+2) + 2(6n-1)(-1)^n}{27}  + 2 \cdot \frac{2^n (3n-4)-2(3n-2)(-1)^n}{27} \right) \\
+ &= \frac{1}{n \cdot 2^{n-1}} \cdot \frac{2^n(9n-6) + 6(-1)^n}{27} \\
+ &= \frac{2(9n-6)}{27n} + \frac{6(-1)^n}{27n \cdot 2^{n-1}} \\
+ &= \frac{2(3n-2)}{9n} + \frac{2(-1)^n}{9n \cdot 2^{n-1}}
 \end{align}
 
-Then as $n \rightarrow \infty$ we have
+Then as $n \rightarrow \infty$, the second term vanishes and we have
 
 \begin{align}
-    \lim_{n \rightarrow \infty} R(n) &= \frac{1}{27} \left[6 + 4(3) \right] = \frac{18}{27} = \frac{2}{3}
+    \lim_{n \rightarrow \infty} R(n) &= \lim_{n \rightarrow \infty} \frac{2(3n-2)}{9n} = \frac{6}{9} = \frac{2}{3}
 \end{align}
 
 
-We can also sanity check the above via computer simulation using the following script in Python 3.8, by computing the original formula naively:
-\begin{verbatim}
-#!/usr/bin/python
-
-import math
-#The binomial coefficient nCk...
-def binom(n, k):
-        if k > n or k < 0:
-                return 0
-        a = math.factorial(n)
-        b = math.factorial(k)
-        c = math.factorial(n - k)
-        return a / (b * c)
-
-#This is the #(n,k) function
-def num(n, k):
-        return binom(n - k, k)
-
-def A(n, k):
-        return pow(2, k) * num(n - 2,k - 1) + pow(2, k + 1) * num(n - 1, k)
-
-#The expected number of fluorescing locations in a length n
-#amyloid, according to formula derived, is:
-def expected_value(length):
-        result = 0.0
-        for i in range(0, int(length / 2)):
-                result += i * A(length, i)
-
-        result /= pow(2, length)
-        return result
-        
-if __name__ == '__main__':
-    for i in range(4, 1000):
-        r = 2 * expected_value(i) / i
-        print(f"{i}: {r})
-\end{verbatim}
-
-which produces the following sample of the output:
+We can also sanity check the above via computer simulation (see \texttt{split\_yfp\_simulation.py}), which produces the following sample of the output:
 \begin{verbatim}
 2: 0.5
 3: 0.5
@@ -510,72 +536,7 @@ Note that it is conjectured that
     R(n) = 1/3
 \]
 
-by simulation via the following Python script:
-\begin{verbatim}
-#!/usr/bin/python
-import itertools
-import math
-
-#The binomial coefficient nCk...
-def binom(n, k):
-    if k > n or k < 0:
-        return 0
-    a = math.factorial(n)
-    b = math.factorial(k)
-    c = math.factorial(n - k)
-    return a / (b * c)
-
-def a(n):
-    if n == 0:
-        return 0
-    x = math.sqrt(2)
-    result = ((3 + 2 * x) / (x + 2) * 1.0) * pow((1.0 / (-1.0 - x)), n) + 
-    ((2 * x - 3) / (x - 2) * 1.0) * pow((1.0 / (x - 1)), n)
-    return result
-
-def b(n):
-    x = math.sqrt(2)
-    result = - (1.0 / (2 * x + 2)) * pow((1.0 / (-1 - x)), n) - 
-    (1.0 / (2 - 2 * x)) * pow((1.0 / (x - 1)), n)
-    return result
-
-def product(lst):
-    val = 1.0
-    for item in lst:
-        val *= item
-    return val
-
-#This is the A(n,k) function I defined in my writeup...
-def A(n, k):
-    result = 0.0
-    for q in xrange(0, n + 1 - 2 * k):
-        all_lists = 
-        itertools.product(range(2, n - q - 2 * (k - 1)), repeat=k)
-        lists_of_sum_n = [lst for lst in all_lists if sum(lst) == n - q]
-        innerSum = 0.0
-        for lst in lists_of_sum_n:
-            a_lst = [a(phi_i) for phi_i in lst]
-            innerSum += product(a_lst)
-        result += b(q) * innerSum
-
-    return result
-
-#The expected number of fluorescing locations in a length n
-#amyloid, according to formula I derived, is:
-def expected_value(length):
-    result = 0.0
-    for i in xrange(0, length / 2 + 1):
-        result += i * A(length, i)
-    result /= pow(3, length)
-    return result
-
-if __name__ == '__main__':
-    for i in xrange(2, 1000):
-        r = 2 * expected_value(i) / i
-        print "{}: {}".format(i, r)
-\end{verbatim}
-
-which returns the following output:
+by simulation (see \texttt{sup35\_simulation.py}), which returns the following output:
 
 \begin{verbatim}
 6: 0.0146319158665
@@ -823,77 +784,7 @@ A simulation of the quantity
 \[
 R(n) := E(n)/n
 \]
-is done using the following Python script: 
-
-\begin{verbatim}
-#!/usr/bin/python
-import itertools
-import math
-
-#The binomial coefficient nCk...
-def binom(n, k):
-    if k > n or k < 0:
-        return 0
-    a = math.factorial(n)
-    b = math.factorial(k)
-    c = math.factorial(n - k)
-    return a / (b * c)
-
-def a(n,y):
-    if n <= y:
-        return 0
-    x = math.sqrt(2)
-    result = - ((4 + 3 * x) / (x + 2) * 1.0) * pow((1.0/(-1.0-x)),n-y) - 
-    ((4 - 3 * x) / (2 - x) * 1.0) * pow((1.0 / (x - 1)), n - y)
-    return result
-
-def b(n):
-    x = math.sqrt(2)
-    result = - (1.0 / (2 * x + 2)) * pow((1.0 / (-1 - x)), n) - 
-    (1.0 / (2 - 2 * x)) * pow((1.0 / (x - 1)), n)
-    return result
-
-def product(lst):
-    val = 1.0
-    for item in lst:
-        val *= item
-    return val
-
-#This is the A(n,k) function I defined in my writeup...
-def A(n, k):
-    result = 0.0
-    for q in xrange(0, n - k + 1):
-        innerSum = 0.0
-        for i in xrange(1, k + 1):
-            all_lists = itertools.product(xrange(1, n - q + 1), repeat=i)
-            lists_of_psi = [lst for lst in all_lists if sum(lst) == k]
-            all_lists = itertools.product(xrange(2, n - q + 1), repeat=i)
-            lists_of_sum_n=[lst for lst in all_lists if sum(lst)==n - q]
-            for lst in lists_of_sum_n:
-                for lst2 in lists_of_psi:
-                    fin = zip(lst,lst2)
-                    a_lst = [a(x,y) for x,y in fin]
-                    innerSum += product(a_lst)
-        result += b(q) * innerSum
-    return result
-
-#The expected number of fluorescing locations in a length n
-#amyloid, according to formula I derived, is:
-def expected_value(length):
-    result = 0.0
-    for i in xrange(0, length / 2 + 1):
-        result += i * A(length, i)
-    result /= pow(3.0, length)
-    return result
-
-if __name__ == '__main__':
-    for i in xrange(1, 1000):
-        r = expected_value(i) / i
-        print "{}: {}".format(i, r)
-
-\end{verbatim}
-
-which yields the following results up to $n=15$ before becoming computationally inviable:
+is done via simulation (see \texttt{fret\_sup35\_simulation.py}), which yields the following results up to $n=15$ before becoming computationally inviable:
 
 \begin{verbatim}
 2: 0.111111111111
