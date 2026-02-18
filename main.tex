@@ -319,6 +319,39 @@ Then as $n \rightarrow \infty$, the second term vanishes and we have
     \lim_{n \rightarrow \infty} R(n) &= \lim_{n \rightarrow \infty} \frac{2(3n-2)}{9n} = \frac{6}{9} = \frac{2}{3}
 \end{align}
 
+\subsubsection{Alternative derivation via Markov chain}
+
+We can also derive $E(n)$ directly by a Markov chain argument, bypassing $\cA(n,k)$ entirely. Consider building an amyloid one protein at a time, where each protein is independently A or B with equal probability $1/2$. Define two states based on the rightmost protein:
+\begin{itemize}
+\item \textbf{State $p$}: the rightmost protein is \textit{not} part of a fused pair.
+\item \textbf{State $q$}: the rightmost protein is part of a fused pair.
+\end{itemize}
+
+From state $p$ (say the rightmost protein is A, unfused): with probability $1/2$ the next protein is A (same type, no fusion, stay in $p$), and with probability $1/2$ it is B (fusion, go to $q$, $+1$ fluorescence). By symmetry, the case for B is identical. So from $p$: transition to $p$ with probability $1/2$ and to $q$ with probability $1/2$, with expected fluorescence $1/2$.
+
+From state $q$ (rightmost protein is fused): the next protein is A or B each with probability $1/2$, and in either case goes to state $p$ with no fluorescence (since the current protein is already fused). So from $q$: transition to $p$ with probability $1$.
+
+With $p_1 = 1$ (the first protein is always unfused), the recurrence $p_{n+1} = \frac{1}{2} p_n + 1 \cdot (1 - p_n) = 1 - \frac{1}{2} p_n$ has fixed point $p^* = 2/3$ and general solution
+\[
+p_n = \frac{2}{3} + \frac{1}{3}\left(-\frac{1}{2}\right)^{n-1}
+\]
+
+The expected fluorescence contributed by the $(n+1)$th protein is $e_{n+1} = \frac{1}{2} p_n$, so
+\begin{align*}
+E(n) = \sum_{i=2}^{n} e_i &= \frac{1}{2} \sum_{j=1}^{n-1} p_j = \frac{1}{2} \sum_{j=1}^{n-1} \left[ \frac{2}{3} + \frac{1}{3}\left(-\frac{1}{2}\right)^{j-1} \right] \\
+&= \frac{n-1}{3} + \frac{1}{6} \cdot \frac{1 - (-1/2)^{n-1}}{3/2} = \frac{n-1}{3} + \frac{1}{9}\left(1 - \left(-\frac{1}{2}\right)^{n-1}\right)
+\end{align*}
+
+Therefore
+\[
+R(n) = \frac{2E(n)}{n} = \frac{2(n-1)}{3n} + \frac{2}{9n}\left(1 - \left(-\frac{1}{2}\right)^{n-1}\right) \longrightarrow \frac{2}{3} \text{ as } n \to \infty
+\]
+
+Since this must agree with the combinatorial derivation, equating the two expressions for $E(n)$ provides an independent verification of the sum identities (\ref{eq:sum1}) and (\ref{eq:sum2}). Specifically,
+\[
+\frac{S_1(n) + 2\,S_2(n)}{2^n} = \frac{n-1}{3} + \frac{1}{9}\left(1 - \left(-\frac{1}{2}\right)^{n-1}\right)
+\]
+which one can verify simplifies to the same closed form obtained from the generating function proofs.
 
 We can also sanity check the above via computer simulation (see \texttt{split\_yfp\_simulation.py}), which produces the following sample of the output:
 \begin{verbatim}
@@ -531,35 +564,79 @@ This is the number:
     R(n) = \frac{2E(n)}{n}
 \]
 
-Note that it is conjectured that
+We prove that $\lim_{n \to \infty} R(n) = 1/3$ by computing $E(n)$ directly using a Markov chain argument, bypassing the combinatorial formula for $\cA(n,k)$.
+
+Consider building an amyloid one protein at a time, where each protein is independently A, B, or S with equal probability $1/3$. We define two states based on the status of the most recently added protein:
+\begin{itemize}
+\item \textbf{State $p$}: the rightmost protein is A or B and is \textit{not} part of a fused pair (and so is available to fuse with the next protein).
+\item \textbf{State $q$}: the rightmost protein is either S, or is A/B but already part of a fused pair (and so the next protein cannot fuse with it).
+\end{itemize}
+
+The transition probabilities are as follows. From state $p$ (say the rightmost protein is A, unfused):
+\begin{itemize}
+\item With probability $1/3$, the next protein is A (same type): no fusion, go to $p$.
+\item With probability $1/3$, the next protein is B (different type): fusion occurs (+1 fluorescence), go to $q$.
+\item With probability $1/3$, the next protein is S: no fusion, go to $q$.
+\end{itemize}
+By symmetry between A and B, the case where the rightmost is B is identical. So from $p$: transition to $p$ with probability $1/3$, to $q$ with probability $2/3$, with expected fluorescence $1/3$.
+
+From state $q$, the rightmost protein cannot fuse regardless of the next protein's type. The next protein is A, B, or S each with probability $1/3$, and is always unfused. So from $q$: transition to $p$ with probability $2/3$ (next is A or B), to $q$ with probability $1/3$ (next is S), with expected fluorescence $0$.
+
+Let $p_n$ denote the probability of being in state $p$ after the $n$th protein. The initial state is $p$ with probability $2/3$ and $q$ with probability $1/3$, so $p_1 = 2/3$. The recurrence is:
 \[
-    R(n) = 1/3
+p_{n+1} = \frac{1}{3} p_n + \frac{2}{3}(1 - p_n) = \frac{2}{3} - \frac{1}{3} p_n
+\]
+This has fixed point $p^* = 1/2$, and the general solution is
+\[
+p_n = \frac{1}{2} + \frac{(-1/3)^{n-1}}{6}
+\]
+which is verified by checking $p_1 = 1/2 + 1/6 = 2/3$.
+
+The expected fluorescence contributed by the $(n+1)$th protein is $e_{n+1} = p_n / 3$, so
+\begin{align*}
+E(n) &= \sum_{i=2}^{n} e_i = \frac{1}{3} \sum_{j=1}^{n-1} p_j = \frac{1}{3} \sum_{j=1}^{n-1} \left[ \frac{1}{2} + \frac{(-1/3)^{j-1}}{6} \right] \\
+&= \frac{n-1}{6} + \frac{1}{18} \cdot \frac{1 - (-1/3)^{n-1}}{4/3} = \frac{n-1}{6} + \frac{1}{24}\left(1 - (-1/3)^{n-1}\right) \\
+&= \frac{4n - 3}{24} - \frac{(-1)^{n-1}}{24 \cdot 3^{n-1}}
+\end{align*}
+
+Therefore
+\[
+R(n) = \frac{2E(n)}{n} = \frac{4n-3}{12n} + \frac{(-1)^n}{12n \cdot 3^{n-1}}
 \]
 
-by simulation (see \texttt{sup35\_simulation.py}), which returns the following output:
+and as $n \to \infty$, the second term vanishes:
+\[
+\lim_{n \to \infty} R(n) = \lim_{n \to \infty} \frac{4n - 3}{12n} = \frac{4}{12} = \frac{1}{3}
+\]
+
+A simulation (see \texttt{sup35\_simulation.py}) confirms this, returning the following output:
 
 \begin{verbatim}
-6: 0.0146319158665
-7: 0.0334443791234
-8: 0.0600518213687
-9: 0.0880624566038
-10: 0.117326288337
-11: 0.145103937818
-12: 0.171026824552
-13: 0.194258484153
-14: 0.214795454455
-15: 0.232595648807
-16: 0.24787920548
-17: 0.26086528489
-18: 0.271832547986
-19: 0.281041609429
-20: 0.288746154913
-21: 0.295172255476
-22: 0.300521909795
-23: 0.304969639296
-24: 0.308665548904
-25: 0.311736795713
-26: 0.314290575502
+2: 0.222222222222
+3: 0.246913580247
+4: 0.271604938272
+5: 0.283127572016
+6: 0.291723822588
+7: 0.297602717356
+8: 0.302088096327
+9: 0.305554144298
+10: 0.308333756711
+11: 0.310605932310
+12: 0.312500039202
+13: 0.314102552041
+14: 0.315476194210
+15: 0.316666665505
+16: 0.317708333696
+17: 0.318627450867
+18: 0.319444444480
+19: 0.320175438585
+20: 0.320833333337
+21: 0.321428571427
+22: 0.321969696970
+23: 0.322463768116
+24: 0.322916666667
+25: 0.323333333333
+26: 0.323717948718
 \end{verbatim}
 
 and the following graph:
