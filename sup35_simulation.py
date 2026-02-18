@@ -36,7 +36,7 @@ def A(n, k):
     result = 0.0
     for q in range(0, n + 1 - 2 * k):
         all_lists = \
-        itertools.product(range(2, n - q - 2 * (k - 1)), repeat=k)
+        itertools.product(range(2, n - q - 2 * (k - 1) + 1), repeat=k)
         lists_of_sum_n = [lst for lst in all_lists if sum(lst) == n - q]
         innerSum = 0.0
         for lst in lists_of_sum_n:
