@@ -99,7 +99,7 @@ We will start with the case where the halves of Split-YFP are well-mixed in a ne
 
 \subsection{Lighting Patterns aka 01 representations}
 
-Now let us abstract away from A and B specifically and just analyze the so-called "lighting-patterns" of amyloids of length $n$, which we describe below.
+We abstract away from A and B specifically and instead analyze the ``lighting patterns'' of amyloids of length $n$, defined as follows.
 
 We ask: How many distinct patterns of fluorescing locations could we possibly see from an amyloid of length n?
 
@@ -131,7 +131,7 @@ As another example,
 \end{alignat*} 
 We notice that our unambiguous regular expression for these 01 patterns is $(0^*01)^* 0^*$. Note that if we were looking at an amyloid without knowing what the proteins actually were, we would still be able to identify its 01 pattern by looking at the fluorescing locations. Indeed, each fluorescing location corresponds to a 1.
 
-We can count the total number of distinct 01 patterns of length $n$ using the symbolic method for regular expressions \cite{flajolet2009}. Note that $(0^*01)^* 0^* = (0^+1)^* 0^*$: each block $0^*01$ consists of zero or more leading zeros followed by $01$, which means at least one zero precedes the $1$, so $0^*01 = 0^+1$. The two expressions generate the same language under Kleene closure. We assign weight $x$ per symbol. Each block $0^*01 = 0^+1$ has generating function $\frac{x}{1-x} \cdot x = \frac{x^2}{1-x}$, and the Kleene star $(0^*01)^*$ has generating function $\frac{1}{1 - x^2/(1-x)} = \frac{1-x}{1-x-x^2}$. Including the trailing $0^*$ with generating function $\frac{1}{1-x}$, we obtain:
+We can count the total number of distinct 01 patterns of length $n$ using the symbolic method for regular expressions \cite{flajolet2009}. Note that $(0^*01)^* 0^* = (0^+1)^* 0^*$: each block $0^*01$ consists of zero or more leading zeros followed by $01$, so the trailing $0$ of $0^*$ and the leading $0$ of $01$ merge to give at least one zero before the $1$, hence $0^*01 = 0^+1$. We assign weight $x$ per symbol. Each block $0^*01 = 0^+1$ has generating function $\frac{x}{1-x} \cdot x = \frac{x^2}{1-x}$, and the Kleene star $(0^*01)^*$ has generating function $\frac{1}{1 - x^2/(1-x)} = \frac{1-x}{1-x-x^2}$. Including the trailing $0^*$ with generating function $\frac{1}{1-x}$, we obtain:
 \[
 G(x) := \sum_{n=0}^\infty a_n x^n = \frac{1-x}{1-x-x^2} \cdot \frac{1}{1-x} = \frac{1}{1-x-x^2}
 \]
@@ -654,7 +654,7 @@ and the following graph:
 
 \section{ Using FRET in amyloids of YFP and CFP}
 
-We now analyze the case where full YFP (i.e., both halves are conjoined to form the complete fluorophore) and CFP are well-mixed in a container under ambient lighting that causes CFP to fluoresce. When CFP is bonded to YFP, the fluorescence from CFP will cause YFP to fluoresce (FRET). 
+Consider the case where full YFP (i.e., both halves are conjoined to form the complete fluorophore) and CFP are well-mixed in a container under ambient lighting that causes CFP to fluoresce. When CFP is bonded to YFP, the fluorescence from CFP will cause YFP to fluoresce (FRET). 
 
 We are interested in measuring the \textit{total} yellow fluorescence emanating from amyloids of this kind. That is, the YFPs may fluoresce at a fixed level (call it Level 1) when it is next to one and only one CFP, but it may also fluoresce twice as much (Level 2) if it is next to \textit{two} CFPs as in a YFP being sandwiched between two CFPs. We want to then sum over the total yellow fluorescence of an amyloid rather than just the raw number of YFPs that are caused to fluoresce. 
 
