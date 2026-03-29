@@ -97,7 +97,7 @@ Let $n$ be the number of split-YFPs in a given amyloid. Clearly, there are $2^n$
 
 We will start with the case where the halves of Split-YFP are well-mixed in a neutral solution and of equal concentrations, and are thus equally likely to appear as the next protein in an amyloid sequence. 
 
-\subsection{Lighting Patterns aka 01 representations}
+\subsection{Lighting Patterns and 01 representations}
 
 We abstract away from A and B specifically and instead analyze the ``lighting patterns'' of amyloids of length $n$, defined as follows.
 
@@ -153,9 +153,9 @@ We now analyze the probability of seeing $k$ fluorescing vertices in an amyloid 
 \subsubsection{Distinct 01 patterns with $k$ 1s}
 First, let us count the number of 01 patterns of length $n$ with $k$ 1s. Our invariant states that no 1s may be adjacent, and the first digit must be a zero. Since $f_1 = 0$ always, the $k$ ones must be placed among positions $2, 3, \ldots, n$ (i.e., $n - 1$ available positions) with no two adjacent. This is equivalent to placing $k$ non-adjacent objects in $n - 1$ boxes, giving:
 \[
-\#(n,k) := \binom{n-k}{k}, k \leq \floor{n/2}
+\#(n,k) := \binom{n-k}{k}, \quad k \leq \floor{n/2}
 \]
-A proof can be found in \cite{stanley2012}.
+Indeed, the number of ways to place $k$ non-adjacent objects in $m$ boxes is $\binom{m-k+1}{k}$ (see \cite{stanley2012}); setting $m = n - 1$ gives $\binom{n-k}{k}$ as claimed.
 
 
 \subsubsection{Distinct amyloids with $k$ 1s}
@@ -377,17 +377,20 @@ We can also sanity check the above via computer simulation (see \texttt{split\_y
 417: 0.665600852651
 \end{verbatim}
 
-As a graph, the first 400 values appears as:
+As a graph, the first 400 values appear in Figure~\ref{fig:splityfp}.
 
-\includegraphics{SplitYFPamyloids.png}
-
-where the blue line is 2/3 and the orange line is our data.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.75\textwidth]{SplitYFPamyloids.png}
+\caption{$R(n)$ for split-YFP amyloids. The blue line is $2/3$ and the orange curve is the exact $R(n)$.}
+\label{fig:splityfp}
+\end{figure}
 
 
 \section{Introducing Sup35p into Amyloids}
 We now want to consider the facts above but with the introduction of yeast prion protein Sup35p (which we label with an $S$) into our amyloids. Such a prion has no such fluorescent behavior, but rather blocks the two halves of Split-YFP from conjoining and fluorescing. Our amyloids can now be described using the regular expression $\{A,B,S\}^*$. We would like to first analyze the case where Sup35p and the halves of Split-YFP come in equal concentrations, and are thus equally likely to occur as the next protein in an amyloid sequence.
 
-\subsection{Number of distinct lighting patterns aka 01 representations}
+\subsection{Number of distinct lighting patterns and 01 representations}
 The introduction of Sup35p does not change this. When we abstract away the details we are still looking at 01 patterns of the form $(0^*01)^* 0^*$. Hence we have $F_{n+1}$ distinct lighting patterns for an amyloid of length $n$ (using the convention $F_1 = F_2 = 1$).
 
 \subsection{Probability of $k$ fluorescing locations in length $n$ amyloid}
@@ -444,10 +447,10 @@ In detail: let $q$ be the length of the trailing run of zeros, let $b_q$ denote 
 
 Firstly, $b_i$ represents the number of A-B-S patterns represented by a 0-1 pattern of the form 00000....0 where there are precisely $i$ 0's. To obtain the recursive formula, we note that the A-B-S patterns of this type are represented by the A-B-S regular expression
 \[
-S^* \{AA^* SS^*, BB^* SS^*\}^* \{AA^*, BB^*, \phi\}
+S^* \{AA^* SS^*, BB^* SS^*\}^* \{AA^*, BB^*, \varepsilon\}
 \]
 
-where $\phi$ is the empty set,
+where $\varepsilon$ denotes the empty string,
 
 and so the generating function is
 
@@ -655,9 +658,14 @@ A simulation (see \texttt{sup35\_simulation.py}) confirms this, returning the fo
 26: 0.323717948718
 \end{verbatim}
 
-and the following graph:
+and the graph appears in Figure~\ref{fig:sup35}.
 
-\includegraphics{splityfpandsup35.png}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.75\textwidth]{splityfpandsup35.png}
+\caption{$R(n)$ for split-YFP amyloids with Sup35p. The blue line is $1/3$ and the orange curve is the exact $R(n)$.}
+\label{fig:sup35}
+\end{figure}
 
 
 \section{ Using FRET in amyloids of YFP and CFP}
@@ -774,9 +782,9 @@ We now justify the recurrences.
 
 For $b_i$, note that it represents the number of C-Y-S patterns represented by a 0-1 pattern of the form 000...0 where there are precisely $i$ 0's. To obtain the recursive formula, we note that the C-Y-S patterns of this type are represented by the C-Y-S regular expression
 \[
-S^* \{CC^* SS^*, YY^* SS^*\}^* \{CC^*, YY^*, \phi\}
+S^* \{CC^* SS^*, YY^* SS^*\}^* \{CC^*, YY^*, \varepsilon\}
 \]
-where $\phi$ is the empty set.
+where $\varepsilon$ denotes the empty string.
 Notice that this is the same as in Section 3 where $b_i$ represented the number of A-B-S patterns represented by a 0-1 pattern of the form 000...0 where there are precisely $i$ 0's -- the regular expression is equivalent by replacing C with A and Y with B. Thus, this is why we get the same formula for $b_i$ here as we did in Section 3 and do not need to show any new details.
 
 As for $a_{n,y}$, consider that it represents the number of C-Y-S patterns corresponding to a 0-1 functional pattern of length $n$ and with $y$ 1's, and looks like 00000...00011111...111. We fix $y = j$. Then for each $n \in \bN$, a regular expression is as follows:
@@ -821,9 +829,10 @@ a_{y+1,y} &= 2\\
 a_{y+2,y} &= 2\\
 a_{n,y} &= 2a_{n-1,y} + a_{n-2,y}, \text{ for } n > y + 2,
 \end{align*}
-one should notice that $y$ determines when the sequence formally starts to have non-zero values and thus becomes non-trivial. With that in regard, $a_{n,y}$ is essentially a class of sequences in terms of $y$ which all have essentially the same sequence of values for all $n \in \bN$, modulo the zeroes at the beginning. Hence the notion of the second index $y$ being a "translation" factor. The translation factor rule is formally 
-\[a_{n,j} = a_{n+i,j-i}
+one should notice that $y$ determines when the sequence formally starts to have non-zero values and thus becomes non-trivial. With that in regard, $a_{n,y}$ is essentially a class of sequences in terms of $y$ which all have essentially the same sequence of values for all $n \in \bN$, modulo the zeroes at the beginning. Hence the notion of the second index $y$ being a "translation" factor. The translation rule is formally
+\[a_{n,j} = a_{n+\ell,\, j-\ell}
 \]
+for any integer $\ell$ such that both indices remain in range.
 With this in mind, consider that we have the generating function in terms of $j$ which is the second index. Setting $j = 0$ gives a generating function for $a_{n,0}$ which we can do partial fractions on:
 
 \begin{align*}
@@ -862,11 +871,14 @@ Therefore
 R(n) := E(n)/n = \frac{2(n-1)}{9n} \longrightarrow \frac{2}{9} \text{ as } n \to \infty
 \]
 
-The first 400 values of $R(n)$ appear as:
+The first 400 values of $R(n)$ appear in Figure~\ref{fig:fretsup35}.
 
-\includegraphics{FretandSup35.png}
-
-where the blue line is $2/9$ and the orange line is our data.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.75\textwidth]{FretandSup35.png}
+\caption{$R(n)$ for FRET YFP/CFP amyloids with Sup35p. The blue line is $2/9$ and the orange curve is the exact $R(n)$.}
+\label{fig:fretsup35}
+\end{figure}
 
 \section{Conclusion}
 
@@ -891,11 +903,15 @@ In the FRET settings (Sections 4 and 5), the absence of a blocking constraint me
 
 The limiting ratios have concrete experimental interpretations. For split-YFP amyloids, $R(n) \to 2/3$ means that in a long amyloid composed of equal concentrations of the two halves, approximately two-thirds of the proteins participate in a fluorescent fusion---a high baseline fluorescence yield arising from the alternating tendency of random binary sequences. Introducing Sup35p at equal concentration halves this to $1/3$: the inert Sup35p proteins act as spacers that interrupt potential fusion pairs. For FRET, the ratio $R(n) \to 1/2$ reflects the probability that a random adjacent pair is a $\{C,Y\}$ pair, while the drop to $2/9$ with Sup35p reflects the reduced probability $2 \cdot (1/3)^2$ of such a pair when three protein types compete for each position. Experimentally, measured fluorescence ratios deviating from these baseline values would indicate non-random assembly biases in the amyloid growth process.
 
-The results above all depend on the equal-concentration assumption. The Markov chain arguments generalize readily to unequal concentrations. For example, in the split-YFP setting, suppose protein A appears with probability $p$ and protein B with probability $1 - p$. From state $p$ (unfused), the probability of staying unfused is $p^2 + (1-p)^2$ (same-type neighbor) and of fusing is $2p(1-p)$ (different-type neighbor). The steady-state unfused probability is $p^* = 1/(1 + 2p(1-p))$, and since $R(n) = 2E(n)/n$ with expected fluorescence per step $2p(1-p) \cdot p^*$ at steady state, the limiting ratio is
+The results above all depend on the equal-concentration assumption. The Markov chain arguments generalize readily to unequal concentrations. For example, in the split-YFP setting, suppose protein A appears with probability $\alpha$ and protein B with probability $1 - \alpha$. Let $\pi_n$ denote the probability that the $n$th protein is in the unfused state. The transition probabilities are: from unfused, the next protein is the same type with probability $\alpha^2 + (1-\alpha)^2$ (staying unfused) or a different type with probability $2\alpha(1-\alpha)$ (fusion occurs, next protein is fused). From the fused state, the next protein is always unfused. The recurrence is therefore
 \[
-\lim_{n \to \infty} R(n) = \frac{4p(1-p)}{1 + 2p(1-p)}
+\pi_{n+1} = \bigl[\alpha^2 + (1-\alpha)^2\bigr]\,\pi_n + (1 - \pi_n)
 \]
-which reduces to $2/3$ when $p = 1/2$. In the FRET setting with $P(C) = p_C$, $P(Y) = p_Y = 1 - p_C$, linearity of expectation gives $R(n) \to 2p_C p_Y$ directly, and with Sup35p at concentration $p_S$ (where $p_C + p_Y + p_S = 1$) the limit is likewise $R(n) \to 2p_C p_Y$. These generalizations would allow the model to be calibrated to experimental concentration ratios.
+with fixed point $\pi^* = 1/\bigl(1 + 2\alpha(1-\alpha)\bigr)$. The expected fluorescence contributed by the $(n+1)$th protein is $2\alpha(1-\alpha)\,\pi_n$, so since $R(n) = 2E(n)/n$, at steady state:
+\[
+\lim_{n \to \infty} R(n) = 2 \cdot 2\alpha(1-\alpha) \cdot \pi^* = \frac{4\alpha(1-\alpha)}{1 + 2\alpha(1-\alpha)}
+\]
+which reduces to $4 \cdot \frac{1}{4} / \frac{3}{2} = 2/3$ when $\alpha = 1/2$. In the FRET setting with $P(C) = p_C$, $P(Y) = p_Y = 1 - p_C$, linearity of expectation gives $R(n) \to 2p_C p_Y$ directly, and with Sup35p at concentration $p_S$ (where $p_C + p_Y + p_S = 1$) the limit is likewise $R(n) \to 2p_C p_Y$. These generalizations would allow the model to be calibrated to experimental concentration ratios.
 
 Our analysis assumes that proteins are independently distributed in the amyloid sequence. This assumption neglects known cooperative and templated growth effects in amyloid assembly \cite{chiti2006} and should be interpreted as a combinatorial null model: a baseline against which experimental deviations---reflecting assembly biases, kinetic trapping, or cooperative interactions---could be quantified. The combinatorial framework developed here, particularly the generating function approach to constrained fluorescence patterns via regular expressions, could in principle be adapted to non-uniform protein distributions if experimental data on assembly biases become available.
 
