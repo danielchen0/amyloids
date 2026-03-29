@@ -53,7 +53,7 @@ def A(n, k):
 #amyloid, according to formula I derived, is:
 def expected_value(length):
     result = 0.0
-    for i in range(0, length // 2 + 1):
+    for i in range(0, length):
         result += i * A(length, i)
     result /= pow(3.0, length)
     return result
