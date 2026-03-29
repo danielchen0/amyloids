@@ -676,7 +676,7 @@ We are interested in measuring the \textit{total} yellow fluorescence emanating 
 
 Label YFP as Y and CFP as C. Then our patterns are $\{Y,C\}^*$ and as with the split-YFP exclusive case, extracting away the details we get patterns on the form $(0^* 0 1^*1)^* 0^*$ where we write a $1$ whenever the full protein at that location causes the previous to fluoresce OR is caused to fluoresce by the previous. We note that, unlike previous cases, once we decide on the first protein in a 0-1 pattern, the entire protein's Y-C pattern is uniquely determined. Therefore, for each 0-1 pattern there are 2 Y-C patterns.
 
-It is now remarked that there is a one-to-one correspondence between 1's as appearing in 0-1 patterns as described above and the total yellow fluorescence emanating from an amyloid of the kind. To be specific, the number of 1's is equal to the total yellow fluorescence (if we take Level 1 to be 1 and Level 2 to be 2 as numerical values for which we sum up). For example...
+It is now remarked that there is a one-to-one correspondence between 1's as appearing in 0-1 patterns as described above and the total yellow fluorescence emanating from an amyloid of the kind. To be specific, the number of 1's is equal to the total yellow fluorescence (if we take Level 1 to be 1 and Level 2 to be 2 as numerical values for which we sum up). For example:
 
 \begin{alignat}{11}
 \text{$\{C, Y \}^*$:  } & C & Y & Y & Y & C & Y & C & Y & Y & C  & C \\
@@ -726,6 +726,14 @@ Note that $E(n) = (n-1)/2$ also follows directly from linearity of expectation: 
 R(n) := E(n)/n = \frac{n-1}{2n} \longrightarrow \frac{1}{2} \text{ as } n \to \infty
 \]
 
+The first 400 values of $R(n)$ appear in Figure~\ref{fig:fretonly}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.75\textwidth]{FretOnly.png}
+\caption{$R(n)$ for FRET YFP/CFP amyloids. The blue line is $1/2$ and the orange curve is the exact $R(n) = (n-1)/(2n)$.}
+\label{fig:fretonly}
+\end{figure}
 
 \section{Using FRET in amyloids of YFP, CFP, and Sup35p}
 As with section 3, we will now analyze the case of introducing Sup35p to the system in Section 4. That is, we have Sup35p, YFP, and CFP well mixed and of equal concentrations in a container under ambient lighting which causes CFP to fluoresce. The cyan fluorescence of a CFP will cause an adjacent YFP to fluoresce yellow due to FRET, and this fluorescence can be stacked so that a YFP sandwiched between two CFPs will fluoresce twice as much as in the case where a YFP is next to only 1 CFP. The presence of Sup35p will block the YFPs and CFPs from interacting under FRET.
