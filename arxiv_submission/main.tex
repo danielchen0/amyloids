@@ -71,22 +71,23 @@
 \pagestyle{headings}
 
 \title{Fluorescence distributions in combinatorial models of amyloid fibrils composed of split-YFP, Sup35p, and CFP}
-\author{Daniel Tianming Chen }
+\author{Daniel Tianming Chen \\ \texttt{dchen0@pm.me}}
 %\date{June 2017}
 
 \usepackage[numbers]{natbib}
 \usepackage{graphicx}
+\usepackage{url}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-We study four combinatorial models of fluorescence in amyloid fibrils---split-YFP alone, split-YFP with Sup35p, FRET YFP/CFP, and FRET YFP/CFP with Sup35p---and show that the expected fluorescence ratio $R(n)$ converges to $2/3$, $1/3$, $1/2$, and $2/9$ respectively as the amyloid length $n \to \infty$. For split-YFP systems, we derive exact probability distributions $P(n,k)$ via generating functions applied to constrained binary strings, obtaining closed-form evaluations of sums such as $\sum_{k \ge 1}^{\lfloor n/2 \rfloor} k\, 2^k \binom{n-k}{k}$, and independently verify the expected values by Markov chain arguments. For FRET systems, the absence of a blocking constraint permits a direct linearity-of-expectation computation. All results are exact for finite $n$, not merely asymptotic.
+We study four combinatorial models of fluorescence in amyloid fibrils---split-YFP alone, split-YFP with Sup35p, FRET YFP/CFP, and FRET YFP/CFP with Sup35p---and show that the expected fluorescence ratio $R(n)$ converges to $2/3$, $1/3$, $1/2$, and $2/9$ respectively as the amyloid length $n \to \infty$. For split-YFP systems, we derive exact probability distributions $P(n,k)$ via generating functions applied to constrained binary strings, obtaining closed-form evaluations of $k \cdot 2^k$-weighted sums along the shallow diagonals of Pascal's triangle---identities related to known sequences (OEIS A127976, A095977) but arising here in a new biophysical context. These results are independently verified by Markov chain arguments. For FRET systems, the absence of a blocking constraint permits a direct linearity-of-expectation computation. All results are exact for finite $n$, not merely asymptotic.
 \end{abstract}
 
 \section{Introduction}
-\textit{Amyloids} are fibrillar protein aggregates characterized by their distinctive $\beta$-sheet structure, where proteins self-assemble into highly ordered stacks \cite{chiti2006}. For the purposes of our mathematical analysis, we can abstract these complex biochemical structures into a simplified model where individual proteins, denoted as A,B,C,..., form sequential patterns in their stacking arrangements (e.g., ABBACCBCBCA...). This abstraction, while preserving the essential features of protein ordering within amyloid fibrils, transforms a complex biophysical system into a tractable mathematical framework. Our combinatorial approach follows the general framework of analytic combinatorics \cite{flajolet2009}. By viewing amyloid assembly through this lens, we can leverage classical combinatorial enumeration methods to analyze their structural properties, providing insights into both their formation patterns and potential biological implications. In particular, we study amyloids of different compositions, firstly just Split Yellow Fluorescent Proteins (split-YFP), a technique based on bimolecular fluorescence complementation \cite{hu2002}, then split-YFPs and Saccharomyces cerevisiae eukaryotic translation release factor Sup35p, and finally split-YFP and Sup35p under F\"{o}rster resonance energy transfer (FRET) \cite{forster1948} lighting. A specific quantity of interest is the expected number of fluorescing vertices, i.e., points between two proteins in the amyloid stack that fluoresce. We derive the full probability distributions $P(n,k)$ for the number of fluorescing sites and closed-form expressions for the expected values using combinatorial generating functions, Markov chains, and regular expressions. In the split-YFP settings, the adjacency blocking constraint leads to nontrivial combinatorial identities involving sums such as $\sum_{k \ge 1}^{\floor{n/2}} k\, 2^k \binom{n-k}{k}$, which we evaluate via generating function techniques \cite{wilf2006}. Two independent derivations---direct summation and Markov chain arguments---yield the same closed forms, providing mutual verification. The limiting fluorescence ratios are $2/3$, $1/3$, $1/2$, and $2/9$ for the four protein systems studied. Several modeling assumptions should be stated at the outset. First, we assume that proteins are independently and uniformly distributed in the amyloid sequence. Real amyloid assembly is templated and cooperative \cite{chiti2006}, so this i.i.d.\ assumption constitutes a \textit{combinatorial null model}---a baseline against which non-random assembly effects could be detected, rather than a mechanistic description of fibril growth. Second, in the split-YFP sections, we model fluorophore reconstitution as a purely combinatorial adjacency event; we do not capture the irreversible, thermodynamically driven nature of bimolecular fluorescence complementation \cite{hu2002}. Third, in the FRET sections, we restrict interactions to nearest neighbors in the fibril. In practice, the inter-strand spacing in cross-$\beta$ amyloid structure is approximately 0.47\,nm, while the F\"{o}rster radius for the CFP--YFP pair is approximately 4.9\,nm \cite{forster1948}, so FRET can occur across roughly ten subunits. The nearest-neighbor restriction is therefore a significant simplification adopted for analytical tractability; extending the model to a larger interaction radius would change the combinatorial structure. Finally, the equal-concentration assumption ($p = 1/2$ or $1/3$ per protein type) is adopted throughout; we discuss the generalization to unequal concentrations in Section 6.
+\textit{Amyloids} are fibrillar protein aggregates characterized by their distinctive $\beta$-sheet structure, where proteins self-assemble into highly ordered stacks \cite{chiti2006}. For the purposes of our mathematical analysis, we can abstract these complex biochemical structures into a simplified model where individual proteins, denoted as A,B,C,..., form sequential patterns in their stacking arrangements (e.g., ABBACCBCBCA...). This abstraction, while preserving the essential features of protein ordering within amyloid fibrils, transforms a complex biophysical system into a tractable mathematical framework. Our combinatorial approach follows the general framework of analytic combinatorics \cite[Ch.~I]{flajolet2009}. By viewing amyloid assembly through this lens, we can leverage classical combinatorial enumeration methods to analyze their structural properties, providing insights into both their formation patterns and potential biological implications. In particular, we study amyloids of different compositions, firstly just Split Yellow Fluorescent Proteins (split-YFP), a technique based on bimolecular fluorescence complementation \cite{hu2002}, then split-YFPs and Saccharomyces cerevisiae eukaryotic translation release factor Sup35p, and finally split-YFP and Sup35p under F\"{o}rster resonance energy transfer (FRET) \cite{forster1948} lighting. A specific quantity of interest is the expected number of fluorescing vertices, i.e., points between two proteins in the amyloid stack that fluoresce. We derive the full probability distributions $P(n,k)$ for the number of fluorescing sites and closed-form expressions for the expected values using combinatorial generating functions, Markov chains, and regular expressions. In the split-YFP settings, the adjacency blocking constraint leads to nontrivial combinatorial identities involving sums such as $\sum_{k \ge 1}^{\floor{n/2}} k\, 2^k \binom{n-k}{k}$, which we evaluate via generating function techniques \cite{wilf2006}. Two independent derivations---direct summation and Markov chain arguments---yield the same closed forms, providing mutual verification. The limiting fluorescence ratios are $2/3$, $1/3$, $1/2$, and $2/9$ for the four protein systems studied. Several modeling assumptions should be stated at the outset. First, we assume that proteins are independently and uniformly distributed in the amyloid sequence. Real amyloid assembly is templated and cooperative \cite{chiti2006}, so this i.i.d.\ assumption constitutes a \textit{combinatorial null model}---a baseline against which non-random assembly effects could be detected, rather than a mechanistic description of fibril growth. Second, in the split-YFP sections, we model fluorophore reconstitution as a purely combinatorial adjacency event; we do not capture the irreversible, thermodynamically driven nature of bimolecular fluorescence complementation \cite{hu2002}. Third, in the FRET sections, we restrict interactions to nearest neighbors in the fibril. In practice, the inter-strand spacing in cross-$\beta$ amyloid structure is approximately 0.47\,nm, while the F\"{o}rster radius for the CFP--YFP pair is approximately 4.9\,nm \cite{forster1948}, so FRET can occur across roughly ten subunits. The nearest-neighbor restriction is therefore a significant simplification adopted for analytical tractability; extending the model to a larger interaction radius would change the combinatorial structure. Finally, the equal-concentration assumption ($p = 1/2$ or $1/3$ per protein type) is adopted throughout; we discuss the generalization to unequal concentrations in Section 6.
 
 \section{Analysis of exclusively split-YFP Amyloids}
 Let us first analyze amyloids consisting solely of YFP. YFP is a single polypeptide chain that can be split into two fragments, referred to as split-YFP. Call the distinct halves A and B. It is when these two halves A and B fuse that fluorescence occurs at the point of contact. There are no restrictions on the patterns in the amyloid - one can view all combinations of such halves via the regular expression $\{A,B\}^*$. 
@@ -133,7 +134,7 @@ As another example,
 \end{alignat*} 
 We notice that our unambiguous regular expression for these 01 patterns is $(0^*01)^* 0^*$. Note that if we were looking at an amyloid without knowing what the proteins actually were, we would still be able to identify its 01 pattern by looking at the fluorescing locations. Indeed, each fluorescing location corresponds to a 1.
 
-We can count the total number of distinct 01 patterns of length $n$ using the symbolic method for regular expressions \cite{flajolet2009}. Note that $(0^*01)^* 0^* = (0^+1)^* 0^*$: each block $0^*01$ consists of zero or more leading zeros followed by $01$, so the trailing $0$ of $0^*$ and the leading $0$ of $01$ merge to give at least one zero before the $1$, hence $0^*01 = 0^+1$. We assign weight $x$ per symbol. Each block $0^*01 = 0^+1$ has generating function $\frac{x}{1-x} \cdot x = \frac{x^2}{1-x}$, and the Kleene star $(0^*01)^*$ has generating function $\frac{1}{1 - x^2/(1-x)} = \frac{1-x}{1-x-x^2}$. Including the trailing $0^*$ with generating function $\frac{1}{1-x}$, we obtain:
+We can count the total number of distinct 01 patterns of length $n$ using the symbolic method for regular expressions \cite[\S I.4]{flajolet2009}. Note that $(0^*01)^* 0^* = (0^+1)^* 0^*$: each block $0^*01$ consists of zero or more leading zeros followed by $01$, so the trailing $0$ of $0^*$ and the leading $0$ of $01$ merge to give at least one zero before the $1$, hence $0^*01 = 0^+1$. We assign weight $x$ per symbol. Each block $0^*01 = 0^+1$ has generating function $\frac{x}{1-x} \cdot x = \frac{x^2}{1-x}$, and the Kleene star $(0^*01)^*$ has generating function $\frac{1}{1 - x^2/(1-x)} = \frac{1-x}{1-x-x^2}$. Including the trailing $0^*$ with generating function $\frac{1}{1-x}$, we obtain:
 \[
 G(x) := \sum_{n=0}^\infty a_n x^n = \frac{1-x}{1-x-x^2} \cdot \frac{1}{1-x} = \frac{1}{1-x-x^2}
 \]
@@ -142,7 +143,7 @@ Since $(1-x-x^2)\sum_{n \ge 0} a_n x^n = 1$, we read off the recurrence $a_n = a
 
 We see that $a_0 = 1$, $a_1 = 1$, $a_2 = 2$, $a_3 = 3$, $a_4 = 5$, $a_5 = 8$, etc.
 
-So $a_n = F_{n+1}$, where $F_n$ is the Fibonacci sequence with the standard convention $F_1 = F_2 = 1$.
+So $a_n = F_{n+1}$, where $F_n$ is the Fibonacci sequence with the standard convention $F_1 = F_2 = 1$. The coefficients $\binom{n-k}{k}$ appearing in this sum are precisely the entries along the \textit{shallow diagonals} of Pascal's triangle, and the identity $a_n = F_{n+1}$ is a well-known consequence of summing along these diagonals. The weighted sums $S_1(n)$ and $S_2(n)$ evaluated in Section 2.4 can be viewed as weighted sums along these same diagonals, with each entry scaled by $k \cdot 2^k$.
 
 \subsection{Probability of $k$ fluorescing vertices in length $n$ amyloid }
 
@@ -155,7 +156,7 @@ First, let us count the number of 01 patterns of length $n$ with $k$ 1s. Our inv
 \[
 \#(n,k) := \binom{n-k}{k}, \quad k \leq \floor{n/2}
 \]
-Indeed, the number of ways to place $k$ non-adjacent objects in $m$ boxes is $\binom{m-k+1}{k}$ (see \cite{stanley2012}); setting $m = n - 1$ gives $\binom{n-k}{k}$ as claimed.
+Indeed, the number of ways to place $k$ non-adjacent objects in $m$ boxes is $\binom{m-k+1}{k}$ (see \cite[Exercise~1.34]{stanley2012}); setting $m = n - 1$ gives $\binom{n-k}{k}$ as claimed.
 
 
 \subsubsection{Distinct amyloids with $k$ 1s}
@@ -233,7 +234,7 @@ and
 
 We prove both identities using ordinary generating functions.
 
-We will use the identity (see, e.g., \cite{wilf2006}) that for any fixed $j \ge 0$,
+We will use the identity (see, e.g., \cite[\S 1.2]{wilf2006}) that for any fixed $j \ge 0$,
 \begin{equation}\label{eq:binom-ogf}
 \sum_{n \ge 2j} \binom{n-j}{j} x^n = \frac{x^{2j}}{(1-x)^{j+1}}
 \end{equation}
@@ -309,6 +310,19 @@ Then as $n \rightarrow \infty$, the second term vanishes and we have
     \lim_{n \rightarrow \infty} R(n) &= \lim_{n \rightarrow \infty} \frac{2(3n-2)}{9n} = \frac{6}{9} = \frac{2}{3}
 \end{align}
 
+\subsubsection{Weighted shallow diagonal identities}
+
+The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) have a natural interpretation in terms of Pascal's triangle. Recall that the entries along the shallow diagonals of Pascal's triangle are $\binom{n-k}{k}$ for $k = 0, 1, \ldots, \floor{n/2}$, and their sum $\sum_{k=0}^{\floor{n/2}} \binom{n-k}{k} = F_{n+1}$ yields the Fibonacci numbers (Section 2.1). The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) provide closed-form evaluations of \textit{weighted} sums along these same diagonals, where each entry is scaled by $k \cdot 2^k$:
+\begin{align}
+\sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k-1} &= \frac{2^n(3n+2) + 2(6n-1)(-1)^n}{27} \label{eq:diag1} \\[6pt]
+\sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k} &= \frac{2^n(3n-4) - 2(3n-2)(-1)^n}{27} \label{eq:diag2}
+\end{align}
+These identities arise here from the fluorescence analysis, but the sequences themselves are not new. The sequence $S_1(n)/2$ matches OEIS entry A127976, which arises as a convolution of Jacobsthal numbers, while $S_2(n)$ matches OEIS entry A095977, which counts $2 \times 2$ tiles in tilings of $3 \times (n+1)$ rectangles. Both sequences satisfy the same linear recurrence $a_n = 2a_{n-1} + 3a_{n-2} - 4a_{n-3} - 4a_{n-4}$ with different initial conditions.
+
+The fact that the same sequences govern such disparate problems---protein fluorescence in amyloid fibrils, convolutions of Jacobsthal numbers, and rectangle tilings---reflects a deeper structural phenomenon: all three settings reduce to constrained binary strings enumerated by the same rational generating functions with denominator $(1+x)^2(1-2x)^2$. The contribution of the present work is not the identities themselves, but the combinatorial pipeline that connects the biophysical model (protein sequences $\to$ constrained 01 patterns $\to$ generating functions) to these known sequences, providing a new interpretation in terms of fluorescence statistics.
+
+As a corollary, the linear combination $S_1(n) + 2\,S_2(n) = \bigl[2^n(9n-6) + 6(-1)^n\bigr]/27$ governs the expected fluorescence in split-YFP amyloids, connecting these combinatorial identities directly to the biophysical application.
+
 \subsubsection{Alternative derivation via Markov chain}
 
 We can also derive $E(n)$ directly by a Markov chain argument \cite{norris1997}, bypassing $\cA(n,k)$ entirely. Consider building an amyloid one protein at a time, where each protein is independently A or B with equal probability $1/2$. Define two states based on the rightmost protein:
@@ -351,37 +365,26 @@ To verify this, substitute the closed forms from (\ref{eq:sum1}) and (\ref{eq:su
 \]
 while the Markov chain gives $E(n) = \frac{n-1}{3} + \frac{1}{9} - \frac{(-1)^{n-1}}{9 \cdot 2^{n-1}} = \frac{3n-2}{9} + \frac{2(-1)^n}{9 \cdot 2^n}$, confirming the two expressions are identical.
 
-We can also sanity check the above via computer simulation (see \texttt{split\_yfp\_simulation.py}), which produces the following sample of the output:
-\begin{verbatim}
-2: 0.5
-3: 0.5
-4: 0.5625
-5: 0.575
-6: 0.59375
-7: 0.602678571429
-8: 0.611328125
-9: 0.6171875
-10: 0.622265625
-11: 0.626242897727
-12: 0.629638671875
-13: 0.632474459135
-14: 0.634922572545
-15: 0.637036132813
-16: 0.638889312744
-17: 0.640522676356
-18: 0.641975402832
-19: 0.643274809185
-20: 0.644444465637
-21: 0.645502635411
-22: 0.646464651281
-23: 0.647342992866
-24: 0.648148149252
-25: 0.648888888359
-...
-417: 0.665600852651
-\end{verbatim}
+We can also verify the above via computer simulation (see \texttt{split\_yfp\_simulation.py}). A sample of computed values is shown in Table~\ref{tab:splityfp}, and the first 400 values appear in Figure~\ref{fig:splityfp}.
 
-As a graph, the first 400 values appear in Figure~\ref{fig:splityfp}.
+\begin{table}[ht]
+\centering
+\begin{tabular}{rc|rc|rc}
+\hline
+$n$ & $R(n)$ & $n$ & $R(n)$ & $n$ & $R(n)$ \\
+\hline
+2 & 0.500000 & 10 & 0.622266 & 20 & 0.644444 \\
+3 & 0.500000 & 11 & 0.626243 & 25 & 0.648889 \\
+4 & 0.562500 & 12 & 0.629639 & 50 & 0.657778 \\
+5 & 0.575000 & 13 & 0.632474 & 100 & 0.662222 \\
+6 & 0.593750 & 14 & 0.634923 & 200 & 0.664444 \\
+7 & 0.602679 & 15 & 0.637036 & 400 & 0.665556 \\
+\hline
+\multicolumn{6}{c}{$R(n) \to 2/3 \approx 0.666667$} \\
+\end{tabular}
+\caption{Sample values of $R(n)$ for split-YFP amyloids.}
+\label{tab:splityfp}
+\end{table}
 
 \begin{figure}[ht]
 \centering
@@ -632,37 +635,26 @@ and as $n \to \infty$, the second term vanishes:
 \lim_{n \to \infty} R(n) = \lim_{n \to \infty} \frac{4n - 3}{12n} = \frac{4}{12} = \frac{1}{3}
 \]
 
-A simulation (see \texttt{sup35\_simulation.py}) confirms this, returning the following output:
+A simulation (see \texttt{sup35\_simulation.py}) confirms this. A sample of computed values is shown in Table~\ref{tab:sup35}, and the graph appears in Figure~\ref{fig:sup35}.
 
-\begin{verbatim}
-2: 0.222222222222
-3: 0.246913580247
-4: 0.271604938272
-5: 0.283127572016
-6: 0.291723822588
-7: 0.297602717356
-8: 0.302088096327
-9: 0.305554144298
-10: 0.308333756711
-11: 0.310605932310
-12: 0.312500039202
-13: 0.314102552041
-14: 0.315476194210
-15: 0.316666665505
-16: 0.317708333696
-17: 0.318627450867
-18: 0.319444444480
-19: 0.320175438585
-20: 0.320833333337
-21: 0.321428571427
-22: 0.321969696970
-23: 0.322463768116
-24: 0.322916666667
-25: 0.323333333333
-26: 0.323717948718
-\end{verbatim}
-
-and the graph appears in Figure~\ref{fig:sup35}.
+\begin{table}[ht]
+\centering
+\begin{tabular}{rc|rc|rc}
+\hline
+$n$ & $R(n)$ & $n$ & $R(n)$ & $n$ & $R(n)$ \\
+\hline
+2 & 0.222222 & 10 & 0.308334 & 20 & 0.320833 \\
+3 & 0.246914 & 11 & 0.310606 & 25 & 0.323333 \\
+4 & 0.271605 & 12 & 0.312500 & 50 & 0.328333 \\
+5 & 0.283128 & 13 & 0.314103 & 100 & 0.330833 \\
+6 & 0.291724 & 14 & 0.315476 & 200 & 0.332083 \\
+7 & 0.297603 & 15 & 0.316667 & 400 & 0.332708 \\
+\hline
+\multicolumn{6}{c}{$R(n) \to 1/3 \approx 0.333333$} \\
+\end{tabular}
+\caption{Sample values of $R(n)$ for split-YFP amyloids with Sup35p.}
+\label{tab:sup35}
+\end{table}
 
 \begin{figure}[ht]
 \centering
@@ -716,7 +708,7 @@ This is simply the sum:
 
 by definition of expected value.
 
-Note that, by a standard identity \cite{gkp1994}:
+Note that, by a standard identity \cite[\S 5.1, Eq.~5.5]{gkp1994}:
 
 \begin{align*}
 E(n) := \frac{1}{2^{n-1}} \cdot \sum_{k=0}^{n - 1} k \cdot \binom{n-1}{k} 
@@ -927,7 +919,7 @@ which reduces to $4 \cdot \frac{1}{4} / \frac{3}{2} = 2/3$ when $\alpha = 1/2$. 
 
 Our analysis assumes that proteins are independently distributed in the amyloid sequence. This assumption neglects known cooperative and templated growth effects in amyloid assembly \cite{chiti2006} and should be interpreted as a combinatorial null model: a baseline against which experimental deviations---reflecting assembly biases, kinetic trapping, or cooperative interactions---could be quantified. The combinatorial framework developed here, particularly the generating function approach to constrained fluorescence patterns via regular expressions, could in principle be adapted to non-uniform protein distributions if experimental data on assembly biases become available.
 
-All simulation and verification scripts referenced in this paper (\texttt{split\_yfp\_simulation.py}, \texttt{sup35\_simulation.py}, \texttt{fret\_sup35\_simulation.py}, and associated plotting scripts) are available as supplementary material.
+All simulation and verification scripts referenced in this paper (\texttt{split\_yfp\_simulation.py}, \texttt{sup35\_simulation.py}, \texttt{fret\_sup35\_simulation.py}, and associated plotting scripts) are available at \url{https://github.com/danielchen0/amyloids}.
 
 \bibliographystyle{plain}
 \bibliography{references}
