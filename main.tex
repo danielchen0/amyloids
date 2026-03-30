@@ -83,7 +83,7 @@
 \maketitle
 
 \begin{abstract}
-We study four combinatorial models of fluorescence in amyloid fibrils---split-YFP alone, split-YFP with Sup35p, FRET YFP/CFP, and FRET YFP/CFP with Sup35p---and show that the expected fluorescence ratio $R(n)$ converges to $2/3$, $1/3$, $1/2$, and $2/9$ respectively as the amyloid length $n \to \infty$. For split-YFP systems, we derive exact probability distributions $P(n,k)$ via generating functions applied to constrained binary strings, obtaining closed-form evaluations of sums such as $\sum_{k \ge 1}^{\lfloor n/2 \rfloor} k\, 2^k \binom{n-k}{k}$, and independently verify the expected values by Markov chain arguments. For FRET systems, the absence of a blocking constraint permits a direct linearity-of-expectation computation. All results are exact for finite $n$, not merely asymptotic.
+We study four combinatorial models of fluorescence in amyloid fibrils---split-YFP alone, split-YFP with Sup35p, FRET YFP/CFP, and FRET YFP/CFP with Sup35p---and show that the expected fluorescence ratio $R(n)$ converges to $2/3$, $1/3$, $1/2$, and $2/9$ respectively as the amyloid length $n \to \infty$. For split-YFP systems, we derive exact probability distributions $P(n,k)$ via generating functions applied to constrained binary strings, obtaining closed-form evaluations of weighted sums along the shallow diagonals of Pascal's triangle, such as $\sum_{k \ge 1}^{\lfloor n/2 \rfloor} k\, 2^k \binom{n-k}{k}$, and independently verify the expected values by Markov chain arguments. For FRET systems, the absence of a blocking constraint permits a direct linearity-of-expectation computation. All results are exact for finite $n$, not merely asymptotic.
 \end{abstract}
 
 \section{Introduction}
@@ -143,7 +143,7 @@ Since $(1-x-x^2)\sum_{n \ge 0} a_n x^n = 1$, we read off the recurrence $a_n = a
 
 We see that $a_0 = 1$, $a_1 = 1$, $a_2 = 2$, $a_3 = 3$, $a_4 = 5$, $a_5 = 8$, etc.
 
-So $a_n = F_{n+1}$, where $F_n$ is the Fibonacci sequence with the standard convention $F_1 = F_2 = 1$.
+So $a_n = F_{n+1}$, where $F_n$ is the Fibonacci sequence with the standard convention $F_1 = F_2 = 1$. The coefficients $\binom{n-k}{k}$ appearing in this sum are precisely the entries along the \textit{shallow diagonals} of Pascal's triangle, and the identity $a_n = F_{n+1}$ is a well-known consequence of summing along these diagonals. The weighted sums $S_1(n)$ and $S_2(n)$ evaluated in Section 2.4 can be viewed as weighted sums along these same diagonals, with each entry scaled by $k \cdot 2^k$.
 
 \subsection{Probability of $k$ fluorescing vertices in length $n$ amyloid }
 
