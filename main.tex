@@ -155,7 +155,7 @@ First, let us count the number of 01 patterns of length $n$ with $k$ 1s. Our inv
 \[
 \#(n,k) := \binom{n-k}{k}, \quad k \leq \floor{n/2}
 \]
-Indeed, the number of ways to place $k$ non-adjacent objects in $m$ boxes is $\binom{m-k+1}{k}$ (see \cite[Ch.~1]{stanley2012}); setting $m = n - 1$ gives $\binom{n-k}{k}$ as claimed.
+Indeed, the number of ways to place $k$ non-adjacent objects in $m$ boxes is $\binom{m-k+1}{k}$ (see \cite[Exercise~1.34]{stanley2012}); setting $m = n - 1$ gives $\binom{n-k}{k}$ as claimed.
 
 
 \subsubsection{Distinct amyloids with $k$ 1s}
@@ -233,7 +233,7 @@ and
 
 We prove both identities using ordinary generating functions.
 
-We will use the identity (see, e.g., \cite[Ch.~2]{wilf2006}) that for any fixed $j \ge 0$,
+We will use the identity (see, e.g., \cite[\S 1.2]{wilf2006}) that for any fixed $j \ge 0$,
 \begin{equation}\label{eq:binom-ogf}
 \sum_{n \ge 2j} \binom{n-j}{j} x^n = \frac{x^{2j}}{(1-x)^{j+1}}
 \end{equation}
@@ -716,7 +716,7 @@ This is simply the sum:
 
 by definition of expected value.
 
-Note that, by a standard identity \cite[Ch.~5]{gkp1994}:
+Note that, by a standard identity \cite[\S 5.1, Eq.~5.5]{gkp1994}:
 
 \begin{align*}
 E(n) := \frac{1}{2^{n-1}} \cdot \sum_{k=0}^{n - 1} k \cdot \binom{n-1}{k} 
