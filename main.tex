@@ -351,37 +351,26 @@ To verify this, substitute the closed forms from (\ref{eq:sum1}) and (\ref{eq:su
 \]
 while the Markov chain gives $E(n) = \frac{n-1}{3} + \frac{1}{9} - \frac{(-1)^{n-1}}{9 \cdot 2^{n-1}} = \frac{3n-2}{9} + \frac{2(-1)^n}{9 \cdot 2^n}$, confirming the two expressions are identical.
 
-We can also sanity check the above via computer simulation (see \texttt{split\_yfp\_simulation.py}), which produces the following sample of the output:
-\begin{verbatim}
-2: 0.5
-3: 0.5
-4: 0.5625
-5: 0.575
-6: 0.59375
-7: 0.602678571429
-8: 0.611328125
-9: 0.6171875
-10: 0.622265625
-11: 0.626242897727
-12: 0.629638671875
-13: 0.632474459135
-14: 0.634922572545
-15: 0.637036132813
-16: 0.638889312744
-17: 0.640522676356
-18: 0.641975402832
-19: 0.643274809185
-20: 0.644444465637
-21: 0.645502635411
-22: 0.646464651281
-23: 0.647342992866
-24: 0.648148149252
-25: 0.648888888359
-...
-417: 0.665600852651
-\end{verbatim}
+We can also verify the above via computer simulation (see \texttt{split\_yfp\_simulation.py}). A sample of computed values is shown in Table~\ref{tab:splityfp}, and the first 400 values appear in Figure~\ref{fig:splityfp}.
 
-As a graph, the first 400 values appear in Figure~\ref{fig:splityfp}.
+\begin{table}[ht]
+\centering
+\begin{tabular}{rc|rc|rc}
+\hline
+$n$ & $R(n)$ & $n$ & $R(n)$ & $n$ & $R(n)$ \\
+\hline
+2 & 0.500000 & 10 & 0.622266 & 20 & 0.644444 \\
+3 & 0.500000 & 11 & 0.626243 & 25 & 0.648889 \\
+4 & 0.562500 & 12 & 0.629639 & 50 & 0.657778 \\
+5 & 0.575000 & 13 & 0.632474 & 100 & 0.662222 \\
+6 & 0.593750 & 14 & 0.634923 & 200 & 0.664444 \\
+7 & 0.602679 & 15 & 0.637036 & 400 & 0.665556 \\
+\hline
+\multicolumn{6}{c}{$R(n) \to 2/3 \approx 0.666667$} \\
+\end{tabular}
+\caption{Sample values of $R(n)$ for split-YFP amyloids.}
+\label{tab:splityfp}
+\end{table}
 
 \begin{figure}[ht]
 \centering
@@ -632,37 +621,26 @@ and as $n \to \infty$, the second term vanishes:
 \lim_{n \to \infty} R(n) = \lim_{n \to \infty} \frac{4n - 3}{12n} = \frac{4}{12} = \frac{1}{3}
 \]
 
-A simulation (see \texttt{sup35\_simulation.py}) confirms this, returning the following output:
+A simulation (see \texttt{sup35\_simulation.py}) confirms this. A sample of computed values is shown in Table~\ref{tab:sup35}, and the graph appears in Figure~\ref{fig:sup35}.
 
-\begin{verbatim}
-2: 0.222222222222
-3: 0.246913580247
-4: 0.271604938272
-5: 0.283127572016
-6: 0.291723822588
-7: 0.297602717356
-8: 0.302088096327
-9: 0.305554144298
-10: 0.308333756711
-11: 0.310605932310
-12: 0.312500039202
-13: 0.314102552041
-14: 0.315476194210
-15: 0.316666665505
-16: 0.317708333696
-17: 0.318627450867
-18: 0.319444444480
-19: 0.320175438585
-20: 0.320833333337
-21: 0.321428571427
-22: 0.321969696970
-23: 0.322463768116
-24: 0.322916666667
-25: 0.323333333333
-26: 0.323717948718
-\end{verbatim}
-
-and the graph appears in Figure~\ref{fig:sup35}.
+\begin{table}[ht]
+\centering
+\begin{tabular}{rc|rc|rc}
+\hline
+$n$ & $R(n)$ & $n$ & $R(n)$ & $n$ & $R(n)$ \\
+\hline
+2 & 0.222222 & 10 & 0.308334 & 20 & 0.320833 \\
+3 & 0.246914 & 11 & 0.310606 & 25 & 0.323333 \\
+4 & 0.271605 & 12 & 0.312500 & 50 & 0.328333 \\
+5 & 0.283128 & 13 & 0.314103 & 100 & 0.330833 \\
+6 & 0.291724 & 14 & 0.315476 & 200 & 0.332083 \\
+7 & 0.297603 & 15 & 0.316667 & 400 & 0.332708 \\
+\hline
+\multicolumn{6}{c}{$R(n) \to 1/3 \approx 0.333333$} \\
+\end{tabular}
+\caption{Sample values of $R(n)$ for split-YFP amyloids with Sup35p.}
+\label{tab:sup35}
+\end{table}
 
 \begin{figure}[ht]
 \centering
