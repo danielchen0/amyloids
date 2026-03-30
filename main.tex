@@ -317,9 +317,11 @@ The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) have a natural interpretation
 \sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k-1} &= \frac{2^n(3n+2) + 2(6n-1)(-1)^n}{27} \label{eq:diag1} \\[6pt]
 \sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k} &= \frac{2^n(3n-4) - 2(3n-2)(-1)^n}{27} \label{eq:diag2}
 \end{align}
-These identities arise naturally from the fluorescence analysis. The sequences $S_1(n)$ and $S_2(n)$ are related to OEIS entries A127976 and A095977 respectively, where they appear in contexts including Jacobsthal number convolutions and rectangle tilings. The connection to amyloid fluorescence appears to be new.
+These identities arise here from the fluorescence analysis, but the sequences themselves are not new. The sequence $S_1(n)/2$ matches OEIS entry A127976, which arises as a convolution of Jacobsthal numbers, while $S_2(n)$ matches OEIS entry A095977, which counts $2 \times 2$ tiles in tilings of $3 \times (n+1)$ rectangles. Both sequences satisfy the same linear recurrence $a_n = 2a_{n-1} + 3a_{n-2} - 4a_{n-3} - 4a_{n-4}$ with different initial conditions.
 
-As a corollary, their sum $S_1(n) + 2\,S_2(n) = \bigl[2^n(9n-6) + 6(-1)^n\bigr]/27$ governs the expected fluorescence in split-YFP amyloids, connecting these combinatorial identities directly to the biophysical application.
+The fact that the same sequences govern such disparate problems---protein fluorescence in amyloid fibrils, convolutions of Jacobsthal numbers, and rectangle tilings---reflects a deeper structural phenomenon: all three settings reduce to constrained binary strings enumerated by the same rational generating functions with denominator $(1+x)^2(1-2x)^2$. The contribution of the present work is not the identities themselves, but the combinatorial pipeline that connects the biophysical model (protein sequences $\to$ constrained 01 patterns $\to$ generating functions) to these known sequences, providing a new interpretation in terms of fluorescence statistics.
+
+As a corollary, the linear combination $S_1(n) + 2\,S_2(n) = \bigl[2^n(9n-6) + 6(-1)^n\bigr]/27$ governs the expected fluorescence in split-YFP amyloids, connecting these combinatorial identities directly to the biophysical application.
 
 \subsubsection{Alternative derivation via Markov chain}
 
