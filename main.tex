@@ -114,7 +114,7 @@ f_i = \begin{cases}
 \]
 Informally, $f_i = 1$ indicates that position $i$ is a fusion site: the protein $s_i$ differs from its neighbor $s_{i-1}$ and that neighbor was not already consumed by a prior fusion. The first protein always receives $f_1 = 0$ since there is no predecessor. The blocking constraint ($f_{i-1} = 0$ required) ensures that both proteins in a fused pair are ``used up,'' preventing cascading fusions. Note that the 01 representation has the same length as the amyloid, and the mapping $f$ is well-defined for any sequence in $\{A,B\}^n$.
 
-The left-to-right, greedy pairing rule reflects the sequential nature of amyloid polymerization: proteins are incorporated one at a time at the growing end of the fibril, and each newly added protein either fuses with the current endpoint or does not. This greedy convention is motivated by the kinetics of sequential assembly---once a split-YFP pair reconstitutes, the resulting fluorophore is thermodynamically stable and irreversible \cite{hu2002}, so later arrivals cannot displace it. We note that on a path graph, the greedy matching (always fuse when possible) is in fact optimal: it yields the same count as a maximum matching of the completed static sequence. This can be seen by induction on the sequence length, since taking the first available fusion is always at least as good as skipping it (the skipped fusion saves at most one later fusion, while forfeiting one now). Thus the sequential and static interpretations of the model are equivalent.
+The left-to-right, greedy pairing rule reflects the sequential nature of amyloid polymerization: proteins are incorporated one at a time at the growing end of the fibril, and each newly added protein either fuses with the current endpoint or does not. This greedy convention is motivated by the kinetics of sequential assembly---once a split-YFP pair reconstitutes, the resulting fluorophore is thermodynamically stable and irreversible \cite{hu2002}, so later arrivals cannot displace it. We note that on a path graph, the greedy matching (always fuse when possible) is in fact optimal: it yields the same count as a maximum matching of the completed static sequence. This can be seen by induction on the sequence length: taking the first available fusion at position $i$ blocks at most position $i+1$ from fusing with $i$, but skipping $i$ does not help $i+1$, since $i+1$ can still fuse with $i+2$ regardless. Thus skipping never yields a net gain, and greedy is optimal. Thus the sequential and static interpretations of the model are equivalent.
 
 For example, if we have ABBAAAAABA, then reading from left to right (because we have to think about how these proteins were added one at a time to analyze which ones fused), we get the 01 representation 0101000010. Writing these two representations side by side shows it:
 
@@ -162,7 +162,7 @@ Indeed, the number of ways to place $k$ non-adjacent objects in $m$ boxes is $\b
 \subsubsection{Distinct amyloids with $k$ 1s}
 Now, the number of distinct amyloids of length $n$ with $k$ fluorescing pairs is:
 \[
-    \cA(n,k) = 2^k \cdot \#(n-2,k-1) + 2^{k+1}  \cdot \#(n-1,k) = 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k}
+    \cA(n,k) = 2^k \cdot N(n-2,k-1) + 2^{k+1}  \cdot N(n-1,k) = 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k}
 \]
 
 To see this, we have two cases, where we fix $k = 5$ for the sake of example: 
@@ -176,7 +176,7 @@ Consider the following pattern. We write the number of possible proteins (A or B
 \end{align*}
 Indeed, for each block of 0's, at the beginning of the block, any of either A or B may appear there, since it will not fuse with the previous protein. Then thereafter each protein is uniquely determined by this choice through to the 1 that appears.
 
-Any pattern of this case therefore has $2^{k+1}$ possible amyloids associated with it. There are $\#(n-1,k)$ possible patterns for this case. 
+Any pattern of this case therefore has $2^{k+1}$ possible amyloids associated with it. There are $N(n-1,k)$ possible patterns for this case. 
 
 \textbf{01 pattern ends with a 1}
 
@@ -186,7 +186,7 @@ Consider the following 01 pattern. We write the number of possible proteins (A o
     & 211112111121211211111111
 \end{align*}
 
-As we can see, putting a 1 at the end of the 01 pattern implies only $2^k$ possible amyloids with the particular pattern. There are $\#(n-2, k - 1)$ patterns with this property.
+As we can see, putting a 1 at the end of the 01 pattern implies only $2^k$ possible amyloids with the particular pattern. There are $N(n-2, k - 1)$ patterns with this property.
 
 \textbf{Verification.} For $n = 4$, $k = 1$: $\cA(4,1) = 2^1 \binom{2}{0} + 2^2 \binom{2}{1} = 2 + 8 = 10$. One can check by brute-force enumeration over all $2^4 = 16$ amyloids of length 4 that exactly 10 have precisely 1 fluorescing pair.
 
