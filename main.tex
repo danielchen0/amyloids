@@ -114,7 +114,7 @@ f_i = \begin{cases}
 \]
 Informally, $f_i = 1$ indicates that position $i$ is a fusion site: the protein $s_i$ differs from its neighbor $s_{i-1}$ and that neighbor was not already consumed by a prior fusion. The first protein always receives $f_1 = 0$ since there is no predecessor. The blocking constraint ($f_{i-1} = 0$ required) ensures that both proteins in a fused pair are ``used up,'' preventing cascading fusions. Note that the 01 representation has the same length as the amyloid, and the mapping $f$ is well-defined for any sequence in $\{A,B\}^n$.
 
-The left-to-right, greedy pairing rule reflects the sequential nature of amyloid polymerization: proteins are incorporated one at a time at the growing end of the fibril, and each newly added protein either fuses with the current endpoint or does not. This greedy convention is motivated by the kinetics of sequential assembly---once a split-YFP pair reconstitutes, the resulting fluorophore is thermodynamically stable and irreversible \cite{hu2002}, so later arrivals cannot displace it. An alternative model based on maximum matching of the completed static sequence would yield different combinatorics (in particular, a higher fluorescence count for some sequences) and is not pursued here; the two models coincide on most sequences and differ only when suboptimal early pairings block later ones.
+The left-to-right, greedy pairing rule reflects the sequential nature of amyloid polymerization: proteins are incorporated one at a time at the growing end of the fibril, and each newly added protein either fuses with the current endpoint or does not. This greedy convention is motivated by the kinetics of sequential assembly---once a split-YFP pair reconstitutes, the resulting fluorophore is thermodynamically stable and irreversible \cite{hu2002}, so later arrivals cannot displace it. We note that on a path graph, the greedy matching (always fuse when possible) is in fact optimal: it yields the same count as a maximum matching of the completed static sequence. This can be seen by induction on the sequence length, since taking the first available fusion is always at least as good as skipping it (the skipped fusion saves at most one later fusion, while forfeiting one now). Thus the sequential and static interpretations of the model are equivalent.
 
 For example, if we have ABBAAAAABA, then reading from left to right (because we have to think about how these proteins were added one at a time to analyze which ones fused), we get the 01 representation 0101000010. Writing these two representations side by side shows it:
 
@@ -132,7 +132,7 @@ As another example,
 &B &B &B &B &A &B &A &B &A &B &A &B &A &B &A &B &A &B &A &A &A &A &B &A &A &B &A &B &B &B &B &A &B &A  \\
 &0 &0 &0 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1  &0 &0 &0 &1 &0 &0 &1 &0 &1 &0 &0 &0 &1 &0 &1
 \end{alignat*} 
-We notice that our unambiguous regular expression for these 01 patterns is $(0^*01)^* 0^*$. Note that if we were looking at an amyloid without knowing what the proteins actually were, we would still be able to identify its 01 pattern by looking at the fluorescing locations. Indeed, each fluorescing location corresponds to a 1.
+We observe that an unambiguous regular expression for these 01 patterns is $(0^*01)^* 0^*$ (non-ambiguous in the sense required by the symbolic method: each string has a unique parse). Note that if we were looking at an amyloid without knowing what the proteins actually were, we would still be able to identify its 01 pattern by looking at the fluorescing locations. Indeed, each fluorescing location corresponds to a 1.
 
 We can count the total number of distinct 01 patterns of length $n$ using the symbolic method for regular expressions \cite[\S I.4]{flajolet2009}. Note that $(0^*01)^* 0^* = (0^+1)^* 0^*$: each block $0^*01$ consists of zero or more leading zeros followed by $01$, so the trailing $0$ of $0^*$ and the leading $0$ of $01$ merge to give at least one zero before the $1$, hence $0^*01 = 0^+1$. We assign weight $x$ per symbol. Each block $0^*01 = 0^+1$ has generating function $\frac{x}{1-x} \cdot x = \frac{x^2}{1-x}$, and the Kleene star $(0^*01)^*$ has generating function $\frac{1}{1 - x^2/(1-x)} = \frac{1-x}{1-x-x^2}$. Including the trailing $0^*$ with generating function $\frac{1}{1-x}$, we obtain:
 \[
@@ -154,7 +154,7 @@ We now analyze the probability of seeing $k$ fluorescing vertices in an amyloid 
 \subsubsection{Distinct 01 patterns with $k$ 1s}
 First, let us count the number of 01 patterns of length $n$ with $k$ 1s. Our invariant states that no 1s may be adjacent, and the first digit must be a zero. Since $f_1 = 0$ always, the $k$ ones must be placed among positions $2, 3, \ldots, n$ (i.e., $n - 1$ available positions) with no two adjacent. This is equivalent to placing $k$ non-adjacent objects in $n - 1$ boxes, giving:
 \[
-\#(n,k) := \binom{n-k}{k}, \quad k \leq \floor{n/2}
+N(n,k) := \binom{n-k}{k}, \quad k \leq \floor{n/2}
 \]
 Indeed, the number of ways to place $k$ non-adjacent objects in $m$ boxes is $\binom{m-k+1}{k}$ (see \cite[Exercise~1.34]{stanley2012}); setting $m = n - 1$ gives $\binom{n-k}{k}$ as claimed.
 
@@ -188,8 +188,9 @@ Consider the following 01 pattern. We write the number of possible proteins (A o
 
 As we can see, putting a 1 at the end of the 01 pattern implies only $2^k$ possible amyloids with the particular pattern. There are $\#(n-2, k - 1)$ patterns with this property.
 
+\textbf{Verification.} For $n = 4$, $k = 1$: $\cA(4,1) = 2^1 \binom{2}{0} + 2^2 \binom{2}{1} = 2 + 8 = 10$. One can check by brute-force enumeration over all $2^4 = 16$ amyloids of length 4 that exactly 10 have precisely 1 fluorescing pair.
 
-Hence the probability of seeing $k$ fluorescing pairs in an amyloid of length $n$ is 
+Hence the probability of seeing $k$ fluorescing pairs in an amyloid of length $n$ is
 
 \[
 P(n,k) = \frac{\cA(n,k)}{2^n}
@@ -317,7 +318,7 @@ The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) have a natural interpretation
 \sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k-1} &= \frac{2^n(3n+2) + 2(6n-1)(-1)^n}{27} \label{eq:diag1} \\[6pt]
 \sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k} &= \frac{2^n(3n-4) - 2(3n-2)(-1)^n}{27} \label{eq:diag2}
 \end{align}
-These identities arise here from the fluorescence analysis, but the sequences themselves are not new. The sequence $S_1(n)/2$ matches OEIS entry A127976, which arises as a convolution of Jacobsthal numbers, while $S_2(n)$ matches OEIS entry A095977, which counts $2 \times 2$ tiles in tilings of $3 \times (n+1)$ rectangles. Both sequences satisfy the same linear recurrence $a_n = 2a_{n-1} + 3a_{n-2} - 4a_{n-3} - 4a_{n-4}$ with different initial conditions.
+These identities arise here from the fluorescence analysis, but the sequences themselves are not new. Specifically, $S_1(n) = 2 \cdot \text{A127976}(n-1)$ and $S_2(n) = \text{A095977}(n-2)$, where A127976 arises as a convolution of Jacobsthal numbers and A095977 counts $2 \times 2$ tiles in tilings of $3 \times (n+1)$ rectangles. Both sequences satisfy the same linear recurrence $a_n = 2a_{n-1} + 3a_{n-2} - 4a_{n-3} - 4a_{n-4}$ with different initial conditions.
 
 The fact that the same sequences govern such disparate problems---protein fluorescence in amyloid fibrils, convolutions of Jacobsthal numbers, and rectangle tilings---reflects a deeper structural phenomenon: all three settings reduce to constrained binary strings enumerated by the same rational generating functions with denominator $(1+x)^2(1-2x)^2$. The contribution of the present work is not the identities themselves, but the combinatorial pipeline that connects the biophysical model (protein sequences $\to$ constrained 01 patterns $\to$ generating functions) to these known sequences, providing a new interpretation in terms of fluorescence statistics.
 
@@ -670,7 +671,7 @@ Consider the case where full YFP (i.e., both halves are conjoined to form the co
 
 We are interested in measuring the \textit{total} yellow fluorescence emanating from amyloids of this kind. That is, the YFPs may fluoresce at a fixed level (call it Level 1) when it is next to one and only one CFP, but it may also fluoresce twice as much (Level 2) if it is next to \textit{two} CFPs as in a YFP being sandwiched between two CFPs. We want to then sum over the total yellow fluorescence of an amyloid rather than just the raw number of YFPs that are caused to fluoresce. We note that this additive model of FRET from multiple donors is a mathematical idealization; in practice, the efficiency of energy transfer from two donors to a single acceptor depends on geometric factors beyond simple adjacency. We adopt this convention for analytical tractability.
 
-Label YFP as Y and CFP as C. Then our patterns are $\{Y,C\}^*$ and as with the split-YFP exclusive case, extracting away the details we get patterns on the form $(0^* 0 1^*1)^* 0^*$ where we write a $1$ whenever the full protein at that location causes the previous to fluoresce OR is caused to fluoresce by the previous. We note that, unlike previous cases, once we decide on the first protein in a 0-1 pattern, the entire protein's Y-C pattern is uniquely determined. Therefore, for each 0-1 pattern there are 2 Y-C patterns.
+Label YFP as Y and CFP as C. Then our patterns are $\{Y,C\}^*$ and as with the split-YFP exclusive case, extracting away the details we get patterns on the form $(0^* 0 1^*1)^* 0^*$ where we write a $1$ whenever the full protein at that location causes the previous to fluoresce OR is caused to fluoresce by the previous. We note that, unlike previous cases, once we fix the first protein (Y or C), the 01 pattern uniquely determines every subsequent protein: a $1$ forces the next protein to differ from its predecessor, while a $0$ forces it to match. Therefore, for each 01 pattern there are exactly 2 Y-C sequences (one starting with Y, one with C).
 
 It is now remarked that there is a one-to-one correspondence between 1's as appearing in 0-1 patterns as described above and the total yellow fluorescence emanating from an amyloid of the kind. To be specific, the number of 1's is equal to the total yellow fluorescence (if we take Level 1 to be 1 and Level 2 to be 2 as numerical values for which we sum up). For example:
 
@@ -884,6 +885,24 @@ The first 400 values of $R(n)$ appear in Figure~\ref{fig:fretsup35}.
 \label{fig:fretsup35}
 \end{figure}
 
+\section{Generalization to unequal concentrations}
+
+The results of Sections 2--5 all depend on the equal-concentration assumption. The Markov chain arguments generalize readily to unequal concentrations, which we outline here.
+
+\subsection{Split-YFP with unequal concentrations}
+Suppose protein A appears with probability $\alpha$ and protein B with probability $1 - \alpha$. Let $\pi_n$ denote the probability that the $n$th protein is in the unfused state. The transition probabilities are: from unfused, the next protein is the same type with probability $\alpha^2 + (1-\alpha)^2$ (staying unfused) or a different type with probability $2\alpha(1-\alpha)$ (fusion occurs, next protein is fused). From the fused state, the next protein is always unfused. The recurrence is therefore
+\[
+\pi_{n+1} = \bigl[\alpha^2 + (1-\alpha)^2\bigr]\,\pi_n + (1 - \pi_n)
+\]
+with fixed point $\pi^* = 1/\bigl(1 + 2\alpha(1-\alpha)\bigr)$. The expected fluorescence contributed by the $(n+1)$th protein is $2\alpha(1-\alpha)\,\pi_n$, so since $R(n) = 2E(n)/n$, at steady state:
+\[
+\lim_{n \to \infty} R(n) = 2 \cdot 2\alpha(1-\alpha) \cdot \pi^* = \frac{4\alpha(1-\alpha)}{1 + 2\alpha(1-\alpha)}
+\]
+which reduces to $4 \cdot \frac{1}{4} / \frac{3}{2} = 2/3$ when $\alpha = 1/2$.
+
+\subsection{FRET with unequal concentrations}
+In the FRET setting with $P(C) = p_C$, $P(Y) = p_Y = 1 - p_C$, linearity of expectation gives $R(n) \to 2p_C p_Y$ directly, and with Sup35p at concentration $p_S$ (where $p_C + p_Y + p_S = 1$) the limit is likewise $R(n) \to 2p_C p_Y$. These generalizations would allow the model to be calibrated to experimental concentration ratios.
+
 \section{Conclusion}
 
 We have derived exact probability distributions and closed-form expected values for fluorescence in four combinatorial models of amyloid fibrils. The principal results are summarized in the following table:
@@ -906,16 +925,6 @@ A key structural distinction separates the two pairs of systems. In the split-YF
 In the FRET settings (Sections 4 and 5), the absence of a blocking constraint means that each adjacent pair contributes independently to the total fluorescence. This permits a direct linearity-of-expectation argument, yielding exact formulas without the need for the full combinatorial machinery.
 
 The limiting ratios have concrete experimental interpretations. For split-YFP amyloids, $R(n) \to 2/3$ means that in a long amyloid composed of equal concentrations of the two halves, approximately two-thirds of the proteins participate in a fluorescent fusion---a high baseline fluorescence yield arising from the alternating tendency of random binary sequences. Introducing Sup35p at equal concentration halves this to $1/3$: the inert Sup35p proteins act as spacers that interrupt potential fusion pairs. For FRET, the ratio $R(n) \to 1/2$ reflects the probability that a random adjacent pair is a $\{C,Y\}$ pair, while the drop to $2/9$ with Sup35p reflects the reduced probability $2 \cdot (1/3)^2$ of such a pair when three protein types compete for each position. Experimentally, measured fluorescence ratios deviating from these baseline values would indicate non-random assembly biases in the amyloid growth process.
-
-The results above all depend on the equal-concentration assumption. The Markov chain arguments generalize readily to unequal concentrations. For example, in the split-YFP setting, suppose protein A appears with probability $\alpha$ and protein B with probability $1 - \alpha$. Let $\pi_n$ denote the probability that the $n$th protein is in the unfused state. The transition probabilities are: from unfused, the next protein is the same type with probability $\alpha^2 + (1-\alpha)^2$ (staying unfused) or a different type with probability $2\alpha(1-\alpha)$ (fusion occurs, next protein is fused). From the fused state, the next protein is always unfused. The recurrence is therefore
-\[
-\pi_{n+1} = \bigl[\alpha^2 + (1-\alpha)^2\bigr]\,\pi_n + (1 - \pi_n)
-\]
-with fixed point $\pi^* = 1/\bigl(1 + 2\alpha(1-\alpha)\bigr)$. The expected fluorescence contributed by the $(n+1)$th protein is $2\alpha(1-\alpha)\,\pi_n$, so since $R(n) = 2E(n)/n$, at steady state:
-\[
-\lim_{n \to \infty} R(n) = 2 \cdot 2\alpha(1-\alpha) \cdot \pi^* = \frac{4\alpha(1-\alpha)}{1 + 2\alpha(1-\alpha)}
-\]
-which reduces to $4 \cdot \frac{1}{4} / \frac{3}{2} = 2/3$ when $\alpha = 1/2$. In the FRET setting with $P(C) = p_C$, $P(Y) = p_Y = 1 - p_C$, linearity of expectation gives $R(n) \to 2p_C p_Y$ directly, and with Sup35p at concentration $p_S$ (where $p_C + p_Y + p_S = 1$) the limit is likewise $R(n) \to 2p_C p_Y$. These generalizations would allow the model to be calibrated to experimental concentration ratios.
 
 Our analysis assumes that proteins are independently distributed in the amyloid sequence. This assumption neglects known cooperative and templated growth effects in amyloid assembly \cite{chiti2006} and should be interpreted as a combinatorial null model: a baseline against which experimental deviations---reflecting assembly biases, kinetic trapping, or cooperative interactions---could be quantified. The combinatorial framework developed here, particularly the generating function approach to constrained fluorescence patterns via regular expressions, could in principle be adapted to non-uniform protein distributions if experimental data on assembly biases become available.
 
