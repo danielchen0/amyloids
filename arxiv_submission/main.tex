@@ -318,7 +318,7 @@ The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) have a natural interpretation
 \sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k-1} &= \frac{2^n(3n+2) + 2(6n-1)(-1)^n}{27} \label{eq:diag1} \\[6pt]
 \sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k} &= \frac{2^n(3n-4) - 2(3n-2)(-1)^n}{27} \label{eq:diag2}
 \end{align}
-These identities arise here from the fluorescence analysis, but the sequences themselves are not new. Specifically, $S_1(n) = 2 \cdot \text{A127976}(n-1)$ and $S_2(n) = \text{A095977}(n-2)$, where A127976 arises as a convolution of Jacobsthal numbers and A095977 counts $2 \times 2$ tiles in tilings of $3 \times (n+1)$ rectangles. Both sequences satisfy the same linear recurrence $a_n = 2a_{n-1} + 3a_{n-2} - 4a_{n-3} - 4a_{n-4}$ with different initial conditions.
+These identities arise here from the fluorescence analysis, but the sequences themselves are not new. Specifically, $S_1(n) = 2 \cdot \text{A127976}(n-1)$ and $S_2(n) = \text{A095977}(n-2)$, where A127976 arises as a convolution of Jacobsthal numbers and A095977 counts $2 \times 2$ tiles in tilings of $3 \times (n+1)$ rectangles. Both sequences satisfy the linear recurrence $a_n = 2a_{n-1} + 3a_{n-2} - 4a_{n-3} - 4a_{n-4}$ with different initial conditions, which can be verified from the generating function denominator $(1+x)^2(1-2x)^2 = 1 - 2x - 3x^2 + 4x^3 + 4x^4$. Direct computation confirms: $S_1(2) = 2 = 2 \cdot \text{A127976}(1)$ and $S_2(3) = 2 = \text{A095977}(1)$, with subsequent values matching by the shared recurrence.
 
 The fact that the same sequences govern such disparate problems---protein fluorescence in amyloid fibrils, convolutions of Jacobsthal numbers, and rectangle tilings---reflects a deeper structural phenomenon: all three settings reduce to constrained binary strings enumerated by the same rational generating functions with denominator $(1+x)^2(1-2x)^2$. The contribution of the present work is not the identities themselves, but the combinatorial pipeline that connects the biophysical model (protein sequences $\to$ constrained 01 patterns $\to$ generating functions) to these known sequences, providing a new interpretation in terms of fluorescence statistics.
 
@@ -680,7 +680,7 @@ It is now remarked that there is a one-to-one correspondence between 1's as appe
 \text{$(0^*0 1^* 1)^* 0^*$:  } & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 1 & 0 \\
 \text{Yellow fluorescence:  } & 0 & 1 & 0 & 0 & 1 & 2 & 0 & 1 & 1 & 0 & 0
 \end{alignat}
-Note that in the 01 pattern, the $1$s are attributed to positions as a bookkeeping convention (each $1$ marks a position that participates in a $\{C,Y\}$ adjacency), not to the physically emitting protein. The key claim is that the \textit{total} number of $1$s equals the total yellow fluorescence, which we verify: both rows sum to $6$.
+Note that in the 01 pattern, each $1$ is attributed to the right endpoint of a $\{C,Y\}$ adjacency as a bookkeeping convention, not to the physically emitting protein. The key claim is that the \textit{total} number of $1$s equals the total yellow fluorescence, which we verify: both rows sum to $6$.
 
 \subsection{Probability of $k$ total yellow fluorescence in length $n$ amyloid}
 
@@ -902,6 +902,19 @@ with fixed point $\pi^* = 1/\bigl(1 + 2\alpha(1-\alpha)\bigr)$. The expected flu
 \lim_{n \to \infty} R(n) = 2 \cdot 2\alpha(1-\alpha) \cdot \pi^* = \frac{4\alpha(1-\alpha)}{1 + 2\alpha(1-\alpha)}
 \]
 which reduces to $4 \cdot \frac{1}{4} / \frac{3}{2} = 2/3$ when $\alpha = 1/2$.
+
+\subsection{Split-YFP with Sup35p at unequal concentrations}
+Now suppose proteins A, B, S appear with probabilities $\alpha$, $\beta$, and $1 - \alpha - \beta$ respectively. We define three Markov states: $p_A$ (rightmost is A, unfused), $p_B$ (rightmost is B, unfused), and $q$ (rightmost is S, or fused). The transitions are:
+\begin{itemize}
+\item From $p_A$: next is A (prob $\alpha$, stay $p_A$), B (prob $\beta$, fuse, go $q$), or S (prob $1{-}\alpha{-}\beta$, go $q$).
+\item From $p_B$: next is B (prob $\beta$, stay $p_B$), A (prob $\alpha$, fuse, go $q$), or S (prob $1{-}\alpha{-}\beta$, go $q$).
+\item From $q$: next is A (prob $\alpha$, go $p_A$), B (prob $\beta$, go $p_B$), or S (prob $1{-}\alpha{-}\beta$, stay $q$).
+\end{itemize}
+The steady-state probabilities are $\pi_A = \alpha(1-\beta)/(1 - \alpha\beta)$, $\pi_B = \beta(1-\alpha)/(1 - \alpha\beta)$, and $\pi_q = (1-\alpha)(1-\beta)/(1-\alpha\beta)$. The expected fluorescence per step is $e = \beta\pi_A + \alpha\pi_B = \alpha\beta(2 - \alpha - \beta)/(1 - \alpha\beta)$, giving
+\[
+\lim_{n \to \infty} R_{\text{SY}}(n) = 2e = \frac{2\alpha\beta(2 - \alpha - \beta)}{1 - \alpha\beta}
+\]
+which reduces to $1/3$ when $\alpha = \beta = 1/3$ (and to $2/3$ when $\alpha = \beta = 1/2$, recovering the no-Sup35p case).
 
 \subsection{FRET with unequal concentrations}
 In the FRET setting with $P(C) = p_C$, $P(Y) = p_Y = 1 - p_C$, linearity of expectation gives $R(n) \to 2p_C p_Y$ directly, and with Sup35p at concentration $p_S$ (where $p_C + p_Y + p_S = 1$) the limit is likewise $R(n) \to 2p_C p_Y$. These generalizations would allow the model to be calibrated to experimental concentration ratios.
