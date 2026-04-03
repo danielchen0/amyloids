@@ -112,7 +112,7 @@ f_i = \begin{cases}
 0, & \text{otherwise.}
 \end{cases}
 \]
-Informally, $f_i = 1$ indicates that position $i$ is a fusion site: the protein $s_i$ differs from its neighbor $s_{i-1}$ and that neighbor was not already consumed by a prior fusion. The first protein always receives $f_1 = 0$ since there is no predecessor. The blocking constraint ($f_{i-1} = 0$ required) ensures that both proteins in a fused pair are ``used up,'' preventing cascading fusions. Note that the 01 representation has the same length as the amyloid, and the mapping $f$ is well-defined for any sequence in $\{A,B\}^n$.
+Informally, $f_i = 1$ indicates that a fusion occurs between positions $i-1$ and $i$, attributed to the later index $i$: the protein $s_i$ differs from its neighbor $s_{i-1}$ and that neighbor was not already consumed by a prior fusion. The first protein always receives $f_1 = 0$ since there is no predecessor. The blocking constraint ($f_{i-1} = 0$ required) ensures that both proteins in a fused pair are ``used up,'' preventing cascading fusions. Note that the 01 representation has the same length as the amyloid, and the mapping $f$ is well-defined for any sequence in $\{A,B\}^n$.
 
 The left-to-right, greedy pairing rule reflects the sequential nature of amyloid polymerization: proteins are incorporated one at a time at the growing end of the fibril, and each newly added protein either fuses with the current endpoint or does not. This greedy convention is motivated by the kinetics of sequential assembly---once a split-YFP pair reconstitutes, the resulting fluorophore is thermodynamically stable and irreversible \cite{hu2002}, so later arrivals cannot displace it. We note that on a path graph, the greedy matching (always fuse when possible) is in fact optimal: it yields the same count as a maximum matching of the completed static sequence. This can be seen by induction on the sequence length: taking the fusion at positions $(i, i+1)$ prevents $i+1$ from pairing with $i+2$, but we gain one fusion now while losing at most one later, so skipping never yields a net gain and greedy is optimal. Thus the sequential and static interpretations of the model are equivalent.
 
@@ -216,7 +216,7 @@ by definition of expected value.
 
 \subsection{Expected percentage of proteins involved in fluorescence}
 
-This is the number:
+Since each fluorescing vertex involves two proteins, the fraction of proteins participating in fluorescence is:
 
 \[
     R(n) := \frac{2E(n)}{n} = \frac{1}{n \cdot 2^{n-1}}\sum_{k \ge 1}^{\floor{n/2}} k \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right)
@@ -718,10 +718,11 @@ E(n) := \frac{1}{2^{n-1}} \cdot \sum_{k=0}^{n - 1} k \cdot \binom{n-1}{k}
 
 So that for very large $n$, we expect to see about as much yellow unit fluorescence as half the length of the amyloid.
 
-Note that $E(n) = (n-1)/2$ also follows directly from linearity of expectation: the total yellow fluorescence equals the number of adjacent $\{C,Y\}$ pairs, and there are $n - 1$ adjacent pairs each with probability $P(\{C,Y\}) = 2 \cdot (1/2)^2 = 1/2$ of being a $\{C,Y\}$ pair (since FRET interactions, unlike split-YFP fusion, have no blocking constraint). Hence
+Note that $E(n) = (n-1)/2$ also follows directly from linearity of expectation: the total yellow fluorescence equals the number of adjacent $\{C,Y\}$ pairs, and there are $n - 1$ adjacent pairs each with probability $P(\{C,Y\}) = 2 \cdot (1/2)^2 = 1/2$ of being a $\{C,Y\}$ pair (since FRET interactions, unlike split-YFP fusion, have no blocking constraint). We define the fluorescence ratio as
 \[
 R(n) := E(n)/n = \frac{n-1}{2n} \longrightarrow \frac{1}{2} \text{ as } n \to \infty
 \]
+Note the convention change from Sections 2--3: there, $R(n) = 2E(n)/n$ measured the fraction of \textit{proteins} involved in fluorescence (two per fused pair), whereas here $R(n) = E(n)/n$ measures total fluorescence units per protein, since $E(n)$ already counts FRET contributions directly.
 
 The first 400 values of $R(n)$ appear in Figure~\ref{fig:fretonly}.
 
@@ -865,6 +866,8 @@ a_{n,y} =
 \end{cases}
 \]
 which is what was required.
+
+\textbf{Verification.} For $n = 3$, brute-force enumeration over all $3^3 = 27$ amyloids in $\{C,Y,S\}^3$ gives $\cA(3,0) = 17$, $\cA(3,1) = 8$, and $\cA(3,2) = 2$, with $E(3) = (0 \cdot 17 + 1 \cdot 8 + 2 \cdot 2)/27 = 12/27 = 4/9$. This agrees with the linearity-of-expectation formula $E(3) = 2(3-1)/9 = 4/9$.
 
 The combinatorial formula for $\cA(n,k)$ above gives the full probability distribution. However, for computing the expected value, a much simpler route is available. As in Section 4, the total yellow fluorescence of an amyloid equals the number of adjacent $\{C,Y\}$ pairs. Since FRET interactions have no blocking constraint (unlike split-YFP fusion), the linearity of expectation argument from Section 4 applies directly. With each protein independently C, Y, or S with probability $1/3$:
 \[
