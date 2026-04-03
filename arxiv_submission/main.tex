@@ -697,7 +697,7 @@ and thus the probability of observing $k$ total yellow fluorescence in a length 
 P(n,k) = \frac{2\binom{n-1}{k}}{2^n} = \frac{\binom{n-1}{k}}{2^{n-1}}, \quad k \in [0,n - 1]
 \].
 
-These are all easily seen from the remarks above.
+This is the Binomial$(n-1, 1/2)$ distribution, which can also be seen directly: since the first protein determines the parity, the indicators $f_2, f_3, \ldots, f_n$ are mutually independent Bernoulli$(1/2)$ random variables (each adjacent pair is independently $\{C,Y\}$ or not), so their sum is Binomial$(n-1, 1/2)$.
 
 \subsection{Expected total yellow fluorescence}
 
@@ -910,7 +910,7 @@ Now suppose proteins A, B, S appear with probabilities $\alpha$, $\beta$, and $1
 \item From $p_B$: next is B (prob $\beta$, stay $p_B$), A (prob $\alpha$, fuse, go $q$), or S (prob $1{-}\alpha{-}\beta$, go $q$).
 \item From $q$: next is A (prob $\alpha$, go $p_A$), B (prob $\beta$, go $p_B$), or S (prob $1{-}\alpha{-}\beta$, stay $q$).
 \end{itemize}
-The steady-state probabilities are $\pi_A = \alpha(1-\beta)/(1 - \alpha\beta)$, $\pi_B = \beta(1-\alpha)/(1 - \alpha\beta)$, and $\pi_q = (1-\alpha)(1-\beta)/(1-\alpha\beta)$. The expected fluorescence per step is $e = \beta\pi_A + \alpha\pi_B = \alpha\beta(2 - \alpha - \beta)/(1 - \alpha\beta)$, giving
+Solving the balance equations $\pi_A = \alpha\pi_A + \alpha\pi_q$, $\pi_B = \beta\pi_B + \beta\pi_q$, and $\pi_A + \pi_B + \pi_q = 1$ gives $\pi_A = \alpha(1-\beta)/(1 - \alpha\beta)$, $\pi_B = \beta(1-\alpha)/(1 - \alpha\beta)$, and $\pi_q = (1-\alpha)(1-\beta)/(1-\alpha\beta)$. The expected fluorescence per step is $e = \beta\pi_A + \alpha\pi_B = \alpha\beta(2 - \alpha - \beta)/(1 - \alpha\beta)$, giving
 \[
 \lim_{n \to \infty} R_{\text{SY}}(n) = 2e = \frac{2\alpha\beta(2 - \alpha - \beta)}{1 - \alpha\beta}
 \]
