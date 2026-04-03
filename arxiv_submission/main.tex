@@ -188,7 +188,7 @@ Consider the following 01 pattern. We write the number of possible proteins (A o
 
 As we can see, putting a 1 at the end of the 01 pattern implies only $2^k$ possible amyloids with the particular pattern. There are $N(n-2, k - 1)$ patterns with this property.
 
-\textbf{Verification.} For $n = 4$, $k = 1$: $\cA(4,1) = 2^1 \binom{2}{0} + 2^2 \binom{2}{1} = 2 + 8 = 10$. One can check by brute-force enumeration over all $2^4 = 16$ amyloids of length 4 that exactly 10 have precisely 1 fluorescing pair.
+\textbf{Verification.} For $n = 4$, $k = 1$: $\cA(4,1) = 2^1 \binom{2}{0} + 2^2 \binom{2}{1} = 2 + 8 = 10$. For $k = 2$: $\cA(4,2) = 2^2 \binom{1}{1} + 2^3 \binom{1}{2} = 4 + 0 = 4$ (the only 01 pattern is $0101$, giving amyloids ABAB, BABA, ABBA, BAAB). With $\cA(4,0) = 2$ (AAAA and BBBB), we have $2 + 10 + 4 = 16 = 2^4$. $\checkmark$
 
 Hence the probability of seeing $k$ fluorescing pairs in an amyloid of length $n$ is
 
@@ -366,7 +366,7 @@ To verify this, substitute the closed forms from (\ref{eq:sum1}) and (\ref{eq:su
 \]
 while the Markov chain gives $E(n) = \frac{n-1}{3} + \frac{1}{9} - \frac{(-1)^{n-1}}{9 \cdot 2^{n-1}} = \frac{3n-2}{9} + \frac{2(-1)^n}{9 \cdot 2^n}$, confirming the two expressions are identical.
 
-We can also verify the above via computer simulation (see \texttt{split\_yfp\_simulation.py}). A sample of computed values is shown in Table~\ref{tab:splityfp}, and the first 400 values appear in Figure~\ref{fig:splityfp}.
+We can also verify the above via computer simulation (see \texttt{split\_yfp\_simulation.py}; all scripts are available at \url{https://github.com/danielchen0/amyloids}). A sample of computed values is shown in Table~\ref{tab:splityfp}, and the first 400 values appear in Figure~\ref{fig:splityfp}.
 
 \begin{table}[ht]
 \centering
@@ -390,7 +390,7 @@ $n$ & $R(n)$ & $n$ & $R(n)$ & $n$ & $R(n)$ \\
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.75\textwidth]{SplitYFPamyloids.png}
-\caption{$R(n)$ for split-YFP amyloids. The blue line is $2/3$ and the orange curve is the exact $R(n)$. The exponential correction term $O(2^{-n}/n)$ yields rapid convergence.}
+\caption{$R(n)$ for split-YFP amyloids. The blue line is $2/3$ and the orange curve is the exact $R(n)$. The exponential correction term $O((1/2)^n/n)$ yields rapid convergence.}
 \label{fig:splityfp}
 \end{figure}
 
@@ -636,6 +636,12 @@ and as $n \to \infty$, the second term vanishes:
 \lim_{n \to \infty} R(n) = \lim_{n \to \infty} \frac{4n - 3}{12n} = \frac{4}{12} = \frac{1}{3}
 \]
 
+As in Section 2, the agreement between the Markov chain and the combinatorial formula provides a non-trivial identity. Since both methods compute $E(n)$, we have
+\[
+\frac{1}{3^n} \sum_{k \ge 1}^{\floor{n/2}} k \cdot \cA(n,k) = \frac{4n-3}{24} - \frac{(-1)^{n-1}}{24 \cdot 3^{n-1}}
+\]
+where $\cA(n,k)$ is the combinatorial formula involving the $a_{\phi_i}$ and $b_q$ sequences with $\sqrt{2}$. This identity, which equates a sum over compositions weighted by products of irrational-valued sequences to a simple rational expression, serves as an independent verification of both derivations.
+
 A simulation (see \texttt{sup35\_simulation.py}) confirms this. A sample of computed values is shown in Table~\ref{tab:sup35}, and the graph appears in Figure~\ref{fig:sup35}.
 
 \begin{table}[ht]
@@ -660,7 +666,7 @@ $n$ & $R(n)$ & $n$ & $R(n)$ & $n$ & $R(n)$ \\
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.75\textwidth]{splityfpandsup35.png}
-\caption{$R(n)$ for split-YFP amyloids with Sup35p. The blue line is $1/3$ and the orange curve is the exact $R(n)$. The exponential correction term $O(3^{-n}/n)$ yields even faster convergence than Figure~\ref{fig:splityfp}.}
+\caption{$R(n)$ for split-YFP amyloids with Sup35p. The blue line is $1/3$ and the orange curve is the exact $R(n)$. The exponential correction term $O((1/3)^n/n)$ yields even faster convergence than Figure~\ref{fig:splityfp}.}
 \label{fig:sup35}
 \end{figure}
 
@@ -669,7 +675,7 @@ $n$ & $R(n)$ & $n$ & $R(n)$ & $n$ & $R(n)$ \\
 
 Consider the case where full YFP (i.e., both halves are conjoined to form the complete fluorophore) and CFP are well-mixed in a container under ambient lighting that causes CFP to fluoresce. When CFP is bonded to YFP, the fluorescence from CFP will cause YFP to fluoresce (FRET). 
 
-We are interested in measuring the \textit{total} yellow fluorescence emanating from amyloids of this kind. That is, the YFPs may fluoresce at a fixed level (call it Level 1) when it is next to one and only one CFP, but it may also fluoresce twice as much (Level 2) if it is next to \textit{two} CFPs as in a YFP being sandwiched between two CFPs. We want to then sum over the total yellow fluorescence of an amyloid rather than just the raw number of YFPs that are caused to fluoresce. We note that this additive model of FRET from multiple donors is a mathematical idealization; in practice, the efficiency of energy transfer from two donors to a single acceptor depends on geometric factors beyond simple adjacency. We adopt this convention for analytical tractability.
+We are interested in measuring the \textit{total} yellow fluorescence emanating from amyloids of this kind. That is, the YFPs may fluoresce at a fixed level (call it Level 1) when it is next to one and only one CFP, but it may also fluoresce twice as much (Level 2) if it is next to \textit{two} CFPs as in a YFP being sandwiched between two CFPs. We want to then sum over the total yellow fluorescence of an amyloid rather than just the raw number of YFPs that are caused to fluoresce. We note that this additive model of FRET from multiple donors is a mathematical idealization; in practice, the efficiency of energy transfer from two donors to a single acceptor depends on geometric factors beyond simple adjacency. We adopt this convention for analytical tractability. A more realistic model incorporating geometry-dependent FRET efficiencies would break the linearity-of-expectation argument used below and require a more involved analysis.
 
 Label YFP as Y and CFP as C. Then our patterns are $\{Y,C\}^*$ and as with the split-YFP exclusive case, extracting away the details we get patterns on the form $(0^* 0 1^*1)^* 0^*$ where we write a $1$ whenever the full protein at that location causes the previous to fluoresce OR is caused to fluoresce by the previous. We note that, unlike previous cases, once we fix the first protein (Y or C), the 01 pattern uniquely determines every subsequent protein: a $1$ forces the next protein to differ from its predecessor, while a $0$ forces it to match. Therefore, for each 01 pattern there are exactly 2 Y-C sequences (one starting with Y, one with C).
 
@@ -901,7 +907,7 @@ with fixed point $\pi^* = 1/\bigl(1 + 2\alpha(1-\alpha)\bigr)$. The expected flu
 \[
 \lim_{n \to \infty} R(n) = 2 \cdot 2\alpha(1-\alpha) \cdot \pi^* = \frac{4\alpha(1-\alpha)}{1 + 2\alpha(1-\alpha)}
 \]
-which reduces to $4 \cdot \frac{1}{4} / \frac{3}{2} = 2/3$ when $\alpha = 1/2$.
+which reduces to $4 \cdot \frac{1}{4} / \frac{3}{2} = 2/3$ when $\alpha = 1/2$. By symmetry and concavity of $\alpha(1-\alpha)$, this limit is maximized at $\alpha = 1/2$, confirming that equal concentrations maximize the fluorescence yield.
 
 \subsection{Split-YFP with Sup35p at unequal concentrations}
 Now suppose proteins A, B, S appear with probabilities $\alpha$, $\beta$, and $1 - \alpha - \beta$ respectively. We define three Markov states: $p_A$ (rightmost is A, unfused), $p_B$ (rightmost is B, unfused), and $q$ (rightmost is S, or fused). The transitions are:
@@ -942,6 +948,8 @@ A key structural distinction separates the two pairs of systems. In the split-YF
 In the FRET settings (Sections 4 and 5), the absence of a blocking constraint means that each adjacent pair contributes independently to the total fluorescence. This permits a direct linearity-of-expectation argument, yielding exact formulas without the need for the full combinatorial machinery.
 
 The limiting ratios have concrete experimental interpretations. For split-YFP amyloids, $R(n) \to 2/3$ means that in a long amyloid composed of equal concentrations of the two halves, approximately two-thirds of the proteins participate in a fluorescent fusion---a high baseline fluorescence yield arising from the alternating tendency of random binary sequences. Introducing Sup35p at equal concentration halves this to $1/3$: the inert Sup35p proteins act as spacers that interrupt potential fusion pairs. For FRET, the ratio $R(n) \to 1/2$ reflects the probability that a random adjacent pair is a $\{C,Y\}$ pair, while the drop to $2/9$ with Sup35p reflects the reduced probability $2 \cdot (1/3)^2$ of such a pair when three protein types compete for each position. Experimentally, measured fluorescence ratios deviating from these baseline values would indicate non-random assembly biases in the amyloid growth process.
+
+A natural extension of the FRET model would be to allow interactions within a window of radius $r$ rather than nearest neighbors only. For $r = 2$, a YFP at position $i$ would fluoresce from CFPs at positions $i \pm 1$ and $i \pm 2$. The indicator variables $f_i$ are then no longer independent---knowing that positions $i-1$ and $i$ are a $\{C,Y\}$ pair constrains the distribution at $i+1$---and the linearity-of-expectation argument no longer suffices for the full distribution $P(n,k)$. One would need either inclusion-exclusion or a Markov chain with states tracking the last $r$ proteins. For the expected value $E(n)$, linearity of expectation still applies: each pair $(i, j)$ with $|i - j| \le r$ contributes independently to $E(n)$, giving $E(n) = \sum_{d=1}^{r} (n - d) \cdot 2p_C p_Y$ for the FRET + Sup35p case with equal concentrations. However, the full distribution would require generating functions for strings with forbidden patterns of length $> 2$, a substantially richer combinatorial problem.
 
 Our analysis assumes that proteins are independently distributed in the amyloid sequence. This assumption neglects known cooperative and templated growth effects in amyloid assembly \cite{chiti2006} and should be interpreted as a combinatorial null model: a baseline against which experimental deviations---reflecting assembly biases, kinetic trapping, or cooperative interactions---could be quantified. The combinatorial framework developed here, particularly the generating function approach to constrained fluorescence patterns via regular expressions, could in principle be adapted to non-uniform protein distributions if experimental data on assembly biases become available.
 
