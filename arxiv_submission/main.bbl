@@ -1,0 +1,106 @@
+\begin{thebibliography}{10}
+
+\bibitem{chiti2006}
+Fabrizio Chiti and Christopher~M. Dobson.
+\newblock Protein misfolding, functional amyloid, and human disease.
+\newblock {\em Annual Review of Biochemistry}, 75:333--366, 2006.
+\newblock \url{https://doi.org/10.1146/annurev.biochem.75.101304.123901}.
+
+\bibitem{flajolet2009}
+Philippe Flajolet and Robert Sedgewick.
+\newblock {\em Analytic Combinatorics}.
+\newblock Cambridge University Press, 2009.
+
+\bibitem{forster1948}
+Theodor F{\"o}rster.
+\newblock Zwischenmolekulare {Energiewanderung} und {Fluoreszenz}.
+\newblock {\em Annalen der Physik}, 437(1--2):55--75, 1948.
+\newblock \url{https://doi.org/10.1002/andp.19484370105}.
+
+\bibitem{gkp1994}
+Ronald~L. Graham, Donald~E. Knuth, and Oren Patashnik.
+\newblock {\em Concrete Mathematics: A Foundation for Computer Science}.
+\newblock Addison-Wesley, 2nd edition, 1994.
+
+\bibitem{hu2002}
+Chang-Deng Hu, Yurii Chinenov, and Tom~K. Kerppola.
+\newblock Visualization of interactions among {bZIP} and {Rel} family proteins
+  in living cells using bimolecular fluorescence complementation.
+\newblock {\em Molecular Cell}, 9(4):789--798, 2002.
+\newblock \url{https://doi.org/10.1016/S1097-2765(02)00496-3}.
+
+\bibitem{kerppola2006}
+Tom~K. Kerppola.
+\newblock Design and implementation of bimolecular fluorescence complementation
+  ({BiFC}) assays for the visualization of protein interactions in living
+  cells.
+\newblock {\em Nature Protocols}, 1(3):1278--1286, 2006.
+\newblock \url{https://doi.org/10.1038/nprot.2006.201}.
+
+\bibitem{lakowicz2006}
+Joseph~R. Lakowicz.
+\newblock {\em Principles of Fluorescence Spectroscopy}.
+\newblock Springer, 3rd edition, 2006.
+\newblock \url{https://doi.org/10.1007/978-0-387-46312-4}.
+
+\bibitem{norris1997}
+James~R. Norris.
+\newblock {\em Markov Chains}.
+\newblock Cambridge University Press, 1997.
+
+\bibitem{oeisA000129}
+{OEIS Foundation Inc.}
+\newblock {A000129}.
+\newblock \url{https://oeis.org/A000129}.
+\newblock Accessed 2026-05-14.
+
+\bibitem{oeisA001333}
+{OEIS Foundation Inc.}
+\newblock {A001333}.
+\newblock \url{https://oeis.org/A001333}.
+\newblock Accessed 2026-05-14.
+
+\bibitem{oeisA095977}
+{OEIS Foundation Inc.}
+\newblock {A095977}.
+\newblock \url{https://oeis.org/A095977}.
+\newblock Accessed 2026-05-14.
+
+\bibitem{oeisA127976}
+{OEIS Foundation Inc.}
+\newblock {A127976}.
+\newblock \url{https://oeis.org/A127976}.
+\newblock Accessed 2026-05-14.
+
+\bibitem{patino1996}
+M.~M. Patino, J.~J. Liu, J.~R. Glover, and S.~Lindquist.
+\newblock Support for the prion hypothesis for inheritance of a phenotypic
+  trait in yeast.
+\newblock {\em Science}, 273(5275):622--626, 1996.
+\newblock \url{https://doi.org/10.1126/science.273.5275.622}.
+
+\bibitem{patterson2000}
+George~H. Patterson, David~W. Piston, and B.~George Barisas.
+\newblock F{\"o}rster distances between green fluorescent protein pairs.
+\newblock {\em Analytical Biochemistry}, 284(2):438--440, 2000.
+\newblock \url{https://doi.org/10.1006/abio.2000.4708}.
+
+\bibitem{stanley2012}
+Richard~P. Stanley.
+\newblock {\em Enumerative Combinatorics}, volume~1.
+\newblock Cambridge University Press, 2nd edition, 2012.
+
+\bibitem{sunde1997}
+Margaret Sunde, Louise~C. Serpell, Mark Bartlam, Peter~E. Fraser, Mark~B.
+  Pepys, and Colin C.~F. Blake.
+\newblock Common core structure of amyloid fibrils by synchrotron x-ray
+  diffraction.
+\newblock {\em Journal of Molecular Biology}, 273(3):729--739, 1997.
+\newblock \url{https://doi.org/10.1006/jmbi.1997.1348}.
+
+\bibitem{wilf2006}
+Herbert~S. Wilf.
+\newblock {\em generatingfunctionology}.
+\newblock A K Peters, 3rd edition, 2006.
+
+\end{thebibliography}

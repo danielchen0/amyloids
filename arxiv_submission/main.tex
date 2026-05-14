@@ -83,16 +83,39 @@
 \maketitle
 
 \begin{abstract}
-We study four combinatorial models of fluorescence in amyloid fibrils---split-YFP alone, split-YFP with Sup35p, FRET YFP/CFP, and FRET YFP/CFP with Sup35p---and show that the expected fluorescence ratio---$R_{\text{SY}}(n) := 2E(n)/n$ for split-YFP systems, $R_{\text{F}}(n) := E(n)/n$ for FRET---converges to $2/3$, $1/3$, $1/2$, and $2/9$ respectively as the amyloid length $n \to \infty$. For split-YFP systems, we derive exact probability distributions $P(n,k)$ via generating functions applied to constrained binary strings, obtaining closed-form evaluations of $k \cdot 2^k$-weighted sums along the shallow diagonals of Pascal's triangle---identities related to known sequences (OEIS A127976, A095977) but arising here in a new biophysical context. These results are independently verified by Markov chain arguments. For FRET systems, the absence of a blocking constraint permits a direct linearity-of-expectation computation. All expected value formulas are exact for finite $n$, not merely asymptotic; the full distributions $P(n,k)$ are given in closed form for Sections 2 and 4, and via an explicit combinatorial formula (involving a convolution over compositions) for Sections 3 and 5.
+We study exact null-model fluorescence statistics for four combinatorial models of amyloid fibrils: split-YFP alone, split-YFP with Sup35p, FRET YFP/CFP, and FRET YFP/CFP with Sup35p. In their natural units, the split-YFP statistics $R_{\text{SY}}(n) := 2E(n)/n$ and $R_{\text{SY},S}(n) := 2E(n)/n$ (fractions of proteins participating in reconstituted pairs) converge to $2/3$ and $1/3$, while the FRET statistics $R_{\text{F}}(n) := E(n)/n$ and $R_{\text{F},S}(n) := E(n)/n$ (total adjacent-pair fluorescence per protein) converge to $1/2$ and $2/9$. These two ratio families measure different physical quantities and should not be read as directly comparable fluorescence yields. For split-YFP systems, standard bivariate generating-function and transfer-matrix methods give exact probability distributions $P(n,k)$, represented either by closed binomial sums or by rational bivariate generating functions, and closed-form evaluations of $k \cdot 2^k$-weighted sums along the shallow diagonals of Pascal's triangle---identities related to known On-Line Encyclopedia of Integer Sequences (OEIS) entries A127976 and A095977, but arising here in a new biophysical context. The same framework unifies the Sup35p sections: in each case the joint distribution $P(n,k)$ is encoded by a rational generating function of the form $(1 + \alpha(w) z)/(1 - \beta(w) z - \gamma(w) z^2)$, from which expected values and variances follow by differentiation at $w = 1$. These results are independently verified by Markov chain arguments and (in the unequal-concentration setting) by Monte Carlo spot checks. For FRET systems, linearity of expectation also gives a finite interaction-radius baseline, with $E_r(n)/n \to 2r p_Cp_Y$ under an additive unit-weight cutoff. All expectation and variance formulas are exact for finite $n$, not merely asymptotic.
 \end{abstract}
 
 \section{Introduction}
-\textit{Amyloids} are fibrillar protein aggregates characterized by their distinctive $\beta$-sheet structure, where proteins self-assemble into highly ordered stacks \cite{chiti2006}. For the purposes of our mathematical analysis, we can abstract these complex biochemical structures into a simplified model where individual proteins, denoted as A,B,C,..., form sequential patterns in their stacking arrangements (e.g., ABBACCBCBCA...). This abstraction, while preserving the essential features of protein ordering within amyloid fibrils, transforms a complex biophysical system into a tractable mathematical framework. Our combinatorial approach follows the general framework of analytic combinatorics \cite[Ch.~I]{flajolet2009}. By viewing amyloid assembly through this lens, we can leverage classical combinatorial enumeration methods to analyze their structural properties, providing insights into both their formation patterns and potential biological implications. In particular, we study amyloids of different compositions, firstly just Split Yellow Fluorescent Proteins (split-YFP), a technique based on bimolecular fluorescence complementation \cite{hu2002}, then split-YFPs and Saccharomyces cerevisiae eukaryotic translation release factor Sup35p, and finally split-YFP and Sup35p under F\"{o}rster resonance energy transfer (FRET) \cite{forster1948} lighting. A specific quantity of interest is the expected number of fluorescing vertices, i.e., points between two proteins in the amyloid stack that fluoresce. We derive the full probability distributions $P(n,k)$ for the number of fluorescing sites and closed-form expressions for the expected values using combinatorial generating functions, Markov chains, and regular expressions. In the split-YFP settings, the adjacency blocking constraint leads to nontrivial combinatorial identities involving sums such as $\sum_{k \ge 1}^{\floor{n/2}} k\, 2^k \binom{n-k}{k}$, which we evaluate via generating function techniques \cite{wilf2006}. Two independent derivations---direct summation and Markov chain arguments---yield the same closed forms, providing mutual verification. The limiting fluorescence ratios are $2/3$, $1/3$, $1/2$, and $2/9$ for the four protein systems studied. The closed-form identities that arise turn out to match known OEIS sequences (A127976, A095977); the contribution of this work is not the identities themselves, but the combinatorial pipeline connecting a biophysical model to these sequences, providing a new interpretation in terms of fluorescence statistics. Several modeling assumptions should be stated at the outset. First, we assume that proteins are independently and uniformly distributed in the amyloid sequence. Real amyloid assembly is templated and cooperative \cite{chiti2006}, so this i.i.d.\ assumption constitutes a \textit{combinatorial null model}---a baseline against which non-random assembly effects could be detected, rather than a mechanistic description of fibril growth. Second, in the split-YFP sections, we model fluorophore reconstitution as a purely combinatorial adjacency event; we do not capture the irreversible, thermodynamically driven nature of bimolecular fluorescence complementation \cite{hu2002}. Third, in the FRET sections, we restrict interactions to nearest neighbors in the fibril. In practice, the inter-strand spacing in cross-$\beta$ amyloid structure is approximately 0.47\,nm, while the F\"{o}rster radius for the CFP--YFP pair is approximately 4.9\,nm \cite{forster1948, lakowicz2006}, so FRET can occur across roughly ten subunits. The nearest-neighbor restriction is therefore a significant simplification adopted for analytical tractability; extending the model to a larger interaction radius would change the combinatorial structure. Finally, the equal-concentration assumption ($p = 1/2$ or $1/3$ per protein type) is adopted throughout; we discuss the generalization to unequal concentrations in Section 6.
+\textit{Amyloids} are fibrillar protein aggregates characterized by their distinctive $\beta$-sheet structure, where proteins self-assemble into highly ordered stacks \cite{chiti2006}. For the purposes of our mathematical analysis, we abstract these complex biochemical structures into a simplified model where individual proteins, denoted A,B,C,\ldots, form sequential patterns in their stacking arrangements (e.g., ABBACCBCBCA...). This abstraction turns a biophysical setting into a tractable combinatorial null model rather than a mechanistic description of fibril growth.
 
-\section{Analysis of exclusively split-YFP Amyloids}
+Our combinatorial approach follows the general framework of analytic combinatorics \cite[Ch.~I]{flajolet2009}. We study amyloids of different compositions: split Yellow Fluorescent Proteins (split-YFP), a technique based on bimolecular fluorescence complementation \cite{hu2002,kerppola2006}; split-YFP together with \textit{Saccharomyces cerevisiae} eukaryotic translation release factor Sup35p, a prion-forming protein \cite{patino1996}; and YFP/Cyan Fluorescent Protein (CFP) systems under donor excitation that can produce F\"{o}rster resonance energy transfer (FRET) \cite{forster1948,patterson2000}. A specific quantity of interest is the expected number of \textit{fluorescing locations}---points between two adjacent proteins in the amyloid stack at which a fluorescent interaction occurs (a fusion in the split-YFP settings, a $\{C, Y\}$ adjacency in the FRET settings). We derive the full probability distributions $P(n,k)$ for the number of fluorescing sites and closed-form expressions for the expected values using standard generating functions, transfer matrices, Markov chains, and regular expressions. The symbol $\cA(n,k)$ is used locally within each model for the number of length-$n$ amyloids with $k$ fluorescing sites.
+
+In the split-YFP settings, the adjacency blocking constraint leads to weighted shallow-diagonal sums such as $\sum_{k=1}^{\floor{n/2}} k\, 2^k \binom{n-k}{k}$, which we evaluate via generating function techniques \cite{wilf2006}. Direct summation and Markov chain arguments yield the same closed forms, providing mutual verification. The closed-form identities that arise turn out to match known OEIS sequences A127976 and A095977 \cite{oeisA127976,oeisA095977}; the contribution of this work is not the identities themselves, but the exact null-model statistics obtained by applying this familiar combinatorial pipeline to a family of related fluorescence models.
+
+Several modeling assumptions should be stated at the outset. First, proteins are assumed to be independently and uniformly distributed in the amyloid sequence. Real amyloid assembly is templated and cooperative \cite{chiti2006}, so this i.i.d.\ assumption is a baseline against which non-random assembly effects could be detected. Second, Sup35p is used here purely as an abstract inert third species: the model does not attempt to describe Sup35p's own prion biology, only the effect of inserting a non-fluorescent stack partner. Third, in the split-YFP sections, we model fluorophore reconstitution as a local pairing rule; the rule is motivated by bimolecular fluorescence complementation being effectively irreversible on experimental timescales \cite{hu2002,kerppola2006}, but abstracts away geometric and kinetic details of real fibril growth. Fourth, in the FRET sections, we initially restrict interactions to nearest neighbors in the fibril, then record the expected-value extension to a finite interaction radius in Section~\ref{sec:variance-radius}. In practice, the inter-strand spacing in cross-$\beta$ amyloid structure is approximately 0.47\,nm \cite{sunde1997}, while reported F\"{o}rster radii for common CFP--YFP variants are on the order of $5$\,nm \cite{patterson2000,lakowicz2006}, so the F\"{o}rster scale is on the order of ten amyloid spacings. The effective interaction along a fibril nevertheless depends on fluorophore geometry and orientation and decays steeply with distance, so this scale should not be read as a hard interaction radius. The nearest-neighbor restriction is therefore a deliberately simplified $r=1$ baseline, not the quantitative model one would compare directly to experiment. Finally, the equal-concentration assumption ($p = 1/2$ or $1/3$ per protein type) is adopted throughout the main sections; limiting unequal-concentration formulas are discussed in Section~\ref{sec:unequal}.
+
+Throughout, $K_n$ denotes the fluorescence count in a length-$n$ amyloid under the model currently being discussed, $E(n)=\mathbb{E}[K_n]$, and $P(n,k)=\mathbb{P}(K_n=k)$. The counting symbol $\cA(n,k)$ is model-local: it denotes the number of length-$n$ amyloids with $K_n=k$ in the current section, with the empty word convention $\cA(0,0)=1$ when bivariate generating functions are used. In split-YFP models, $K_n$ counts fused A--B pairs, so $2K_n$ proteins participate in fluorescence. In FRET models, $K_n$ counts additive C--Y interaction units; a single YFP adjacent to two CFPs contributes two units, so $K_n$ is not generally the number of distinct fluorescent YFP molecules.
+
+\begin{center}
+\begin{tabular}{llll}
+\hline
+Model & Alphabet & Interaction & Native ratio \\
+\hline
+split-YFP & $\{A,B\}$ & A--B fusion & $R_{\text{SY}}=2E/n$ \\
+split-YFP + Sup35p & $\{A,B,S\}$ & A--B fusion & $R_{\text{SY},S}=2E/n$ \\
+FRET YFP/CFP & $\{C,Y\}$ & C--Y adjacency & $R_{\text{F}}=E/n$ \\
+FRET + Sup35p & $\{C,Y,S\}$ & C--Y adjacency & $R_{\text{F},S}=E/n$ \\
+\hline
+\end{tabular}
+\end{center}
+
+The paper is organized as follows. Sections~\ref{sec:split-yfp} and~\ref{sec:sup35} treat split-YFP models, where the blocking constraint requires constrained-string enumeration and finite-state Markov chains. Sections~\ref{sec:fret} and~\ref{sec:fret-sup35} treat FRET models, where the absence of blocking makes the expectation a direct adjacent-pair count, although transfer matrices still encode the full distribution. Section~\ref{sec:variance-radius} records finite-$n$ variances and the finite-radius FRET expectation, and Section~\ref{sec:unequal} gives limiting unequal-concentration formulas.
+
+\section{Analysis of exclusively split-YFP Amyloids}\label{sec:split-yfp}
 Let us first analyze amyloids consisting solely of YFP. YFP is a single polypeptide chain that can be split into two fragments, referred to as split-YFP. Call the distinct halves A and B. It is when these two halves A and B fuse that fluorescence occurs at the point of contact. There are no restrictions on the patterns in the amyloid - one can view all combinations of such halves via the regular expression $\{A,B\}^*$. 
 
-We are interested in positions of an amyloid where A and B come together and fuse, producing yellow fluorescence. Such a scenario is essentially the reconstitution of the full fluorophore structure of YFP. We refer to such points in the amyloid stack as \textit{vertices} throughout this paper.
+We are interested in positions of an amyloid where A and B come together and fuse, producing yellow fluorescence. Such a scenario is essentially the reconstitution of the full fluorophore structure of YFP. We refer to such points in the amyloid stack as \textit{fluorescing locations} (or \textit{fluorescing sites}) throughout this paper. The same terminology applies in Sections~\ref{sec:fret}--\ref{sec:fret-sup35} to the FRET settings, where a fluorescing location is a $\{C, Y\}$ adjacency at which energy transfer occurs.
 
 Let $n$ be the number of split-YFPs in a given amyloid. Clearly, there are $2^n$ possible amyloids of length $n$.
 
@@ -114,7 +137,9 @@ f_i = \begin{cases}
 \]
 Informally, $f_i = 1$ indicates that a fusion occurs between positions $i-1$ and $i$, attributed to the later index $i$: the protein $s_i$ differs from its neighbor $s_{i-1}$ and that neighbor was not already consumed by a prior fusion. The first protein always receives $f_1 = 0$ since there is no predecessor. The blocking constraint ($f_{i-1} = 0$ required) ensures that both proteins in a fused pair are ``used up,'' preventing cascading fusions. Note that the 01 representation has the same length as the amyloid, and the mapping $f$ is well-defined for any sequence in $\{A,B\}^n$.
 
-The left-to-right, greedy pairing rule reflects the sequential nature of amyloid polymerization: proteins are incorporated one at a time at the growing end of the fibril, and each newly added protein either fuses with the current endpoint or does not. This greedy convention is motivated by the kinetics of sequential assembly---once a split-YFP pair reconstitutes, the resulting fluorophore is thermodynamically stable and irreversible \cite{hu2002}, so later arrivals cannot displace it. We note that on a path graph, the greedy matching (always fuse when possible) is in fact optimal: it yields the same count as a maximum matching of the completed static sequence. We prove this by induction on $n$. For $n \le 2$ the claim is trivial. For the inductive step, suppose the first fusible pair is at positions $(i, i+1)$. If we take it, the remaining sequence from position $i+2$ onward is handled optimally by the inductive hypothesis, yielding $1 + M(i+2, \ldots, n)$ fusions where $M$ denotes the maximum matching. If we skip it, the best we can achieve from position $i$ onward is $M(i, \ldots, n)$. But skipping $(i, i+1)$ frees $i+1$ only to potentially pair with $i+2$---yet $i+2$ can equally pair with $i+3$ regardless, so skipping gains at most zero net fusions. Hence taking the first available fusion is always optimal, and greedy equals maximum matching on paths. Thus the sequential and static interpretations of the model are equivalent.
+The left-to-right, greedy pairing rule reflects an idealized sequential-polymerization picture: proteins are incorporated one at a time at a single growing end of the fibril, and each newly added protein either fuses with the current endpoint or does not. This greedy convention is motivated by the kinetics of sequential assembly---once a split-YFP pair reconstitutes, bimolecular fluorescence complementation is commonly treated as effectively irreversible on experimental timescales \cite{hu2002,kerppola2006}, so later arrivals cannot displace it in this null model. It should nevertheless be read as a modeling convention, not as a full kinetic model of fibril growth at multiple ends or with spatial rearrangements.
+
+The convention is also compatible with a common static alternative at the level of counts. If one forms the path graph whose edges are adjacent unlike pairs and asks only for a maximum-cardinality matching, the leftmost greedy algorithm gives a maximum matching on a path: after taking the leftmost available edge, no maximum matching can use more than one edge among its two endpoints, and the remaining problem is again a shorter path. Thus the fluorescence count here agrees with the static maximum-matching count under unit weights, although the identity of the paired proteins remains tied to the chosen growth convention. Other static ensembles, such as Boltzmann-weighted matchings or geometry-dependent pairing propensities, would define different null models and are outside the scope of the present calculation.
 
 For example, if we have ABBAAAAABA, then reading from left to right (because we have to think about how these proteins were added one at a time to analyze which ones fused), we get the 01 representation 0101000010. Writing these two representations side by side shows it:
 
@@ -132,7 +157,7 @@ As another example,
 &B &B &B &B &A &B &A &B &A &B &A &B &A &B &A &B &A &B &A &A &A &A &B &A &A &B &A &B &B &B &B &A &B &A  \\
 &0 &0 &0 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1 &0 &1  &0 &0 &0 &1 &0 &0 &1 &0 &1 &0 &0 &0 &1 &0 &1
 \end{alignat*} 
-We observe that an unambiguous regular expression for these 01 patterns is $(0^*01)^* 0^*$ (non-ambiguous in the sense required by the symbolic method: each string has a unique parse). Note that if we were looking at an amyloid without knowing what the proteins actually were, we would still be able to identify its 01 pattern by looking at the fluorescing locations. Indeed, each fluorescing location corresponds to a 1.
+We observe that an unambiguous regular expression for these 01 patterns is $(0^*01)^* 0^*$ (non-ambiguous in the sense required by the symbolic method: each string has a unique parse). Within the mathematical model, if the fluorescing locations were site-resolved, they would determine the 01 pattern: each fluorescing location corresponds to a 1.
 
 We can count the total number of distinct 01 patterns of length $n$ using the symbolic method for regular expressions \cite[\S I.4]{flajolet2009}. Note that $(0^*01)^* 0^* = (0^+1)^* 0^*$: each block $0^*01$ consists of zero or more leading zeros followed by $01$, so the trailing $0$ of $0^*$ and the leading $0$ of $01$ merge to give at least one zero before the $1$, hence $0^*01 = 0^+1$. We assign weight $x$ per symbol. Each block $0^*01 = 0^+1$ has generating function $\frac{x}{1-x} \cdot x = \frac{x^2}{1-x}$, and the Kleene star $(0^*01)^*$ has generating function $\frac{1}{1 - x^2/(1-x)} = \frac{1-x}{1-x-x^2}$. Including the trailing $0^*$ with generating function $\frac{1}{1-x}$, we obtain:
 \[
@@ -143,11 +168,11 @@ Since $(1-x-x^2)\sum_{n \ge 0} a_n x^n = 1$, we read off the recurrence $a_n = a
 
 We see that $a_0 = 1$, $a_1 = 1$, $a_2 = 2$, $a_3 = 3$, $a_4 = 5$, $a_5 = 8$, etc.
 
-So $a_n = F_{n+1}$, where $F_n$ is the Fibonacci sequence with the standard convention $F_1 = F_2 = 1$. The coefficients $\binom{n-k}{k}$ appearing in this sum are precisely the entries along the \textit{shallow diagonals} of Pascal's triangle, and the identity $a_n = F_{n+1}$ is a well-known consequence of summing along these diagonals. The weighted sums $S_1(n)$ and $S_2(n)$ evaluated in Section 2.4 can be viewed as weighted sums along these same diagonals, with each entry scaled by $k \cdot 2^k$.
+So $a_n = F_{n+1}$, where $F_n$ is the Fibonacci sequence with the standard convention $F_1 = F_2 = 1$. The coefficients $\binom{n-k}{k}$ appearing in this sum are precisely the entries along the \textit{shallow diagonals} of Pascal's triangle, and the identity $a_n = F_{n+1}$ is a well-known consequence of summing along these diagonals. The weighted sums $S_1(n)$ and $S_2(n)$ evaluated in Section~\ref{subsec:sy-ratio} can be viewed as weighted sums along these same diagonals, with each entry scaled by $k \cdot 2^k$.
 
-\subsection{Probability of $k$ fluorescing vertices in length $n$ amyloid }
+\subsection{Probability of $k$ fluorescing locations in length $n$ amyloid }
 
-We now analyze the probability of seeing $k$ fluorescing vertices in an amyloid of length $n$.
+We now analyze the probability of seeing $k$ fluorescing locations in an amyloid of length $n$.
 
 %This is equivalent to the probability of observing an amyloid of length $n$ with $k$ 1's in its 01 pattern.
 
@@ -160,12 +185,18 @@ Indeed, the number of ways to place $k$ non-adjacent objects in $m$ boxes is $\b
 
 
 \subsubsection{Distinct amyloids with $k$ 1s}
-Now, the number of distinct amyloids of length $n$ with $k$ fluorescing pairs is:
+Now, for $k \ge 1$, the number of distinct amyloids of length $n$ with $k$ fluorescing locations is:
 \[
     \cA(n,k) = 2^k \cdot N(n-2,k-1) + 2^{k+1}  \cdot N(n-1,k) = 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k}
 \]
+The zero-fluorescence case is $\cA(n,0) = 2$, corresponding to the two constant amyloids $AA\cdots A$ and $BB\cdots B$.
+Throughout, binomial coefficients with lower index outside the usual range are interpreted as zero; nevertheless the displayed formula for $\cA(n,k)$ is stated for $k \ge 1$, with $k=0$ handled separately.
 
-To see this, we have two cases, where we fix $k = 5$ for the sake of example: 
+To justify the formula, fix an admissible 01 pattern $f$ with $k$ ones. Once $s_1$ is chosen, every later protein is determined except immediately after a $1$ in the 01 pattern: if $f_i=1$, then $s_i$ is forced to be the opposite of $s_{i-1}$; if $f_i=0$ and $f_{i-1}=0$, then $s_i$ is forced to equal $s_{i-1}$; if $f_i=0$ and $f_{i-1}=1$, then $s_i$ is free because the previous protein has already been consumed by a fusion. Thus a fixed pattern ending in $0$ has $2^{k+1}$ realizing amyloids (the initial choice, plus one free choice immediately after each of the $k$ ones, all of which have successors), while a fixed pattern ending in $1$ has $2^k$ realizing amyloids.
+
+It remains only to count admissible 01 patterns by their final digit. Patterns ending in $0$ are obtained by appending a zero to a length-$(n-1)$ admissible pattern with $k$ ones, giving $N(n-1,k)$ choices. Patterns ending in $1$ must have $f_{n-1}=0$, and deleting the final $01$ leaves a length-$(n-2)$ admissible pattern with $k-1$ ones, giving $N(n-2,k-1)$ choices. Multiplying by the fixed-pattern counts proves the displayed formula.
+
+For example, when $k = 5$ the two cases have the following degrees of freedom:
 
 \textbf{01 pattern ends with a 0}
 
@@ -190,47 +221,39 @@ As we can see, putting a 1 at the end of the 01 pattern implies only $2^k$ possi
 
 \textbf{Verification.} For $n = 4$, $k = 1$: $\cA(4,1) = 2^1 \binom{2}{0} + 2^2 \binom{2}{1} = 2 + 8 = 10$. For $k = 2$: $\cA(4,2) = 2^2 \binom{1}{1} + 2^3 \binom{1}{2} = 4 + 0 = 4$ (the only 01 pattern is $0101$, giving amyloids ABAB, BABA, ABBA, BAAB). With $\cA(4,0) = 2$ (AAAA and BBBB), we have $2 + 10 + 4 = 16 = 2^4$. $\checkmark$
 
-Hence the probability of seeing $k$ fluorescing pairs in an amyloid of length $n$ is
+Hence the probability of seeing $k$ fluorescing locations in an amyloid of length $n$ is
 
 \[
 P(n,k) = \frac{\cA(n,k)}{2^n}
 \]
-
-% \subsection{Probability of at least $m$ fluorescing locations}
-
-% The probability of seeing at least $m$ fluorescing pairs on an amyloid of length $n$ is simply the sum:
-% \[
-%   P_{\geq}(n,m) = \frac{1}{2^n}\sum_{k = m}^{\floor{n/2}} \cA(n,k)
-% \]
-% since the events $k = m, \dots,  \floor{n/2}$ are independent.
 
 \subsection{Expected number of fluorescing locations}
 
 This is simply the sum:
 
 \[
-    E(n) = \frac{1}{2^n}\sum_{k \ge 1}^{\floor{n/2}} k \cdot \cA(n,k) = \frac{1}{2^n}\sum_{k \ge 1}^{\floor{n/2}} k \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right)
+    E(n) = \frac{1}{2^n}\sum_{k=1}^{\floor{n/2}} k \cdot \cA(n,k) = \frac{1}{2^n}\sum_{k=1}^{\floor{n/2}} k \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right)
 \]
 
 by definition of expected value.
 
-\subsection{Expected percentage of proteins involved in fluorescence}
+\subsection{Expected fraction of proteins involved in fluorescence}\label{subsec:sy-ratio}
 
-Since each fluorescing vertex involves two proteins, the fraction of proteins participating in fluorescence is:
+Since each fluorescing location involves two proteins, the fraction of proteins participating in fluorescence is:
 
 \[
-    R_{\text{SY}}(n) := \frac{2E(n)}{n} = \frac{1}{n \cdot 2^{n-1}}\sum_{k \ge 1}^{\floor{n/2}} k \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right)
+    R_{\text{SY}}(n) := \frac{2E(n)}{n} = \frac{1}{n \cdot 2^{n-1}}\sum_{k=1}^{\floor{n/2}} k \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right)
 \]
 
 We claim that
 \begin{equation}\label{eq:sum1}
-\sum_{k \ge 1}^{\floor{n/2}} k 2^k \binom{n-k-1}{k-1} = \frac{2^n (3n+2) + 2(6n-1)(-1)^n}{27}
+\sum_{k=1}^{\floor{n/2}} k 2^k \binom{n-k-1}{k-1} = \frac{2^n (3n+2) + 2(6n-1)(-1)^n}{27}
 \end{equation}
 
 and
 
 \begin{equation}\label{eq:sum2}
-\sum_{k \ge 1}^{\floor{n/2}} k 2^k \binom{n-k-1}{k} = \frac{2^n (3n-4)-2(3n-2)(-1)^n}{27}
+\sum_{k=1}^{\floor{n/2}} k 2^k \binom{n-k-1}{k} = \frac{2^n (3n-4)-2(3n-2)(-1)^n}{27}
 \end{equation}
 
 We prove both identities using ordinary generating functions.
@@ -239,15 +262,18 @@ We will use the identity (see, e.g., \cite[\S 1.2]{wilf2006}) that for any fixed
 \begin{equation}\label{eq:binom-ogf}
 \sum_{n \ge 2j} \binom{n-j}{j} x^n = \frac{x^{2j}}{(1-x)^{j+1}}
 \end{equation}
-which follows from the substitution $m = n - j$ and the known generating function $\sum_{m \ge j} \binom{m}{j} x^m = x^j/(1-x)^{j+1}$.
+which follows from the substitution $m = n - j$ and the known generating function
+\[
+\sum_{m \ge j} \binom{m}{j} x^m = \frac{x^j}{(1-x)^{j+1}}.
+\]
 
-\textbf{Proof of (\ref{eq:sum1}).} Let $S_1(n) := \sum_{k \ge 1}^{\floor{n/2}} k\, 2^k \binom{n-k-1}{k-1}$. We derive the ordinary generating function $G_1(x) = \sum_{n \ge 0} S_1(n) x^n$.
+\textbf{Proof of (\ref{eq:sum1}).} Let $S_1(n) := \sum_{k=1}^{\floor{n/2}} k\, 2^k \binom{n-k-1}{k-1}$. We derive the ordinary generating function $G_1(x) = \sum_{n \ge 0} S_1(n) x^n$.
 
 Using the substitution $j = k - 1$,
 \[
 S_1(n) = \sum_{j \ge 0} (j+1)\, 2^{j+1} \binom{n - j - 2}{j}
 \]
-Since all terms are non-negative for $x > 0$, we may interchange the order of summation. Applying (\ref{eq:binom-ogf}) with a shift $n \mapsto n - 2$:
+Working as a formal power series, we may interchange the order of summation termwise. Applying (\ref{eq:binom-ogf}) with a shift $n \mapsto n - 2$:
 \[
 G_1(x) = \sum_{j \ge 0}(j+1)\, 2^{j+1} \cdot \frac{x^{2j+2}}{(1-x)^{j+1}}
 = \frac{2x^2}{1-x} \sum_{j \ge 0} (j+1) \left( \frac{2x^2}{1-x} \right)^j
@@ -279,7 +305,7 @@ S_1(n) &= -\frac{1}{27} \cdot 2^n + \frac{1}{9}(n+1)\, 2^n - \frac{14}{27}(-1)^n
 \end{align*}
 as claimed. $\square$
 
-\textbf{Proof of (\ref{eq:sum2}).} Let $S_2(n) := \sum_{k \ge 1}^{\floor{n/2}} k\, 2^k \binom{n-k-1}{k}$. As before, applying (\ref{eq:binom-ogf}):
+\textbf{Proof of (\ref{eq:sum2}).} Let $S_2(n) := \sum_{k=1}^{\floor{n/2}} k\, 2^k \binom{n-k-1}{k}$. As before, applying (\ref{eq:binom-ogf}):
 \[
 G_2(x) = \sum_{n \ge 0} S_2(n) x^n = \sum_{k \ge 1} k \cdot 2^k \cdot \frac{x^{2k+1}}{(1-x)^{k+1}} = \frac{x}{1-x} \cdot \frac{u}{(1-u)^2}
 \]
@@ -298,7 +324,7 @@ as claimed. $\square$
 Substituting (\ref{eq:sum1}) and (\ref{eq:sum2}):
 
 \begin{align}
- R_{\text{SY}}(n) &= \frac{1}{n \cdot 2^{n-1}}\sum_{k \ge 1}^{\floor{n/2}} k \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right) \\
+ R_{\text{SY}}(n) &= \frac{1}{n \cdot 2^{n-1}}\sum_{k=1}^{\floor{n/2}} k \left( 2^k \binom{n-k-1}{k-1} + 2^{k+1} \binom{n-k-1}{k} \right) \\
  &= \frac{1}{n \cdot 2^{n-1}} \left(\frac{2^n (3n+2) + 2(6n-1)(-1)^n}{27}  + 2 \cdot \frac{2^n (3n-4)-2(3n-2)(-1)^n}{27} \right) \\
  &= \frac{1}{n \cdot 2^{n-1}} \cdot \frac{2^n(9n-6) + 6(-1)^n}{27} \\
  &= \frac{2(9n-6)}{27n} + \frac{6(-1)^n}{27n \cdot 2^{n-1}} \\
@@ -313,14 +339,14 @@ Then as $n \rightarrow \infty$, the second term vanishes and we have
 
 \subsubsection{Weighted shallow diagonal identities}
 
-The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) have a natural interpretation in terms of Pascal's triangle. Recall that the entries along the shallow diagonals of Pascal's triangle are $\binom{n-k}{k}$ for $k = 0, 1, \ldots, \floor{n/2}$, and their sum $\sum_{k=0}^{\floor{n/2}} \binom{n-k}{k} = F_{n+1}$ yields the Fibonacci numbers (Section 2.1). The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) provide closed-form evaluations of \textit{weighted} sums along these same diagonals, where each entry is scaled by $k \cdot 2^k$:
+The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) have a natural interpretation in terms of Pascal's triangle. Recall that the entries along the shallow diagonals of Pascal's triangle are $\binom{n-k}{k}$ for $k = 0, 1, \ldots, \floor{n/2}$, and their sum $\sum_{k=0}^{\floor{n/2}} \binom{n-k}{k} = F_{n+1}$ yields the Fibonacci numbers (Section~\ref{sec:split-yfp}). The identities (\ref{eq:sum1}) and (\ref{eq:sum2}) provide closed-form evaluations of \textit{weighted} sums along these same diagonals, where each entry is scaled by $k \cdot 2^k$:
 \begin{align}
 \sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k-1} &= \frac{2^n(3n+2) + 2(6n-1)(-1)^n}{27} \label{eq:diag1} \\[6pt]
 \sum_{k=1}^{\floor{n/2}} k \cdot 2^k \binom{n-k-1}{k} &= \frac{2^n(3n-4) - 2(3n-2)(-1)^n}{27} \label{eq:diag2}
 \end{align}
-These identities arise here from the fluorescence analysis, but the sequences themselves are not new. Specifically, $S_1(n) = 2 \cdot \text{A127976}(n-1)$ and $S_2(n) = \text{A095977}(n-2)$, where A127976 arises as a convolution of Jacobsthal numbers and A095977 counts $2 \times 2$ tiles in tilings of $3 \times (n+1)$ rectangles. Both sequences satisfy the linear recurrence $a_n = 2a_{n-1} + 3a_{n-2} - 4a_{n-3} - 4a_{n-4}$ with different initial conditions, which can be verified from the generating function denominator $(1+x)^2(1-2x)^2 = 1 - 2x - 3x^2 + 4x^3 + 4x^4$. Direct computation confirms: $S_1(2) = 2 = 2 \cdot \text{A127976}(1)$ and $S_2(3) = 2 = \text{A095977}(1)$, with subsequent values matching by the shared recurrence.
+These identities arise here from the fluorescence analysis, but the sequences themselves are not new. Specifically, $S_1(n) = 2 \cdot \text{A127976}(n-1)$ and $S_2(n) = \text{A095977}(n-2)$, where OEIS lists A127976 as a convolution involving Jacobsthal numbers and A095977 as counting $2 \times 2$ tiles in tilings of $3 \times (n+1)$ rectangles \cite{oeisA127976,oeisA095977}. Both sequences satisfy the linear recurrence $a_n = 2a_{n-1} + 3a_{n-2} - 4a_{n-3} - 4a_{n-4}$ with different initial conditions, which can be verified from the generating function denominator $(1+x)^2(1-2x)^2 = 1 - 2x - 3x^2 + 4x^3 + 4x^4$. Direct computation confirms: $S_1(2) = 2 = 2 \cdot \text{A127976}(1)$ and $S_2(3) = 2 = \text{A095977}(1)$, with subsequent values matching by the shared recurrence.
 
-The fact that the same sequences govern such disparate problems---protein fluorescence in amyloid fibrils, convolutions of Jacobsthal numbers, and rectangle tilings---reflects a deeper structural phenomenon: all three settings reduce to constrained binary strings enumerated by the same rational generating functions with denominator $(1+x)^2(1-2x)^2$. The contribution of the present work is not the identities themselves, but the combinatorial pipeline that connects the biophysical model (protein sequences $\to$ constrained 01 patterns $\to$ generating functions) to these known sequences, providing a new interpretation in terms of fluorescence statistics.
+The appearance of the same sequences in these different settings is explained by the shared reduction to constrained binary strings and rational generating functions with denominator $(1+x)^2(1-2x)^2$. Thus the OEIS matches are useful checks and interpretations, but the main point here is their role in the fluorescence null model.
 
 As a corollary, the linear combination $S_1(n) + 2\,S_2(n) = \bigl[2^n(9n-6) + 6(-1)^n\bigr]/27$ governs the expected fluorescence in split-YFP amyloids, connecting these combinatorial identities directly to the biophysical application.
 
@@ -390,50 +416,93 @@ $n$ & $R_{\text{SY}}(n)$ & $n$ & $R_{\text{SY}}(n)$ & $n$ & $R_{\text{SY}}(n)$ \
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.75\textwidth]{SplitYFPamyloids.png}
-\caption{$R_{\text{SY}}(n)$ for split-YFP amyloids. The blue line is $2/3$ and the orange curve is the exact $R_{\text{SY}}(n)$. The exponential correction term $O((1/2)^n/n)$ yields rapid convergence.}
+\caption{$R_{\text{SY}}(n)$ for split-YFP amyloids. The blue line is $2/3$ and the orange curve is the exact $R_{\text{SY}}(n)$. Convergence to the limiting ratio is algebraic ($O(1/n)$), with a smaller alternating exponential correction.}
 \label{fig:splityfp}
 \end{figure}
 
 
-\section{Introducing Sup35p into Amyloids}
-We now want to consider the facts above but with the introduction of yeast prion protein Sup35p (which we label with an $S$) into our amyloids. In our model, Sup35p is treated as completely inert: it cannot participate in any fluorescent interaction, and its sole effect is to sterically separate adjacent split-YFP halves, preventing them from conjoining and fluorescing. Our amyloids can now be described using the regular expression $\{A,B,S\}^*$. We would like to first analyze the case where Sup35p and the halves of Split-YFP come in equal concentrations, and are thus equally likely to occur as the next protein in an amyloid sequence.
+\section{Introducing Sup35p into Amyloids}\label{sec:sup35}
+We now want to consider the facts above but with the introduction of yeast prion protein Sup35p (which we label with an $S$) into our amyloids \cite{patino1996}. In this null model, Sup35p is used as an abstract inert third species: we do not model its own prion biology, only its role as a non-fluorescent stack partner. It cannot participate in any fluorescent interaction, and its sole effect in the model is to sterically separate adjacent split-YFP halves, preventing them from conjoining and fluorescing. Our amyloids can now be described using the regular expression $\{A,B,S\}^*$. We would like to first analyze the case where Sup35p and the halves of Split-YFP come in equal concentrations, and are thus equally likely to occur as the next protein in an amyloid sequence.
+
+The 01 representation introduced in Section~\ref{sec:split-yfp} must be extended to $\{A, B, S\}^n$ to reflect Sup35p's inertness. Applied verbatim, the Section~\ref{sec:split-yfp} rule ``$f_i = 1$ iff $s_i \neq s_{i-1}$ and $f_{i-1} = 0$'' would mark an $S \to A$ adjacency as fluorescing, contradicting the modeling assumption that S blocks fluorescence. The intended rule, used implicitly throughout this section, is:
+\[
+f_i = \begin{cases}
+0, & \text{if } i = 1, \\
+1, & \text{if } i \ge 2,\ \{s_{i-1}, s_i\} = \{A, B\},\ \text{and}\ f_{i-1} = 0, \\
+0, & \text{otherwise.}
+\end{cases}
+\]
+That is, a 1 requires both proteins in the adjacency to be split-YFP halves (one A and one B), and that the left protein not already be consumed by a prior fusion. With this extension, the set of 01 patterns produced by $\{A,B,S\}^n$ sequences is exactly the same as in Section~\ref{sec:split-yfp}: the regular expression $(0^*01)^*0^*$ still describes all attainable patterns, since insertions of S only stretch existing zero runs.
 
 \subsection{Number of distinct lighting patterns and 01 representations}
 The introduction of Sup35p does not change this. When we abstract away the details we are still looking at 01 patterns of the form $(0^*01)^* 0^*$. Hence we have $F_{n+1}$ distinct lighting patterns for an amyloid of length $n$ (using the convention $F_1 = F_2 = 1$).
 
-\subsection{Probability of $k$ fluorescing locations in length $n$ amyloid}
+\subsection{Probability of $k$ fluorescing locations in length $n$ amyloid}\label{subsec:s3-dist}
 
-The key idea is that each 01 pattern with $k$ ones decomposes into $k$ ``active blocks'' of the form $0^+1$ (each containing exactly one fluorescing site), followed by a trailing run of zeros. The $k$ fluorescing sites partition the amyloid into these independent blocks, and the total count is obtained by summing over all ways to distribute the $n$ positions among the blocks and the tail, weighting each by the number of A-B-S protein patterns it admits.
+We derive the joint distribution of length and fluorescence count from a bivariate generating function obtained by a two-state Markov decomposition, and then unpack it into a block-decomposition formula that mirrors Section~\ref{sec:split-yfp}.
 
-Formally, the number of amyloids of length $n$ with $k$ fluorescing locations is:
+\paragraph{Bivariate generating function.} Throughout the transfer-matrix derivations, $M(w)_{ij}$ weights a step from state $i$ to state $j$, row vectors multiply on the left, and a final column vector of ones sums over terminal states. Build an A-B-S amyloid one protein at a time, classifying its rightmost protein into two lumped states:
+\begin{itemize}
+\item \textbf{$p$}: rightmost is A or B and is not currently part of a fused pair.
+\item \textbf{$q$}: rightmost is either S, or is A/B that has just been fused with its left neighbor.
+\end{itemize}
+The transitions, weighted by $z$ for length and $w$ for each fluorescing site produced, are:
 \[
-\cA(n,k) = \sum_{q=0}^{n - 2k} b_q \sum_{\substack{\sum_{i=1}^k \phi_i = n-q \\ \phi_i \ge 2}} \prod_{i=1}^k a_{\phi_i}
+M(w) = \begin{pmatrix} 1 & 1 + w \\ 2 & 1 \end{pmatrix},
 \]
-
-The inner sum is a convolution over compositions of $n - q$ into $k$ parts, each of size $\ge 2$.
-
-Here $a_0 = a_1 = 0, a_2 = 2$, $a_i = 2a_{i-1} + a_{i-2}, i > 2$
-and $b_0 = 1, b_1 = 3$, $b_i = 2b_{i-1} + b_{i-2}, i > 1$.
-
-Explicitly,
-
+where the rows index the from-state $(p, q)$ and the columns the to-state. From $p$ (say rightmost is A, unfused): next protein A yields one new amyloid ending in $p$ (weight $1$); next protein B fuses and yields one amyloid ending in $q$ (weight $w$, $+1$ fluorescence); next protein S yields one amyloid ending in $q$ (weight $1$). From $q$: either A or B sends us to $p$ (weight $2$ for two letters), and S sends us back to $q$ (weight $1$). This two-state lumping is valid here because A and B have equal weights and symmetric transition behavior; for unequal A/B concentrations the unfused A and unfused B states must be separated, as in Section~\ref{sec:unequal}. For $n \ge 1$, the row vector of length-$n$ weighted counts is $(2,1)M(w)^{n-1}$; the initial vector $(2,1)$ records the two one-letter amyloids A/B in state $p$ and the one one-letter amyloid S in state $q$. Hence the joint generating function
 \[
-b_n = - \frac{1}{2 + 2\sqrt{2}} \cdot \left(\frac{1}{-1-\sqrt{2}}\right)^n - \frac{1}{2-2\sqrt{2}} \cdot \left( \frac{1}{-1 +\sqrt{2}} \right)^n, n \ge 0 
+F(z, w) := \sum_{n \ge 0} \sum_{k \ge 0} \cA(n, k)\, w^k z^n
 \]
-
-and
-
-\[a_n = 
-\begin{cases}
-      0, & \text{if}\ n=0 \\
-        \frac{3+2\sqrt{2}}{\sqrt{2}+2} \left( \frac{1}{-1-\sqrt{2}}\right)^n - \frac{3 - 2\sqrt{2} }{\sqrt{2}-2}\left( \frac{1}{-1 + \sqrt{2}} \right)^n  , & \text{if} \ n \geq 1
-    \end{cases}
+(where in this section $\cA(n,k)$ counts amyloids over $\{A,B,S\}$, and $\cA(0, 0) := 1$ by convention) is
+\[
+F = 1 + \sum_{n \ge 1} z^n (2,1)M(w)^{n-1}\binom{1}{1}
+=1 + z(2, 1) (I - z M(w))^{-1} \binom{1}{1},
 \]
+which evaluates to
+\begin{equation}\label{eq:s3-bivar-gf}
+F(z, w) = \frac{1 + z}{1 - 2z - (1 + 2w)\,z^2}.
+\end{equation}
+Equivalently, the coefficients satisfy the recurrence $\cA(n, k) = 2\cA(n-1, k) + \cA(n-2, k) + 2\cA(n-2, k-1)$ with the appropriate small-$n$ initial conditions. Two specializations recover familiar facts. At $w = 0$, we count amyloids with no fluorescence: $F(z, 0) = (1+z)/(1 - 2z - z^2)$, whose coefficients $b_n$ enumerate A-B-S sequences with all-zero 01 representation. At $w = 1$, all amyloids are counted: $F(z, 1) = (1+z)/(1 - 2z - 3z^2) = 1/(1 - 3z)$ (after canceling the factor $1+z$ from $1 - 2z - 3z^2 = (1 - 3z)(1 + z)$), so $[z^n] F(z, 1) = 3^n$ as required.
 
+The expected value $E(n)$ can now be extracted in a few lines from $\partial F / \partial w \big|_{w=1}$:
+\[
+\left.\frac{\partial F}{\partial w}\right|_{w = 1} = \frac{2 z^2 (1+z)}{(1 - 2z - 3z^2)^2} = \frac{2 z^2}{(1 - 3z)^2 (1 + z)},
+\]
+and partial-fraction expansion (carried out explicitly in Section~\ref{subsec:s3-Eq} below as a consistency check) yields the closed form
+\[
+E(n) \cdot 3^n = [z^n] \frac{2 z^2}{(1 - 3z)^2 (1 + z)} = \frac{3^{n-1}(4n - 3) + (-1)^n}{8}.
+\]
+Equivalently, $E(n) = (4n - 3)/24 + (-1)^n / (8 \cdot 3^n) = (4n-3)/24 - (-1)^{n-1}/(24 \cdot 3^{n-1})$, which is the same formula derived by the explicit Markov recurrence in Section~\ref{subsec:s3-Eq}.
 
-And so the probability of $k$ fluorescing locations in an amyloid of length $n$ is $\cA(n,k)/3^n$.
+\paragraph{Block decomposition.} The bivariate generating function~(\ref{eq:s3-bivar-gf}) admits a more explicit reading via the regular-expression decomposition $(0^*01)^*0^*$ of the 01 pattern. Each amyloid of length $n$ with $k$ ones in its 01 pattern decomposes uniquely as $k$ consecutive ``active blocks'' of the form $0^+ 1$, followed by a trailing run of zeros:
+\[
+\underbrace{0\cdots 0\, 1}_{\phi_1} \; \underbrace{0\cdots 0\, 1}_{\phi_2} \; \cdots \; \underbrace{0\cdots 0\, 1}_{\phi_k} \; \underbrace{0\cdots 0}_{q}
+\]
+with $\phi_i \ge 2$ and $q \ge 0$. The protein choices within different blocks are independent: once block $i$ ends with a fusion at position $j$ (so $s_j$ is consumed by the previous fusion), the protein at position $j+1$ may be any of $\{A, B, S\}$ unconstrained, since $f_{j+1} = 0$ is forced regardless of $s_{j+1}$. Hence the number of amyloids realizing a given block decomposition factors:
+\begin{equation}\label{eq:s3-blockcount}
+\cA(n,k) = \sum_{q=0}^{n - 2k} b_q \sum_{\substack{\phi_1 + \cdots + \phi_k = n-q \\ \phi_i \ge 2}} \prod_{i=1}^k a_{\phi_i},
+\end{equation}
+where $a_\phi$ counts A-B-S patterns of length $\phi$ whose 01 representation is $0^{\phi-1} 1$, and $b_q$ counts patterns of length $q$ with all-zero 01 representation. For $k=0$, the formula reduces to the all-zero case $\cA(n,0)=b_n$. Thus $P(n,k)=\cA(n,k)/3^n$. Equation~(\ref{eq:s3-blockcount}) is the convolutional unfolding of~(\ref{eq:s3-bivar-gf}): writing $F(z, w) = B(z) / (1 - w\, A(z))$ with $A(z) = \sum_{\phi \ge 2} a_\phi z^\phi = 2 z^2 / (1 - 2z - z^2)$ and $B(z) = \sum_{q \ge 0} b_q z^q = (1+z)/(1 - 2z - z^2)$, one verifies
+\[
+\frac{B(z)}{1 - w A(z)} = \frac{(1+z)/(1 - 2z - z^2)}{1 - 2 w z^2/(1 - 2z - z^2)} = \frac{1 + z}{1 - 2z - (1 + 2w) z^2},
+\]
+recovering (\ref{eq:s3-bivar-gf}).
 
-\textbf{Worked example.} Consider $n = 4$, $k = 1$. A 01 pattern of length 4 with exactly one 1 decomposes as one block of the form $0^+1$ (of length $\phi_1$) followed by a tail of zeros (of length $q$), where $\phi_1 + q = 4$ and $\phi_1 \ge 2$. Using the recurrences, $a_2 = 2$, $a_3 = 4$, $a_4 = 10$, and $b_0 = 1$, $b_1 = 3$, $b_2 = 7$. The decomposition gives:
+Unlike the two-letter split-YFP case, this gives $P(n,k)$ most naturally as a coefficient or convolution formula rather than as a single binomial closed form; the rational bivariate generating function is the compact representation of the full distribution.
+
+\paragraph{The sequences $a_n$ and $b_n$.} Both sequences are governed by the same denominator $1 - 2x - x^2$. From the regular expressions $S^* \{AA^* SS^*, BB^* SS^*\}^* \{AA^*, BB^*, \varepsilon\}$ for the $b$-sequence and $S^* \{AA^* SS^*, BB^* SS^*\}^* \{AA^*B, BB^*A\}$ for the $a$-sequence (setting $A = B = S = x$ throughout), one obtains the ordinary generating functions
+\[
+\sum_{n \ge 0} b_n x^n = \frac{1 + x}{1 - 2x - x^2}, \qquad \sum_{n \ge 0} a_n x^n = \frac{2 x^2}{1 - 2x - x^2},
+\]
+yielding the recurrences $b_n = 2 b_{n-1} + b_{n-2}$ for $n \ge 2$ (with $b_0 = 1$, $b_1 = 3$) and $a_n = 2 a_{n-1} + a_{n-2}$ for $n \ge 3$ (with $a_0 = a_1 = 0$, $a_2 = 2$). The denominator's roots are reciprocals of $1 \pm \sqrt{2}$, and clean partial-fraction decomposition gives the closed forms
+\begin{align}
+b_n &= \frac{(1 + \sqrt{2})^{n+1} + (1 - \sqrt{2})^{n+1}}{2}, \quad n \ge 0, \label{eq:s3-bn-closed} \\[4pt]
+a_n &= \left(1 + \tfrac{\sqrt{2}}{2}\right)(1 - \sqrt{2})^n + \left(1 - \tfrac{\sqrt{2}}{2}\right)(1 + \sqrt{2})^n, \quad n \ge 1 \label{eq:s3-an-closed}
+\end{align}
+(the formula for $a_n$ does not extend to $n = 0$, where it gives $2$ rather than $a_0=0$; this is absorbed by the non-homogeneous initial conditions). Both sequences appear in OEIS: $b_n = $ A001333$(n+1)$ and $a_n / 2 = $ A000129$(n-1)$ for $n \ge 1$, where A001333 and A000129 are respectively the continued-fraction numerators of $\sqrt{2}$ and the Pell numbers \cite{oeisA001333,oeisA000129}. Verification: $a_2 = (1 + \sqrt{2}/2)(3 - 2\sqrt{2}) + (1 - \sqrt{2}/2)(3 + 2\sqrt{2}) = 6 - (\sqrt{2}/2)(4\sqrt{2}) = 6 - 4 = 2$; $b_0 = (1+\sqrt{2} + 1-\sqrt{2})/2 = 1$. The first values are $b_0, b_1, \ldots = 1, 3, 7, 17, 41, 99, \ldots$ and $a_0, a_1, \ldots = 0, 0, 2, 4, 10, 24, \ldots$
+
+\textbf{Worked example.} For $n = 4$, $k = 1$, the block decomposition has one block of length $\phi_1 \ge 2$ followed by a tail of length $q = 4 - \phi_1$:
 \begin{center}
 \begin{tabular}{cccc}
 $\phi_1$ & $q$ & 01 pattern & $a_{\phi_1} \cdot b_q$ \\
@@ -443,155 +512,28 @@ $\phi_1$ & $q$ & 01 pattern & $a_{\phi_1} \cdot b_q$ \\
 4 & 0 & 0001 & $10 \cdot 1 = 10$ \\
 \end{tabular}
 \end{center}
-So $\cA(4,1) = 14 + 12 + 10 = 36$. One can verify by brute-force enumeration over all $3^4 = 81$ amyloids of length 4 that exactly 36 have precisely 1 fluorescing location.
+So $\cA(4,1) = 14 + 12 + 10 = 36$, confirmed by brute-force enumeration. Cross-checking against~(\ref{eq:s3-bivar-gf}): the coefficient of $z^4 w^1$ in $F(z, w)$, computed via the recurrence, equals $36$ as well.
 
-The derivation of this formula proceeds by establishing a bijection between amyloids of length $n$ with $k$ fluorescing locations and tuples $(q, \phi_1, \ldots, \phi_k)$ specifying a block decomposition. Every 01 pattern with exactly $k$ ones has the form
-\[
-\underbrace{0\cdots 0\, 1}_{\phi_1} \; \underbrace{0\cdots 0\, 1}_{\phi_2} \; \cdots \; \underbrace{0\cdots 0\, 1}_{\phi_k} \; \underbrace{0\cdots 0}_{q}
-\]
-where $\phi_i \ge 2$ (each active block has at least one leading zero before its $1$) and $q \ge 0$. This decomposition is unique: given any 01 pattern with $k$ ones, the block boundaries are determined by the positions of the ones, and we have $\sum_{i=1}^k \phi_i + q = n$. We claim that the number of A-B-S protein sequences realizing a given 01 pattern factors as $\prod_{i=1}^k a_{\phi_i} \cdot b_q$. To see why, observe that the protein choices within each block are constrained only by the 01 pattern within that block: the last position of each active block carries $f = 1$ (a fusion), so the first position of the next block automatically receives $f = 0$ regardless of what protein occupies it. Concretely: if block $i$ ends with a fusion at position $j$ (so $f_j = 1$ and $s_j \neq s_{j-1}$), then the protein at position $j+1$ can be any of $\{A, B, S\}$, because $f_j = 1$ forces $f_{j+1} = 0$ regardless of what $s_{j+1}$ is. The identity of $s_{j+1}$ is therefore unconstrained by $s_j$ or any earlier protein---it begins a fresh run of zeros. Conversely, the trailing zero block begins after the last fusion and is similarly unconstrained. Since the protein choices within each block depend only on the local 01 pattern and not on the proteins in adjacent blocks, the counts $a_{\phi_i}$ and $b_q$ are independent. Combined with the uniqueness of the decomposition (the block boundaries are uniquely determined by the positions of the ones), this shows that each amyloid is counted exactly once.
-
-In detail: let $q$ be the length of the trailing run of zeros, let $b_q$ denote the number of A-B-S patterns of length $q$ whose 01 representation is all zeros, and let $a_{\phi_i}$ denote the number of A-B-S patterns of length $\phi_i$ with 01 representation $0\cdots 01$.
-
-Firstly, $b_i$ represents the number of A-B-S patterns represented by a 0-1 pattern of the form 00000....0 where there are precisely $i$ 0's. To obtain the recursive formula, we note that the A-B-S patterns of this type are represented by the A-B-S regular expression
-\[
-S^* \{AA^* SS^*, BB^* SS^*\}^* \{AA^*, BB^*, \varepsilon\}
-\]
-
-where $\varepsilon$ denotes the empty string,
-
-and so the generating function is
-
-\[
-G(x) = \sum_{i=0}^\infty b_i x^i = \frac{1}{1-S} \cdot \frac{1}{1 - \left(\frac{A}{1-A} \cdot \frac{S}{1-S} + \frac{B}{1-B} \cdot \frac{S}{1-S} \right)} \cdot \left( \frac{A}{1-A} + \frac{B}{1-B} + 1\right)
-\].
-
-Setting $A = B = S = x$, this simplifies to
-
-\[
-G(x) = \frac{1+x}{1-2x-x^2}
-\]
-
-and so
-
-\[
-b_n - 2b_{n - 1} - b_{n-2} = 
-\begin{cases}
-      1, & \text{if}\ n=0 \\
-      1, & \text{if}\ n=1 \\
-      0, & \text{if} \ n \geq 2 
-    \end{cases}
-\]
-
-where the recurrence is read off from the generating function as before.
-
-
-To get the closed form formula for the value of $b_i$, do partial fractions on the generating function:
-\begin{align*}
-    \sum_{i=0}^\infty b_i x^i &= G(x) = \frac{1+x}{1-2x-x^2}
-    = \frac{(1/2)}{(-1-\sqrt{2}) - x} + \frac{(-1/2)}{(-1 + \sqrt{2}) - x} \\ &= - \frac{1}{2 + 2\sqrt{2}} \cdot \frac{1}{1-(1/(-1-\sqrt{2}))x}
-    -\frac{1}{2-2\sqrt{2}} \cdot \frac{1}{1-(1/(-1 + \sqrt{2}))x}  \\
-    &= - \frac{1}{2 + 2\sqrt{2}} \sum_{i=0}^\infty \left(\frac{1}{-1-\sqrt{2}}\right)^i x^i - \frac{1}{2-2\sqrt{2}} \sum_{i=0}^\infty \left( \frac{1}{-1 + \sqrt{2}} \right)^i x^i
-\end{align*}
-
-Therefore we explicitly get
-\[
-b_n = - \frac{1}{2 + 2\sqrt{2}} \cdot \left(\frac{1}{-1-\sqrt{2}}\right)^n - \frac{1}{2-2\sqrt{2}} \cdot \left( \frac{1}{-1 +\sqrt{2}} \right)^n, n \ge 0 
-\]
-as claimed. 
-
-
-Likewise, $a_i$ represents the number of A-B-S patterns represented by a 0-1 pattern of the form $0^*1$ where the pattern is of length $i$.
-
- To obtain the recursive formula, we note that the A-B-S patterns of this type are represented by the A-B-S regular expression
-\[
-S^* \{AA^* SS^*, BB^* SS^*\}^* \{AA^*B, BB^*A \}
-\]
-
-and so the generating function is 
-
-\[
-G(x) = \sum_{i=0}^\infty a_i x^i = \frac{1}{1-S} \cdot \frac{1}{1 - \left(\frac{A}{1-A} \cdot \frac{S}{1-S} + \frac{B}{1-B} \cdot \frac{S}{1-S} \right)} \cdot \left( \frac{A^2}{1-A} + \frac{B^2}{1-B}\right)
-\].
-
-Setting $A = B = S = x$ and simplifying yields
-
-\[
-G(x) = \frac{2x^2}{1-2x-x^2}
-\]
-
-and so
-
-\[
-a_n - 2a_{n - 1} - a_{n-2} = 
-\begin{cases}
-      0, & \text{if}\ n=0 \\
-      0, & \text{if}\ n=1 \\
-      2, & \text{if}\ n=2 \\
-        0, & \text{if} \ n \geq 3
-    \end{cases}
-\]
-
-where the recurrence is read off from the generating function as before.
-
-
-
-To get the closed form formula for the value of $a_i$, do partial fractions on the generating function:
-\begin{align*}
-    \sum_{i=0}^\infty a_i x^i &= G(x) = \frac{2x^2}{1-2x-x^2} = \frac{4x-2}{(x-(-1-\sqrt{2}))(x-(-1 + \sqrt{2}))} - 2
-    \\
-    &= \frac{(3+2\sqrt{2} )/ \sqrt{2}}{x-(-1-\sqrt{2})} + \frac{(-3 + 2\sqrt{2}) / \sqrt{2}}{x-(-1 + \sqrt{2})} - 2
- \\&=\frac{3+2\sqrt{2}}{\sqrt{2}+2}  \cdot \frac{1}{1-(1/(-1-\sqrt{2})) x} + \frac{-3 + 2\sqrt{2}}{\sqrt{2} - 2} \cdot \frac{1}{1-(1/(-1 + \sqrt{2}))x} - 2
- \\   &= \frac{3+2\sqrt{2}}{\sqrt{2}+2} \sum_{i=0}^\infty \left( \frac{1}{-1-\sqrt{2}}\right)^i x^i - \frac{3 - 2\sqrt{2}}{\sqrt{2}-2} \sum_{i=0}^\infty \left( \frac{1}{-1 + \sqrt{2}} \right)^i x^i - 2
-\end{align*}
-
-Therefore, we explicitly get 
-\[a_n = 
-\begin{cases}
-      0, & \text{if}\ n=0 \\
-        \frac{3+2\sqrt{2}}{\sqrt{2}+2} \left( \frac{1}{-1-\sqrt{2}}\right)^n - \frac{3 - 2\sqrt{2} }{\sqrt{2}-2}\left( \frac{1}{-1 + \sqrt{2}} \right)^n  , & \text{if} \ n \geq 1
-    \end{cases}
-\]
-
-
-Now, rewrite the claimed formula for $\cA(n,k)$ as
-\[
-\cA(n,k) = \sum_{\sum_{i=0}^k \phi_i = n} \prod_{i=0}^k a_{\phi_i} + \sum_{q=1}^n b_q \sum_{\sum_{i=0}^k \phi_i = n-q} \prod_{i=0}^k a_{\phi_i}
-\]
-which is clearly equal to what was claimed.
-
-Then the first term is all A-B-S patterns ending with a 1 and the second term is all A-B-S patterns ending with a 0. This is a similar case analysis to what we did for the Split-YFP-exclusive case. 
-
-This completes the derivation. 
-
-
-% \subsection{Probability of at least $m$ fluorescing locations}
-
-% The probability of seeing at least $m$ fluorescing pairs on an amyloid of length $n$ is simply the sum:
-% \[
-%   P_{\geq}(n,m) = \frac{1}{3^n}\sum_{k = m}^{\floor{n/2}} \cA(n,k)
-% \]
-% since the events $k = m, \dots,  \floor{n/2}$ are independent.
 
 \subsection{Expected number of fluorescing locations}
 
 This is simply the sum:
 
 \[
-    E(n) = \frac{1}{3^n}\sum_{k \ge 1}^{\floor{n/2}} k \cdot \cA(n,k)
+    E(n) = \frac{1}{3^n}\sum_{k=1}^{\floor{n/2}} k \cdot \cA(n,k)
 \]
 
 by definition of expected value.
 
-\subsection{Expected percentage of proteins involved in fluorescence}
+\subsection{Expected fraction of proteins involved in fluorescence}\label{subsec:s3-Eq}
 
 This is the number:
 
 \[
-    R_{\text{SY}}(n) = \frac{2E(n)}{n}
+    R_{\text{SY},S}(n) = \frac{2E(n)}{n}
 \]
 
-We prove that $\lim_{n \to \infty} R_{\text{SY}}(n) = 1/3$ by computing $E(n)$ directly using a Markov chain argument, bypassing the combinatorial formula for $\cA(n,k)$.
+We prove that $\lim_{n \to \infty} R_{\text{SY},S}(n) = 1/3$ by computing $E(n)$ directly using a Markov chain argument, bypassing the combinatorial formula for $\cA(n,k)$.
 
 Consider building an amyloid one protein at a time, where each protein is independently A, B, or S with equal probability $1/3$. We define two states based on the status of the most recently added protein:
 \begin{itemize}
@@ -628,19 +570,19 @@ E(n) &= \sum_{i=2}^{n} e_i = \frac{1}{3} \sum_{j=1}^{n-1} p_j = \frac{1}{3} \sum
 
 Therefore
 \[
-R_{\text{SY}}(n) = \frac{2E(n)}{n} = \frac{4n-3}{12n} + \frac{(-1)^n}{12n \cdot 3^{n-1}}
+R_{\text{SY},S}(n) = \frac{2E(n)}{n} = \frac{4n-3}{12n} + \frac{(-1)^n}{12n \cdot 3^{n-1}}
 \]
 
 and as $n \to \infty$, the second term vanishes:
 \[
-\lim_{n \to \infty} R_{\text{SY}}(n) = \lim_{n \to \infty} \frac{4n - 3}{12n} = \frac{4}{12} = \frac{1}{3}
+\lim_{n \to \infty} R_{\text{SY},S}(n) = \lim_{n \to \infty} \frac{4n - 3}{12n} = \frac{4}{12} = \frac{1}{3}
 \]
 
-As in Section 2, the agreement between the Markov chain and the combinatorial formula provides a non-trivial identity. Since both methods compute $E(n)$, we have
+The block decomposition~(\ref{eq:s3-blockcount}) and the transfer-matrix generating function~(\ref{eq:s3-bivar-gf}) give two views of the same coefficients $\cA(n,k)$. Taking expectations then gives the identity
 \[
-\frac{1}{3^n} \sum_{k \ge 1}^{\floor{n/2}} k \cdot \cA(n,k) = \frac{4n-3}{24} - \frac{(-1)^{n-1}}{24 \cdot 3^{n-1}}
+\frac{1}{3^n} \sum_{k=1}^{\floor{n/2}} k \cdot \cA(n,k) = \frac{4n-3}{24} - \frac{(-1)^{n-1}}{24 \cdot 3^{n-1}}
 \]
-where $\cA(n,k)$ is the combinatorial formula involving the $a_{\phi_i}$ and $b_q$ sequences with $\sqrt{2}$. The left-hand side is the definition of $E(n)$, and the right-hand side is the Markov chain result derived in closed form above. Since both are proven independently---the combinatorial formula for $\cA(n,k)$ via generating functions on regular expressions, and $E(n)$ via the Markov recurrence---their equality is established, not merely conjectured. This identity, which equates a sum over compositions weighted by products of irrational-valued sequences to a simple rational expression, can also be numerically verified: at $n = 4$, the left-hand side gives $(1 \cdot 36 + 2 \cdot 4)/81 = 44/81$, and the right-hand side gives $(4 \cdot 4 - 3)/24 + 1/(24 \cdot 27) = 13/24 + 1/648 = 44/81$. $\checkmark$
+where $\cA(n,k)$ is the combinatorial formula involving the $a_{\phi_i}$ and $b_q$ sequences with $\sqrt{2}$. The left-hand side is the definition of $E(n)$, and the right-hand side is the closed form obtained from the transfer matrix or, equivalently, from the explicit Markov recurrence above. This is best read as a consistency check between the coefficient-level distribution and the expectation-level calculation, rather than as two wholly independent Markov-free derivations. Numerically, at $n = 4$, the left-hand side gives $(1 \cdot 36 + 2 \cdot 4)/81 = 44/81$, and the right-hand side gives $(4 \cdot 4 - 3)/24 + 1/(24 \cdot 27) = 13/24 + 1/648 = 44/81$. $\checkmark$
 
 A simulation (see \texttt{sup35\_simulation.py}) confirms this. A sample of computed values is shown in Table~\ref{tab:sup35}, and the graph appears in Figure~\ref{fig:sup35}.
 
@@ -648,7 +590,7 @@ A simulation (see \texttt{sup35\_simulation.py}) confirms this. A sample of comp
 \centering
 \begin{tabular}{rc|rc|rc}
 \hline
-$n$ & $R_{\text{SY}}(n)$ & $n$ & $R_{\text{SY}}(n)$ & $n$ & $R_{\text{SY}}(n)$ \\
+$n$ & $R_{\text{SY},S}(n)$ & $n$ & $R_{\text{SY},S}(n)$ & $n$ & $R_{\text{SY},S}(n)$ \\
 \hline
 2 & 0.222222 & 10 & 0.308334 & 20 & 0.320833 \\
 3 & 0.246914 & 11 & 0.310606 & 25 & 0.323333 \\
@@ -657,35 +599,43 @@ $n$ & $R_{\text{SY}}(n)$ & $n$ & $R_{\text{SY}}(n)$ & $n$ & $R_{\text{SY}}(n)$ \
 6 & 0.291724 & 14 & 0.315476 & 200 & 0.332083 \\
 7 & 0.297603 & 15 & 0.316667 & 400 & 0.332708 \\
 \hline
-\multicolumn{6}{c}{$R_{\text{SY}}(n) \to 1/3 \approx 0.333333$} \\
+\multicolumn{6}{c}{$R_{\text{SY},S}(n) \to 1/3 \approx 0.333333$} \\
 \end{tabular}
-\caption{Sample values of $R_{\text{SY}}(n)$ for split-YFP amyloids with Sup35p.}
+\caption{Sample values of $R_{\text{SY},S}(n)$ for split-YFP amyloids with Sup35p.}
 \label{tab:sup35}
 \end{table}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.75\textwidth]{splityfpandsup35.png}
-\caption{$R_{\text{SY}}(n)$ for split-YFP amyloids with Sup35p. The blue line is $1/3$ and the orange curve is the exact $R_{\text{SY}}(n)$. The exponential correction term $O((1/3)^n/n)$ yields even faster convergence than Figure~\ref{fig:splityfp}.}
+\caption{$R_{\text{SY},S}(n)$ for split-YFP amyloids with Sup35p. The blue line is $1/3$ and the orange curve is the exact $R_{\text{SY},S}(n)$. Convergence to the limiting ratio is algebraic ($O(1/n)$), with a smaller alternating exponential correction.}
 \label{fig:sup35}
 \end{figure}
 
 
-\section{ Using FRET in amyloids of YFP and CFP}
+\section{Using FRET in amyloids of YFP and CFP}\label{sec:fret}
 
-Consider the case where full YFP (i.e., both halves are conjoined to form the complete fluorophore) and CFP are well-mixed in a container under ambient lighting that causes CFP to fluoresce. When CFP is bonded to YFP, the fluorescence from CFP will cause YFP to fluoresce (FRET). 
+Consider the case where intact YFP and CFP are well-mixed in a container and observed under excitation of the CFP donor. When CFP and YFP are in close spatial proximity, nonradiative energy transfer from excited CFP to the YFP acceptor can lead to yellow YFP emission through FRET \cite{forster1948,patterson2000,lakowicz2006}.
 
-We are interested in measuring the \textit{total} yellow fluorescence emanating from amyloids of this kind. That is, the YFPs may fluoresce at a fixed level (call it Level 1) when it is next to one and only one CFP, but it may also fluoresce twice as much (Level 2) if it is next to \textit{two} CFPs as in a YFP being sandwiched between two CFPs. We want to then sum over the total yellow fluorescence of an amyloid rather than just the raw number of YFPs that are caused to fluoresce. We note that this additive model of FRET from multiple donors is a mathematical idealization; in practice, the efficiency of energy transfer from two donors to a single acceptor depends on geometric factors beyond simple adjacency. We adopt this convention for analytical tractability. A more realistic model incorporating geometry-dependent FRET efficiencies would break the linearity-of-expectation argument used below and require a more involved analysis.
+We are interested in measuring the \textit{total} yellow fluorescence emanating from amyloids of this kind. In the counting convention used here, an adjacent CFP--YFP pair contributes one unit of yellow fluorescence; a YFP sandwiched between two CFPs therefore contributes two units. This should be read as an additive, time-averaged null-model convention rather than a photophysical prediction about a single acceptor molecule. In practice, real multi-donor FRET to one acceptor does not add linearly in this simple way: efficiencies depend on distance, orientation, donor competition, and saturation effects. We adopt the unit-additive convention for analytical tractability. A more realistic model incorporating geometry-dependent FRET efficiencies would require replacing the simple adjacent-pair counting argument below with a specified physical contribution model.
 
-Label YFP as Y and CFP as C. Then our patterns are $\{Y,C\}^*$ and as with the split-YFP exclusive case, extracting away the details we get patterns of the form $(0^* 0 1^*1)^* 0^*$, which generates all binary strings of length $n$ beginning with $0$---that is, all $2^{n-1}$ such strings---since there is no blocking constraint on adjacent $1$s in the FRET setting. Here we write a $1$ whenever the full protein at that location causes the previous to fluoresce OR is caused to fluoresce by the previous. We note that, unlike previous cases, once we fix the first protein (Y or C), the 01 pattern uniquely determines every subsequent protein: a $1$ forces the next protein to differ from its predecessor, while a $0$ forces it to match. Therefore, for each 01 pattern there are exactly 2 Y-C sequences (one starting with Y, one with C).
+Label YFP as Y and CFP as C. The blocking constraint $f_{i-1} = 0$ that was central to Sections~\ref{sec:split-yfp} and~\ref{sec:sup35} does \emph{not} apply here: by our additive convention, both CFP neighbors of a YFP may contribute to the total count, so consecutive 1s in the 01 representation are allowed. In the FRET sections, the 01 pattern is accordingly defined by
+\[
+f_i = \begin{cases}
+0, & \text{if } i = 1, \\
+1, & \text{if } i \ge 2 \text{ and } \{s_{i-1}, s_i\} = \{C, Y\}, \\
+0, & \text{otherwise,}
+\end{cases}
+\]
+with no constraint on $f_{i-1}$. The protein words are elements of $\{C,Y\}^n$, while the associated 01 patterns are exactly the binary strings of length $n$ whose first symbol is $0$. Indeed, after choosing the first protein, each subsequent bit determines whether the next protein is equal to or different from the previous one: a $1$ forces it to differ, and a $0$ forces it to match. Thus there are $2^{n-1}$ possible 01 patterns, and each is realized by exactly two Y-C sequences, according to the choice of the first protein.
 
-It is now remarked that there is a one-to-one correspondence between 1's as appearing in 0-1 patterns as described above and the total yellow fluorescence emanating from an amyloid of the kind. To be specific, the number of 1's is equal to the total yellow fluorescence (if we take Level 1 to be 1 and Level 2 to be 2 as numerical values for which we sum up). For example:
+The number of 1's in the 01 pattern is exactly the total yellow fluorescence in this additive convention: a 1 appears precisely when an adjacent CFP--YFP pair contributes one unit of FRET fluorescence. For example:
 
-\begin{alignat}{11}
+\begin{alignat*}{11}
 \text{$\{C, Y \}^*$:  } & C & Y & Y & Y & C & Y & C & Y & Y & C  & C \\
 \text{$(0^*0 1^* 1)^* 0^*$:  } & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 1 & 0 \\
-\text{Yellow fluorescence:  } & 0 & 1 & 0 & 0 & 1 & 2 & 0 & 1 & 1 & 0 & 0
-\end{alignat}
+\text{Yellow fluorescence:  } & 0 & 1 & 0 & 1 & 0 & 2 & 0 & 1 & 1 & 0 & 0
+\end{alignat*}
 Note that in the 01 pattern, each $1$ is attributed to the right endpoint of a $\{C,Y\}$ adjacency as a bookkeeping convention, not to the physically emitting protein. The key claim is that the \textit{total} number of $1$s equals the total yellow fluorescence, which we verify: both rows sum to $6$.
 
 \subsection{Probability of $k$ total yellow fluorescence in length $n$ amyloid}
@@ -738,177 +688,242 @@ The first 400 values of $R_{\text{F}}(n)$ appear in Figure~\ref{fig:fretonly}.
 \label{fig:fretonly}
 \end{figure}
 
-\section{Using FRET in amyloids of YFP, CFP, and Sup35p}
-As with section 3, we will now analyze the case of introducing Sup35p to the system in Section 4. That is, we have Sup35p, YFP, and CFP well mixed and of equal concentrations in a container under ambient lighting which causes CFP to fluoresce. The cyan fluorescence of a CFP will cause an adjacent YFP to fluoresce yellow due to FRET, and this fluorescence can be stacked so that a YFP sandwiched between two CFPs will fluoresce twice as much as in the case where a YFP is next to only 1 CFP. The presence of Sup35p will block the YFPs and CFPs from interacting under FRET.
+\section{Using FRET in amyloids of YFP, CFP, and Sup35p}\label{sec:fret-sup35}
+As with Section~\ref{sec:sup35}, we will now analyze the case of introducing Sup35p to the system in Section~\ref{sec:fret}. Thus we have Sup35p, YFP, and CFP well mixed and of equal concentrations in a container under CFP donor excitation. An adjacent CFP--YFP pair contributes one unit of FRET fluorescence in the additive convention of Section~\ref{sec:fret}; a YFP sandwiched between two CFPs contributes two such units. The presence of Sup35p blocks CFP--YFP adjacency in the one-dimensional model by separating the fluorescent proteins.
 
-Our pattern becomes $\{C,Y,S \}^*$ where $C$ represents CFP, $Y$ represents YFP, and $S$ represents Sup35p. The 01 pattern is still $(0^* 0 1^*1)^* 0^*$ as before. 
+Our protein words are elements of $\{C,Y,S \}^*$, where $C$ represents CFP, $Y$ represents YFP, and $S$ represents Sup35p. The 01 representation uses the same local FRET rule as Section~\ref{sec:fret}:
+\[
+f_i = \begin{cases}
+0, & \text{if } i = 1, \\
+1, & \text{if } i \ge 2 \text{ and } \{s_{i-1}, s_i\} = \{C, Y\}, \\
+0, & \text{otherwise.}
+\end{cases}
+\]
+Thus every adjacency involving S contributes 0. As in Section~\ref{sec:fret}, every binary string with first symbol $0$ is attainable, since the C-Y-only words already realize all such patterns. Unlike the two-letter case, however, a fixed 01 pattern no longer determines the protein word up to the first letter, because zeros may arise from equal C/Y neighbors or from the presence of S.
 
 \subsection{Probability of $k$ total yellow fluorescence in length $n$ amyloid}
 
-We remark that the number of amyloids of length $n$ with $k$ total yellow unit fluorescence is:
+The block-decomposition approach used for Section~\ref{subsec:s3-dist} does not transfer cleanly to this setting. The reason is that, unlike split-YFP fusion, FRET allows consecutive 1s in the 01 pattern (a YFP sandwiched between two CFPs fluoresces twice), so each block has the form $0^+ 1^+$ rather than $0^+ 1$. The last protein of a $1^+$ run is always in $\{C, Y\}$, and the first protein of the next block must form $f = 0$ with it---hence must match it or be S, only 2 choices among $\{C, Y, S\}$. By contrast, in Section~\ref{subsec:s3-dist}, the protein after a $1$ is already blocked from fusing leftward, so the next protein is free among all three letters. This boundary coupling means a FRET block decomposition would need to carry boundary-state information; the transfer matrix is the simpler way to track the rightmost protein type.
 
-
+\paragraph{Bivariate generating function.} Lump $\{C, Y\}$ into a single state (justified by the $C \leftrightarrow Y$ symmetry of the model under equal concentrations), and track two states by the rightmost protein type. Without this symmetry, for example if $p_C \neq p_Y$, this lumping would need to be replaced by a chain tracking C-ending and Y-ending states separately.
+\begin{itemize}
+\item \textbf{$p$}: rightmost is C or Y.
+\item \textbf{$q$}: rightmost is S.
+\end{itemize}
+The weighted transition matrix (rows = from, cols = to; $z$ marks length, $w$ marks each fluorescing site) is
 \[
-    \cA(n,k) = \sum_{q=0}^{n-k} b_q \sum_{i = 1}^k \sum_{\substack{\sum_{j=1}^i \phi_j = n - q \\ \phi_j \in [2,n-q] \cap \bZ}} \sum_{\substack{\sum_{j=1}^i \psi_j = k \\ \psi_j \in [1, \phi_j] \cap \bZ}} \prod_{j=1}^i a_{\phi_j,\psi_j}
+M(w) = \begin{pmatrix} 1 + w & 1 \\ 2 & 1 \end{pmatrix}.
 \]
-
-where 
-
-\begin{align*}
-b_0 &= 1, \\
-b_1 &= 3, \\
-b_i &= 2b_{i-1} + b_{i-2} \text{ for } i > 1,
-\end{align*}
-
-and 
-
-\begin{align*}
-a_{n,y} &= 0, \text{ for } n < y + 1 \\
-a_{y+1,y} &= 2\\
-a_{y+2,y} &= 2\\
-a_{n,y} &= 2a_{n-1,y} + a_{n-2,y}, \text{ for } n > y + 2
-\end{align*}
-
-Explicitly,
-
+From $p$ (say rightmost is C): next protein C stays in $p$ with no fluorescence (weight $1$); next protein Y stays in $p$ but produces a fluorescence (weight $w$); next protein S goes to $q$ (weight $1$). By $C \leftrightarrow Y$ symmetry the rightmost-Y case is symmetric. From $q$ (rightmost is S): C and Y carry no fluorescence with S, so next $\in \{C, Y\}$ takes us to $p$ (combined weight $2$), and next $= S$ stays in $q$ (weight $1$). For $n \ge 1$, the row vector of length-$n$ weighted counts is $(2,1)M(w)^{n-1}$; again, $(2,1)$ counts the two possible first letters C/Y in state $p$ and the single first letter S in state $q$. Thus the joint generating function
 \[
-b_n = - \frac{1}{2 + 2\sqrt{2}} \cdot \left(\frac{1}{-1-\sqrt{2}}\right)^n - \frac{1}{2-2\sqrt{2}} \cdot \left( \frac{1}{-1 +\sqrt{2}} \right)^n, n \ge 0 
+F_{\text{F},S}(z, w) := \sum_{n \ge 0} \sum_{k \ge 0} \cA(n, k)\, w^k z^n
 \]
+(with $\cA(0, 0) := 1$) is $1+z(2,1)(I-zM(w))^{-1}\binom{1}{1}$, namely
+\begin{equation}\label{eq:s5-bivar-gf}
+F_{\text{F},S}(z, w) = \frac{1 + (1 - w)\, z}{1 - (2 + w)\, z - (1 - w)\, z^2}.
+\end{equation}
+Equivalently, the coefficients satisfy the recurrence $f_n = (2 + w)\, f_{n-1} + (1 - w)\, f_{n-2}$ with $f_0 = 1$, $f_1 = 3$. At $w = 0$ this recovers $F_{\text{F},S}(z, 0) = (1 + z)/(1 - 2z - z^2)$, the same denominator as $b_n$ in Section~\ref{subsec:s3-dist}---which is correct, since both sequences count length-$n$ A-B-S (or C-Y-S) strings with no fluorescent adjacency, regardless of alphabet relabeling. At $w = 1$ the generating function becomes $F_{\text{F},S}(z,1)=1/(1-3z)$, so $[z^n]F_{\text{F},S}(z,1)=3^n$ as required.
 
-which is the same $b_n$ in section 3, and
-
+The denominator factors as $(1 - \lambda_+ z)(1 - \lambda_- z)$ where the eigenvalues of $M(w)$ are
 \[
-a_{n,y} =
-\begin{cases}
-      0, \text{if} \  n \le y \\
-      -\frac{4+3\sqrt{2}}{2+\sqrt{2}} \left( \frac{1}{-1-\sqrt{2}}  \right)^{n-y}   + \frac{4-3\sqrt{2}}{2-\sqrt{2}} \left(\frac{1}{-1 + \sqrt{2}} \right)^{n-y}, \text{if} \ n > y \\ 
-\end{cases}
+\lambda_\pm(w) = 1 + \frac{w \pm \sqrt{w^2 + 8}}{2},
 \]
+recovering $\lambda_+(1) = 3$, $\lambda_-(1) = 0$, and $\lambda_\pm(0) = 1 \pm \sqrt{2}$ consistently with the $w = 0, 1$ specializations.
 
-We now derive these formulas.
-
-As before in Section 3, the argument is to let $b_q$ represent the tail of zeros of length $q$ (which corresponds to the tail $0^*$ in our functional regular expression), $i$ the number of blocks of the form $(0^* 0 1^* 1)$ (as per our functional regular expression), $\phi_j$ is the length of the $j$th block of the form  $(0^* 0 1^* 1)$ , $\psi_j$ is the number of $1$'s in the $j$th block of the form $(0^* 0 1^* 1)$, and $a_{x,y}$ is the total number of $C-Y-S$ patterns corresponding to a 01 block of the form $(0^* 0 1^* 1)$ of length $x$ and with $y$ 1's. The formula then follows by the same decomposition used for $\cA(n,k)$ in Section 3.
-
-We now justify the recurrences.
-
-For $b_i$, note that it represents the number of C-Y-S patterns represented by a 0-1 pattern of the form 000...0 where there are precisely $i$ 0's. To obtain the recursive formula, we note that the C-Y-S patterns of this type are represented by the C-Y-S regular expression
+\paragraph{Expected value via $\partial F_{\text{F},S}/\partial w$.} Differentiating~(\ref{eq:s5-bivar-gf}) in $w$ and evaluating at $w = 1$ gives, after simplification,
 \[
-S^* \{CC^* SS^*, YY^* SS^*\}^* \{CC^*, YY^*, \varepsilon\}
+\left.\frac{\partial F_{\text{F},S}}{\partial w}\right|_{w = 1} = \frac{2 z^2}{(1 - 3z)^2}.
 \]
-where $\varepsilon$ denotes the empty string.
-Notice that this is the same as in Section 3 where $b_i$ represented the number of A-B-S patterns represented by a 0-1 pattern of the form 000...0 where there are precisely $i$ 0's -- the regular expression is equivalent by replacing C with A and Y with B. Thus, this is why we get the same formula for $b_i$ here as we did in Section 3 and do not need to show any new details.
-
-As for $a_{n,y}$, consider that it represents the number of C-Y-S patterns corresponding to a 0-1 functional pattern of length $n$ and with $y$ 1's, and looks like 00000...00011111...111. We fix $y = j$. Then for each $n \in \bN$, a regular expression is as follows:
-
+Hence
 \[
-S^* \{CC^* SS^*, YY^* SS^*\}^* \{C(YCY...), Y(CYC...) \}
+E(n) \cdot 3^n = [z^n] \frac{2 z^2}{(1 - 3z)^2} = 2 (n - 1)\, 3^{n - 2}, \qquad n \ge 2,
 \]
+giving $E(n) = 2(n-1)/9$ exactly, with no exponential correction term. This matches the linearity-of-expectation derivation given below.
 
-where for the last term the patterns C(YCY...) or Y(CYC...) are of length $j + 1$.
+\textbf{Verification.} For $n = 3$, brute-force enumeration over all $3^3 = 27$ amyloids in $\{C,Y,S\}^3$ gives $\cA(3,0) = 17$, $\cA(3,1) = 8$, and $\cA(3,2) = 2$, with $E(3) = (0 \cdot 17 + 1 \cdot 8 + 2 \cdot 2)/27 = 12/27 = 4/9$. This agrees with both the linearity-of-expectation formula $E(3) = 2(3-1)/9 = 4/9$ and the generating-function expansion: $[z^3] F_{\text{F},S}(z, w) = 17 + 8w + 2w^2$ by direct computation of the recurrence $f_n = (2+w) f_{n-1} + (1-w) f_{n-2}$. For $n = 4$, both routes give $\cA(4, k) = 41, 28, 10, 2$ for $k = 0, 1, 2, 3$, with $E(4) = (28 + 20 + 6)/81 = 54/81 = 2/3 = 2 \cdot 3 / 9$ as expected. (See \texttt{verify\_section5\_gf.py}.)
 
-Our generating function is thus:
-
-
-\[
-G(x) = \sum_{i=0}^\infty a_{i,j} x^i = \frac{1}{1-S} \cdot \frac{1}{1 - \left(\frac{C}{1-C} \cdot \frac{S}{1-S} + \frac{Y}{1-Y} \cdot \frac{S}{1-S} \right)} \cdot 2x^{j+1}
-\].
-
-Setting $C = Y = S = x$, this simplifies to
-
-\[
-G(x) = \frac{2x^{j+1}(1-x)}{1-2x-x^2}
-\]
-
-and so
-
-\[
-a_{n,j} - 2a_{n - 1,j} - a_{n-2,j} = 
-\begin{cases}
-      0, & \text{if}\ n < j + 1 \\
-      2, & \text{if}\ n= j + 1 \\
-      -2, & \text{if}\ n= j + 2 \\
-        0, & \text{if} \ n > j + 2  
-    \end{cases}
-\]
-
-where the recurrence is read off from the generating function as before.
-
-To get the explicit formula, note that we cannot do partial fractions on $G(x)$ directly, however we can notice that the values of $a_{n,y}$ is simply a translation in the positive direction along $\bR$ of the values $a_{n,0}$ in its first index by $y$ -- the second index. That is, given that the recursive formula is:
-\begin{align*}
-a_{n,y} &= 0, \text{ for } n < y + 1 \\
-a_{y+1,y} &= 2\\
-a_{y+2,y} &= 2\\
-a_{n,y} &= 2a_{n-1,y} + a_{n-2,y}, \text{ for } n > y + 2,
-\end{align*}
-one should notice that $y$ determines when the sequence formally starts to have non-zero values and thus becomes non-trivial. With that in regard, $a_{n,y}$ is essentially a class of sequences in terms of $y$ which all have essentially the same sequence of values for all $n \in \bN$, modulo the zeroes at the beginning. Hence the notion of the second index $y$ being a "translation" factor. The translation rule is formally
-\[a_{n,j} = a_{n+\ell,\, j-\ell}
-\]
-for any integer $\ell$ such that both indices remain in range.
-With this in mind, consider that we have the generating function in terms of $j$ which is the second index. Setting $j = 0$ gives a generating function for $a_{n,0}$ which we can do partial fractions on:
-
-\begin{align*}
-    G(x) &= \frac{2x(1-x)}{1-2x-x^2} = 2 + \frac{6x-2}{1-2x-x^2} = 2 +  \frac{(4+ 3\sqrt{2})/\sqrt{2}}{(-1-\sqrt{2}) - x} - \frac{(4-3\sqrt{2})/\sqrt{2}}{(-1+\sqrt{2}) - x} \\
-    &=2  - \frac{4+3\sqrt{2}}{2+\sqrt{2}} \cdot \frac{1}{1-\frac{1}{-1-\sqrt{2}} x} + \frac{4-3\sqrt{2}}{2-\sqrt{2}} \cdot \frac{1}{1- \frac{1}{-1+\sqrt{2}}x} \\
-    &= 2  - \frac{4+3\sqrt{2}}{2+\sqrt{2}}  \sum_{i=0}^\infty \left( \frac{1}{-1-\sqrt{2}}  \right)^i x^i  + \frac{4-3\sqrt{2}}{2- \sqrt{2}} \sum_{i=0}^\infty \left(\frac{1}{-1+\sqrt{2}} \right)^i x^i
-\end{align*}
-
-Hence we get that 
-\[
-a_{n,0} = 
-\begin{cases}
-      0, \text{if} \  n \le 0 \\
-      -\frac{4+3\sqrt{2}}{2+\sqrt{2}} \left( \frac{1}{-1-\sqrt{2}}  \right)^n   + \frac{4-3\sqrt{2}}{2-\sqrt{2}} \left(\frac{1}{-1 + \sqrt{2}} \right)^n, \text{if} \ n > 0 \\ 
-\end{cases}
-\]
-
-Hence by the translation rule,
-
-\[
-a_{n,y} =
-\begin{cases}
-      0, \text{if} \  n \le y \\
-      -\frac{4+3\sqrt{2}}{2+\sqrt{2}} \left( \frac{1}{-1-\sqrt{2}}  \right)^{n-y}   + \frac{4-3\sqrt{2}}{2-\sqrt{2}} \left(\frac{1}{-1 + \sqrt{2}} \right)^{n-y}, \text{if} \ n > y \\ 
-\end{cases}
-\]
-which is what was required.
-
-\textbf{Verification.} For $n = 3$, brute-force enumeration over all $3^3 = 27$ amyloids in $\{C,Y,S\}^3$ gives $\cA(3,0) = 17$, $\cA(3,1) = 8$, and $\cA(3,2) = 2$, with $E(3) = (0 \cdot 17 + 1 \cdot 8 + 2 \cdot 2)/27 = 12/27 = 4/9$. This agrees with the linearity-of-expectation formula $E(3) = 2(3-1)/9 = 4/9$.
-
-The combinatorial formula for $\cA(n,k)$ above gives the full probability distribution. However, for computing the expected value, a much simpler route is available. As in Section 4, the total yellow fluorescence of an amyloid equals the number of adjacent $\{C,Y\}$ pairs. Since FRET interactions have no blocking constraint (unlike split-YFP fusion), the linearity of expectation argument from Section 4 applies directly. With each protein independently C, Y, or S with probability $1/3$:
+The bivariate generating function above encodes the full probability distribution via $P(n,k)=\cA(n,k)/3^n$. However, for computing the expected value, a much simpler route is available. As in Section~\ref{sec:fret}, the total yellow fluorescence of an amyloid equals the number of adjacent $\{C,Y\}$ pairs. Since FRET interactions have no blocking constraint (unlike split-YFP fusion), the linearity of expectation argument from Section~\ref{sec:fret} applies directly. With each protein independently C, Y, or S with probability $1/3$:
 \[
 E(n) = (n-1) \cdot P(\{C,Y\} \text{ pair}) = (n-1) \cdot 2 \cdot \frac{1}{3} \cdot \frac{1}{3} = \frac{2(n-1)}{9}
 \]
 
 Therefore
 \[
-R_{\text{F}}(n) := E(n)/n = \frac{2(n-1)}{9n} \longrightarrow \frac{2}{9} \text{ as } n \to \infty
+R_{\text{F},S}(n) := E(n)/n = \frac{2(n-1)}{9n} \longrightarrow \frac{2}{9} \text{ as } n \to \infty
 \]
 
-The first 400 values of $R_{\text{F}}(n)$ appear in Figure~\ref{fig:fretsup35}.
+The first 400 values of $R_{\text{F},S}(n)$ appear in Figure~\ref{fig:fretsup35}.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.75\textwidth]{FretandSup35.png}
-\caption{$R_{\text{F}}(n)$ for FRET YFP/CFP amyloids with Sup35p. The blue line is $2/9$ and the orange curve is the exact $R_{\text{F}}(n) = 2(n-1)/(9n)$. Convergence is algebraic ($O(1/n)$), as in Figure~\ref{fig:fretonly}.}
+\caption{$R_{\text{F},S}(n)$ for FRET YFP/CFP amyloids with Sup35p. The blue line is $2/9$ and the orange curve is the exact $R_{\text{F},S}(n) = 2(n-1)/(9n)$. Convergence is algebraic ($O(1/n)$), as in Figure~\ref{fig:fretonly}.}
 \label{fig:fretsup35}
 \end{figure}
 
-\section{Generalization to unequal concentrations}
+\section{Variance, null-model fluctuations, and finite-radius FRET}\label{sec:variance-radius}
 
-The results of Sections 2--5 all depend on the equal-concentration assumption. The Markov chain arguments generalize readily to unequal concentrations, which we outline here.
+\subsection{Finite-$n$ variances}
+
+The preceding sections emphasize exact expectations, but the same probability distributions also give exact finite-$n$ fluctuations. Let $K_n$ denote the fluorescence count in the relevant model. If
+\[
+F(z,w) = \sum_{n \ge 0} \sum_{k \ge 0} \cA(n,k) w^k z^n
+\]
+is the corresponding bivariate generating function and $T_n$ is the total number of amyloids of length $n$, then
+\[
+E[K_n] = \frac{[z^n]F_w(z,1)}{T_n}, \qquad
+E[K_n(K_n-1)] = \frac{[z^n]F_{ww}(z,1)}{T_n},
+\]
+and hence
+\[
+\operatorname{Var}(K_n) = E[K_n(K_n-1)] + E[K_n] - E[K_n]^2.
+\]
+The variance formulas below are stated for $n \ge 2$; for $n=1$ one has $K_1=0$ and variance $0$ in all four models. For reference, the model sizes and bivariate generating functions used in this section are:
+\[
+\begin{array}{c|c|c}
+\text{Model} & T_n & F(z,w) \\
+\hline
+\text{split-YFP} & 2^n & \dfrac{1+z}{1-z-2wz^2} \\[8pt]
+\text{split-YFP+Sup35p} & 3^n & \dfrac{1+z}{1-2z-(1+2w)z^2} \\[8pt]
+\text{FRET} & 2^n & \dfrac{1+z(1-w)}{1-z(1+w)} \\[8pt]
+\text{FRET+Sup35p} & 3^n & \dfrac{1+(1-w)z}{1-(2+w)z-(1-w)z^2}
+\end{array}
+\]
+For the exclusively split-YFP model, the bivariate generating function is
+\[
+F_{\text{SY}}(z,w) = \frac{1+z}{1-z-2wz^2},
+\]
+obtained from the same two-state decomposition as in Section~2. In transfer-matrix form, with $p$ denoting an unfused A/B endpoint and $q$ denoting a fused endpoint, the weighted transition matrix is
+\[
+M_{\text{SY}}(w)=
+\begin{pmatrix}
+1 & w\\
+2 & 0
+\end{pmatrix},
+\]
+where the rows and columns are ordered as $(p,q)$ and $w$ marks a fusion. Including the empty amyloid and the initial vector $(2,0)$ gives
+\[
+F_{\text{SY}}(z,w)=1+z(2,0)\left(I-zM_{\text{SY}}(w)\right)^{-1}\binom{1}{1}
+=\frac{1+z}{1-z-2wz^2}.
+\]
+Its second derivative at $w=1$ is
+\[
+\left. \frac{\partial^2 F_{\text{SY}}}{\partial w^2} \right|_{w=1}
+= \frac{8z^4}{(1-2z)^3(1+z)^2}.
+\]
+Using this together with the expectation from Section~2 gives, for $n \ge 2$,
+\[
+\operatorname{Var}_{\text{SY}}(K_n)
+=
+\frac{6n+2}{81}
++
+\frac{(12n+2)(-1)^n}{81\cdot 2^n}
+-
+\frac{4}{81\cdot 4^n}.
+\]
+For split-YFP with Sup35p, differentiating~(\ref{eq:s3-bivar-gf}) twice gives
+\[
+\left. \frac{\partial^2 F}{\partial w^2} \right|_{w=1}
+= \frac{8z^4}{(1-3z)^3(1+z)^2},
+\]
+and therefore
+\[
+\operatorname{Var}_{\text{SY},S}(K_n)
+=
+\frac{56n-27}{576}
++
+\frac{(4n+3)(-1)^n}{48\cdot 3^n}
+-
+\frac{1}{64\cdot 9^n},
+\qquad n \ge 2.
+\]
+For FRET without Sup35p, Section~4 identifies $K_n$ as a Binomial$(n-1,1/2)$ random variable, so
+\[
+\operatorname{Var}_{\text{F}}(K_n)=\frac{n-1}{4}.
+\]
+For FRET with Sup35p, differentiating~(\ref{eq:s5-bivar-gf}) twice gives
+\[
+\left. \frac{\partial^2 F_{\text{F},S}}{\partial w^2} \right|_{w=1}
+= \frac{4z^3(1-z)}{(1-3z)^3},
+\]
+which yields
+\[
+\operatorname{Var}_{\text{F},S}(K_n)=\frac{18n-22}{81},
+\qquad n \ge 2.
+\]
+As a small check, at $n=2$ the split-YFP-with-Sup35p and FRET-with-Sup35p distributions have $P(K_2=0)=7/9$ and $P(K_2=1)=2/9$, giving variance $14/81$, exactly as the formulas above give. In the no-Sup35p split-YFP case, $P(K_2=0)=P(K_2=1)=1/2$, while at $n=3$ one has $P(K_3=0)=2/8$ and $P(K_3=1)=6/8$, giving variances $1/4$ and $3/16$, again matching the formula. The accompanying script \texttt{verify\_variance.py} brute-force checks all four variance formulas against direct enumeration of $P(n,k)$ for $2 \le n \le 7$.
+
+These formulas give exact intrinsic fluctuation scales under the i.i.d.\ null model; they are not, by themselves, experimental measurement error bars. Since the split-YFP ratios are $2K_n/n$ and the FRET ratios are $K_n/n$,
+\[
+\operatorname{Var}(R_{\text{SY}}(n)) = \frac{4}{n^2}\operatorname{Var}_{\text{SY}}(K_n), \qquad
+\operatorname{Var}(R_{\text{SY},S}(n)) = \frac{4}{n^2}\operatorname{Var}_{\text{SY},S}(K_n)
+\]
+\[
+\operatorname{Var}(R_{\text{F}}(n)) = \frac{1}{n^2}\operatorname{Var}_{\text{F}}(K_n), \qquad
+\operatorname{Var}(R_{\text{F},S}(n)) = \frac{1}{n^2}\operatorname{Var}_{\text{F},S}(K_n)
+\]
+Thus, for large $n$, the standard deviations of the ratio statistics scale as $O(n^{-1/2})$. For example,
+\[
+\operatorname{Var}(R_{\text{SY}}(n)) \sim \frac{8}{27n}, \quad
+\operatorname{Var}(R_{\text{SY},S}(n)) \sim \frac{7}{18n}, \quad
+\operatorname{Var}(R_{\text{F}}(n)) \sim \frac{1}{4n}, \quad
+\operatorname{Var}(R_{\text{F},S}(n)) \sim \frac{2}{9n}.
+\]
+This is the usual central-limit scale for additive statistics of finite-state chains and transfer matrices. More formal Gaussian limit laws could be obtained from standard transfer-matrix or quasi-power arguments, but the exact finite-$n$ distributions and variances above are the quantities used here. For short amyloids, the exact distributions $P(n,k)$ should be used directly. For experimental ensembles of many fibrils, the relevant uncertainty also depends on the sampling design, the number of fibrils measured, and instrumental noise.
+
+\subsection{Finite-radius FRET expectation}
+
+The nearest-neighbor FRET assumption can also be relaxed at the level of expected value. Suppose a YFP can receive FRET from CFPs within distance $r$ along the amyloid, with additive unit contribution from each CFP--YFP pair in this window. Let $p_C$ and $p_Y$ be the probabilities of CFP and YFP, and set $m=\min(r,n-1)$. There are $n-d$ unordered pairs at distance $d$, each contributing in expectation $2p_Cp_Y$. Linearity of expectation requires no independence among these pair indicators, so the expectation is exact even though the indicators are correlated. Hence
+\[
+E_r(n) = 2p_Cp_Y \sum_{d=1}^{m} (n-d)
+= 2p_Cp_Y\left(mn-\frac{m(m+1)}{2}\right).
+\]
+For fixed $r$ and $n \to \infty$, this gives
+\[
+\frac{E_r(n)}{n} \longrightarrow 2r p_Cp_Y.
+\]
+In the equal-concentration FRET+Sup35p case ($p_C=p_Y=1/3$), the nearest-neighbor model $r=1$ recovers $E_1(n)=2(n-1)/9$, while $r=2$ gives
+\[
+E_2(n)=\frac{2}{9}\bigl((n-1)+(n-2)\bigr)=\frac{4n-6}{9}, \qquad n \ge 3,
+\]
+and $E_2(n)/n \to 4/9$. A crude hard-cutoff surrogate motivated by $R_0/0.47\,\text{nm} \approx 10$ would scale this unit-window baseline linearly in $r$, but that number is a property of the idealized indicator sum, not a FRET-efficiency-weighted prediction. The point is only that the nearest-neighbor value $2/9$ is an $r=1$ mathematical baseline rather than a quantitative experimental prediction.
+
+The unit-weight window is itself an idealization: a more physical model could weight a CFP--YFP pair at distance $d$ by a distance-dependent FRET efficiency $\eta_d$ rather than by a hard cutoff (for example, an efficiency kernel depending on distance and orientation). The expected-value computation would still go through, giving
+\[
+\frac{E(n)}{n} \longrightarrow 2p_Cp_Y\sum_{d \ge 1} \eta_d
+\]
+whenever the efficiency weights are summable, but the closed form would depend on the chosen geometry. Computing the full distribution for $r>1$ is substantially harder: adjacent indicators are correlated over a larger window, and a transfer matrix would need to track the last $r$ protein identities rather than only the rightmost state.
+For $n=2$, the value $m=\min(r,n-1)$ is still $1$ even when $r=2$, so the radius-two case collapses to the nearest-neighbor formula until $n \ge 3$.
+
+\section{Generalization to unequal concentrations}\label{sec:unequal}
+
+The results of Sections 2--5 all depend on the equal-concentration assumption. The Markov chain arguments generalize readily to unequal concentrations, which we outline here. This section records limiting per-step fluorescence ratios rather than full finite-$n$ distributions. Such distributions could be obtained by the same finite-state transfer-matrix method, with probabilities replacing the equal-count weights, but the resulting formulas are less compact and are left as a natural extension for experimental calibration.
 
 \subsection{Split-YFP with unequal concentrations}
-Suppose protein A appears with probability $\alpha$ and protein B with probability $1 - \alpha$. Let $\pi_n$ denote the probability that the $n$th protein is in the unfused state. The transition probabilities are: from unfused, the next protein is the same type with probability $\alpha^2 + (1-\alpha)^2$ (staying unfused) or a different type with probability $2\alpha(1-\alpha)$ (fusion occurs, next protein is fused). From the fused state, the next protein is always unfused. The recurrence is therefore
+Suppose protein A appears with probability $\alpha$ and protein B with probability $1 - \alpha$. A two-state chain on $\{$unfused$, $ fused$\}$ is insufficient here, because the probability that the next protein triggers a fusion conditional on the current rightmost being unfused depends on whether the rightmost is an A or a B: from rightmost-A, fusion requires next = B (probability $1 - \alpha$), while from rightmost-B it requires next = A (probability $\alpha$). For $\alpha \neq 1/2$ these are not equal, so we cannot lump A-unfused and B-unfused into a single state without loss. We instead use the three-state chain $\{p_A, p_B, q\}$ from Section~\ref{subsec:unequal-sup35}, specialized to the no-Sup35p case $\beta = 1 - \alpha$ (so $1 - \alpha - \beta = 0$). The transitions are:
+\begin{itemize}
+\item From $p_A$: next is A (prob $\alpha$, stay $p_A$); next is B (prob $1{-}\alpha$, fuse, go $q$).
+\item From $p_B$: next is B (prob $1{-}\alpha$, stay $p_B$); next is A (prob $\alpha$, fuse, go $q$).
+\item From $q$: next is A (prob $\alpha$, go $p_A$); next is B (prob $1{-}\alpha$, go $p_B$).
+\end{itemize}
+The balance equations $\pi_A = \alpha \pi_A + \alpha \pi_q$ and $\pi_B = (1{-}\alpha)\pi_B + (1{-}\alpha)\pi_q$, together with $\pi_A + \pi_B + \pi_q = 1$, give
 \[
-\pi_{n+1} = \bigl[\alpha^2 + (1-\alpha)^2\bigr]\,\pi_n + (1 - \pi_n)
+\pi_A = \frac{\alpha^2}{1 - \alpha(1-\alpha)}, \qquad \pi_B = \frac{(1-\alpha)^2}{1 - \alpha(1-\alpha)}, \qquad \pi_q = \frac{\alpha(1-\alpha)}{1 - \alpha(1-\alpha)}.
 \]
-with fixed point $\pi^* = 1/\bigl(1 + 2\alpha(1-\alpha)\bigr)$. The expected fluorescence contributed by the $(n+1)$th protein is $2\alpha(1-\alpha)\,\pi_n$, so since $R_{\text{SY}}(n) = 2E(n)/n$, at steady state:
+The expected fluorescence per step is $e = (1-\alpha)\pi_A + \alpha\pi_B = \alpha(1-\alpha)/(1 - \alpha(1-\alpha))$, so
 \[
-\lim_{n \to \infty} R_{\text{SY}}(n) = 2 \cdot 2\alpha(1-\alpha) \cdot \pi^* = \frac{4\alpha(1-\alpha)}{1 + 2\alpha(1-\alpha)}
+\lim_{n \to \infty} R_{\text{SY}}(n) = 2e = \frac{2\alpha(1-\alpha)}{1 - \alpha(1-\alpha)}.
 \]
-which reduces to $4 \cdot \frac{1}{4} / \frac{3}{2} = 2/3$ when $\alpha = 1/2$. By symmetry and concavity of $\alpha(1-\alpha)$, this limit is maximized at $\alpha = 1/2$, confirming that equal concentrations maximize the fluorescence yield.
+Equivalently, this is the specialization $\beta = 1 - \alpha$ of the Section~\ref{subsec:unequal-sup35} formula $2\alpha\beta(2-\alpha-\beta)/(1-\alpha\beta)$. At $\alpha = 1/2$, $R_{\text{SY}} \to (1/2)/(3/4) = 2/3$, recovering Section~\ref{sec:split-yfp}. The maximum occurs at equal concentrations: differentiating gives
+\[
+\frac{d}{d\alpha}\left(\frac{2\alpha(1-\alpha)}{1-\alpha(1-\alpha)}\right)
+= \frac{2(1-2\alpha)}{(1-\alpha(1-\alpha))^2},
+\]
+so the only interior critical point is $\alpha=1/2$, and the endpoints have zero fluorescence. Numerically, at $\alpha = 1/4$ the limit is $2 \cdot \tfrac{3}{16} / \tfrac{13}{16} = 6/13 \approx 0.462$, in agreement with Monte Carlo simulation (the default script run with $n=5000$ and 400 trials gives approximately $0.462$; see \texttt{split\_yfp\_unequal\_simulation.py}). A naive two-state chain would wrongly lump $p_A$ and $p_B$ into a single unfused state and assign fusion probability $d=2\alpha(1-\alpha)$ from that lumped state, giving the ratio $2d/(1+d)=4\alpha(1-\alpha)/(1+2\alpha(1-\alpha))$; at $\alpha = 1/4$ this is $6/11 \approx 0.545$. The two-state lumping is harmless at $\alpha=1/2$, where A/B symmetry gives equal transition probabilities from $p_A$ and $p_B$ and hence a genuinely lumpable chain, but it fails the simulation check at every $\alpha \neq 1/2$.
 
-\subsection{Split-YFP with Sup35p at unequal concentrations}
+The convergence rate of $R_{\text{SY}}(n)$ to its limit depends on $\alpha$. Near $\alpha=0$ or $\alpha=1$, the chain changes state rarely and finite-$n$ values can differ noticeably from the limiting ratio. For experimental fibril lengths, the finite-$n$ value obtained by iterating the three-state chain or by simulation should be used rather than the stationary limit alone.
+
+\subsection{Split-YFP with Sup35p at unequal concentrations}\label{subsec:unequal-sup35}
 Now suppose proteins A, B, S appear with probabilities $\alpha$, $\beta$, and $1 - \alpha - \beta$ respectively. We define three Markov states: $p_A$ (rightmost is A, unfused), $p_B$ (rightmost is B, unfused), and $q$ (rightmost is S, or fused). The transitions are:
 \begin{itemize}
 \item From $p_A$: next is A (prob $\alpha$, stay $p_A$), B (prob $\beta$, fuse, go $q$), or S (prob $1{-}\alpha{-}\beta$, go $q$).
@@ -917,42 +932,52 @@ Now suppose proteins A, B, S appear with probabilities $\alpha$, $\beta$, and $1
 \end{itemize}
 Solving the balance equations $\pi_A = \alpha\pi_A + \alpha\pi_q$, $\pi_B = \beta\pi_B + \beta\pi_q$, and $\pi_A + \pi_B + \pi_q = 1$ gives $\pi_A = \alpha(1-\beta)/(1 - \alpha\beta)$, $\pi_B = \beta(1-\alpha)/(1 - \alpha\beta)$, and $\pi_q = (1-\alpha)(1-\beta)/(1-\alpha\beta)$. The expected fluorescence per step is $e = \beta\pi_A + \alpha\pi_B = \alpha\beta(2 - \alpha - \beta)/(1 - \alpha\beta)$, giving
 \[
-\lim_{n \to \infty} R_{\text{SY}}(n) = 2e = \frac{2\alpha\beta(2 - \alpha - \beta)}{1 - \alpha\beta}
+\lim_{n \to \infty} R_{\text{SY},S}(n) = 2e = \frac{2\alpha\beta(2 - \alpha - \beta)}{1 - \alpha\beta}
 \]
 which reduces to $1/3$ when $\alpha = \beta = 1/3$ (and to $2/3$ when $\alpha = \beta = 1/2$, recovering the no-Sup35p case).
+The same simulation script also checks this unequal-Sup35p limit for representative $(\alpha,\beta)$ pairs.
 
 \subsection{FRET with unequal concentrations}
-In the FRET setting with $P(C) = p_C$, $P(Y) = p_Y = 1 - p_C$, linearity of expectation gives $R_{\text{F}}(n) \to 2p_C p_Y$ directly, and with Sup35p at concentration $p_S$ (where $p_C + p_Y + p_S = 1$) the limit is likewise $R_{\text{F}}(n) \to 2p_C p_Y$. These generalizations would allow the model to be calibrated to experimental concentration ratios.
+In the two-species FRET setting, $P(C)=p_C$ and $P(Y)=p_Y=1-p_C$, so linearity of expectation gives $R_{\text{F}}(n) \to 2p_Cp_Y$ directly. In the three-species FRET+Sup35p setting, $P(C)=p_C$, $P(Y)=p_Y$, and $P(S)=p_S$ with $p_C+p_Y+p_S=1$; the same adjacent-pair calculation gives $R_{\text{F},S}(n)\to 2p_Cp_Y$. These generalizations would allow the model to be calibrated to experimental concentration ratios.
 
 \section{Conclusion}
 
-We have derived exact probability distributions and closed-form expected values for fluorescence in four combinatorial models of amyloid fibrils. The principal results are summarized in the following table:
+We have derived exact probability distributions, closed-form expected values, and finite-$n$ variances for fluorescence in four combinatorial models of amyloid fibrils. The exact expectation formulas below are for $n \ge 1$, with $E(1)=0$ in all four models; the $n=0$ terms used in generating functions are formal conventions only. The principal expectation results are summarized below in each model's native units:
 
 \begin{center}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccc}
 \hline
-System & Ratio & Exact $E(n)$ & Exact ratio & Limit \\
+System & Native ratio & Exact $E(n)$ & Exact ratio & Limit \\
 \hline
-Split-YFP (Sec.~2) & $R_{\text{SY}} = \dfrac{2E}{n}$ & $\dfrac{3n-2}{9} + \dfrac{2(-1)^n}{9 \cdot 2^n}$ & $\dfrac{2(3n-2)}{9n} + \dfrac{2(-1)^n}{9n \cdot 2^{n-1}}$ & $2/3$ \\[8pt]
-Split-YFP + Sup35p (Sec.~3) & $R_{\text{SY}} = \dfrac{2E}{n}$ & $\dfrac{4n-3}{24} - \dfrac{(-1)^{n-1}}{24 \cdot 3^{n-1}}$ & $\dfrac{4n-3}{12n} + \dfrac{(-1)^n}{12n \cdot 3^{n-1}}$ & $1/3$ \\[8pt]
-FRET YFP/CFP (Sec.~4) & $R_{\text{F}} = \dfrac{E}{n}$ & $\dfrac{n-1}{2}$ & $\dfrac{n-1}{2n}$ & $1/2$ \\[8pt]
-FRET + Sup35p (Sec.~5) & $R_{\text{F}} = \dfrac{E}{n}$ & $\dfrac{2(n-1)}{9}$ & $\dfrac{2(n-1)}{9n}$ & $2/9$ \\[4pt]
+Split-YFP (Sec.~\ref{sec:split-yfp}) & $R_{\text{SY}} = \dfrac{2E}{n}$ & $\dfrac{3n-2}{9} + \dfrac{2(-1)^n}{9 \cdot 2^n}$ & $\dfrac{2(3n-2)}{9n} + \dfrac{2(-1)^n}{9n \cdot 2^{n-1}}$ & $2/3$ \\[8pt]
+Split-YFP + Sup35p (Sec.~\ref{sec:sup35}) & $R_{\text{SY},S} = \dfrac{2E}{n}$ & $\dfrac{4n-3}{24} - \dfrac{(-1)^{n-1}}{24 \cdot 3^{n-1}}$ & $\dfrac{4n-3}{12n} + \dfrac{(-1)^n}{12n \cdot 3^{n-1}}$ & $1/3$ \\[8pt]
+FRET YFP/CFP (Sec.~\ref{sec:fret}) & $R_{\text{F}} = \dfrac{E}{n}$ & $\dfrac{n-1}{2}$ & $\dfrac{n-1}{2n}$ & $1/2$ \\[8pt]
+FRET + Sup35p (Sec.~\ref{sec:fret-sup35}) & $R_{\text{F},S} = \dfrac{E}{n}$ & $\dfrac{2(n-1)}{9}$ & $\dfrac{2(n-1)}{9n}$ & $2/9$ \\[4pt]
 \hline
 \end{tabular}
+}
 \end{center}
-\noindent Here $R_{\text{SY}}(n) := 2E(n)/n$ is the fraction of proteins participating in split-YFP fluorescence (two proteins per fused pair), while $R_{\text{F}}(n) := E(n)/n$ is total FRET fluorescence per protein. The two ratios measure different physical quantities and are not directly comparable.
+\noindent Here $R_{\text{SY}}$ and $R_{\text{SY},S}$ are fractions of proteins participating in split-YFP fluorescence (two proteins per fused pair), while $R_{\text{F}}$ and $R_{\text{F},S}$ are total FRET fluorescence units per protein. The table places the four exact baselines side by side for reference, but the split-YFP and FRET ratios measure different physical quantities and are not directly comparable.
 
-A key structural distinction separates the two pairs of systems. In the split-YFP settings (Sections 2 and 3), the adjacency blocking constraint---a fused pair cannot participate in further fusion---introduces nontrivial combinatorial structure. This necessitates generating function techniques to derive the full distributions $P(n,k)$ and Markov chain arguments to compute the expected values in closed form. The agreement between these two independent approaches provides mutual verification of both the sum identities and the Markov chain analysis.
+A key structural distinction separates the two pairs of systems. In the split-YFP settings (Sections~\ref{sec:split-yfp} and~\ref{sec:sup35}), the adjacency blocking constraint---a fused pair cannot participate in further fusion---introduces nontrivial combinatorial structure. This necessitates generating function techniques to derive the full distributions $P(n,k)$ and Markov chain arguments to compute the expected values in closed form. The agreement between these two independent approaches provides mutual verification of both the sum identities and the Markov chain analysis.
 
-In the FRET settings (Sections 4 and 5), the absence of a blocking constraint means that each adjacent pair contributes independently to the total fluorescence. This permits a direct linearity-of-expectation argument, yielding exact formulas without the need for the full combinatorial machinery.
+In the FRET settings (Sections~\ref{sec:fret} and~\ref{sec:fret-sup35}), the absence of a blocking constraint means that the total fluorescence is a sum of adjacent-pair contributions: one interaction does not consume a protein and prevent another interaction. Thus a direct linearity-of-expectation argument gives the exact expectation. In the two-letter FRET model these adjacent-pair indicators are independent by the bijection in Section~\ref{sec:fret}, while in the Sup35p model they are correlated, as reflected in the variance formula.
 
-The limiting ratios have concrete experimental interpretations. For split-YFP amyloids, $R_{\text{SY}}(n) \to 2/3$ means that in a long amyloid composed of equal concentrations of the two halves, approximately two-thirds of the proteins participate in a fluorescent fusion---a high baseline fluorescence yield arising from the alternating tendency of random binary sequences. Introducing Sup35p at equal concentration halves this to $1/3$: the inert Sup35p proteins act as spacers that interrupt potential fusion pairs. For FRET, the ratio $R_{\text{F}}(n) \to 1/2$ reflects the probability that a random adjacent pair is a $\{C,Y\}$ pair, while the drop to $2/9$ with Sup35p reflects the reduced probability $2 \cdot (1/3)^2$ of such a pair when three protein types compete for each position. Experimentally, measured fluorescence ratios deviating from these baseline values would indicate non-random assembly biases in the amyloid growth process.
+The limiting ratios admit clean interpretations under the i.i.d.\ null model. For split-YFP amyloids under random assembly, $R_{\text{SY}}(n) \to 2/3$ means that in a long amyloid composed of equal concentrations of the two halves, approximately two-thirds of the proteins participate in a fluorescent fusion---a high baseline fluorescence yield arising from the alternating tendency of random binary sequences. Introducing Sup35p at equal concentration gives $R_{\text{SY},S}(n)\to 1/3$: the inert Sup35p proteins act as spacers that interrupt potential fusion pairs. For FRET, the ratio $R_{\text{F}}(n) \to 1/2$ reflects the null-model probability that a random adjacent pair is a $\{C,Y\}$ pair, while $R_{\text{F},S}(n)\to 2/9$ reflects the reduced probability $2 \cdot (1/3)^2$ of such a pair when three protein types compete for each position. The variance formulas in Section~\ref{sec:variance-radius} give finite-$n$ null-model fluctuation scales, so experimentally measured fluorescence ratios can be compared against both the expected value and the size of random fluctuations under the i.i.d.\ model.
 
-A natural extension of the FRET model would be to allow interactions within a window of radius $r$ rather than nearest neighbors only. For $r = 2$, a YFP at position $i$ would fluoresce from CFPs at positions $i \pm 1$ and $i \pm 2$. The indicator variables $f_i$ are then no longer independent---knowing that positions $i-1$ and $i$ are a $\{C,Y\}$ pair constrains the distribution at $i+1$---and the linearity-of-expectation argument no longer suffices for the full distribution $P(n,k)$. One would need either inclusion-exclusion or a Markov chain with states tracking the last $r$ proteins. For the expected value $E(n)$, linearity of expectation still applies: each pair $(i, j)$ with $|i - j| \le r$ contributes to $E(n)$ by linearity of expectation (the indicators are correlated but linearity does not require independence), giving $E(n) = \sum_{d=1}^{r} (n - d) \cdot 2p_C p_Y$ for the FRET + Sup35p case with equal concentrations. However, the full distribution would require generating functions for strings with forbidden patterns of length $> 2$, a substantially richer combinatorial problem.
+Section~\ref{sec:variance-radius} also records the expected-value extension of the FRET model to an interaction radius $r$. This partially addresses the nearest-neighbor simplification while preserving a closed-form baseline: the expectation remains a direct sum over all CFP--YFP pairs within distance $r$. A hard cutoff with $r$ on the order of ten amyloid spacings would scale the unit-window expectation far above the nearest-neighbor value, underscoring that the $r=1$ model is a mathematically transparent baseline rather than a quantitative FRET prediction. However, the full distribution for $r>1$ would require generating functions or transfer matrices for strings with longer-range dependencies, a substantially richer combinatorial problem.
+
+Similarly, Section~\ref{sec:unequal} gives limiting ratios for unequal concentrations but not the corresponding finite-$n$ distributions or variances. Those distributions are accessible in principle through larger or weighted transfer matrices, and would be the next step for fitting the null model to measured concentration ratios.
 
 Our analysis assumes that proteins are independently distributed in the amyloid sequence. This assumption neglects known cooperative and templated growth effects in amyloid assembly \cite{chiti2006} and should be interpreted as a combinatorial null model: a baseline against which experimental deviations---reflecting assembly biases, kinetic trapping, or cooperative interactions---could be quantified. The combinatorial framework developed here, particularly the generating function approach to constrained fluorescence patterns via regular expressions, could in principle be adapted to non-uniform protein distributions if experimental data on assembly biases become available.
 
-All simulation and verification scripts referenced in this paper (\texttt{split\_yfp\_simulation.py}, \texttt{sup35\_simulation.py}, \texttt{fret\_sup35\_simulation.py}, and associated plotting scripts) are available at \url{https://github.com/danielchen0/amyloids}.
+All simulation and verification scripts referenced in this paper are available at
+\begin{center}
+\url{https://github.com/danielchen0/amyloids}.
+\end{center}
+These include the split-YFP, Sup35p, FRET, unequal-concentration, variance, and
+generating function verification scripts, together with the associated plotting scripts.
 
 \bibliographystyle{plain}
 \bibliography{references}
