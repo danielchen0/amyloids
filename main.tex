@@ -664,7 +664,15 @@ The first 400 values of $R_{\text{F}}(n)$ appear in Figure~\ref{fig:fretonly}.
 \section{Using FRET in amyloids of YFP, CFP, and Sup35p}\label{sec:fret-sup35}
 As with section 3, we will now analyze the case of introducing Sup35p to the system in Section 4. That is, we have Sup35p, YFP, and CFP well mixed and of equal concentrations in a container under ambient lighting which causes CFP to fluoresce. The cyan fluorescence of a CFP will cause an adjacent YFP to fluoresce yellow due to FRET, and this fluorescence can be stacked so that a YFP sandwiched between two CFPs will fluoresce twice as much as in the case where a YFP is next to only 1 CFP. The presence of Sup35p will block the YFPs and CFPs from interacting under FRET.
 
-Our pattern becomes $\{C,Y,S \}^*$ where $C$ represents CFP, $Y$ represents YFP, and $S$ represents Sup35p. The 01 pattern is still $(0^* 0 1^*1)^* 0^*$ as before. 
+Our pattern becomes $\{C,Y,S \}^*$ where $C$ represents CFP, $Y$ represents YFP, and $S$ represents Sup35p. The 01 representation uses the same local FRET rule as Section~\ref{sec:fret}:
+\[
+f_i = \begin{cases}
+0, & \text{if } i = 1, \\
+1, & \text{if } i \ge 2 \text{ and } \{s_{i-1}, s_i\} = \{C, Y\}, \\
+0, & \text{otherwise.}
+\end{cases}
+\]
+Thus every adjacency involving S contributes 0. The set of attainable 01 patterns is still $(0^* 0 1^*1)^* 0^*$, since the C-Y-only words from Section~\ref{sec:fret} already realize all binary strings beginning with 0. Unlike the two-letter case, however, a fixed 01 pattern no longer determines the protein word up to the first letter, because zeros may arise from equal C/Y neighbors or from the presence of S.
 
 \subsection{Probability of $k$ total yellow fluorescence in length $n$ amyloid}
 
@@ -900,7 +908,7 @@ FRET + Sup35p (Sec.~5) & $R_{\text{F}} = \dfrac{E}{n}$ & $\dfrac{2(n-1)}{9}$ & $
 
 A key structural distinction separates the two pairs of systems. In the split-YFP settings (Sections 2 and 3), the adjacency blocking constraint---a fused pair cannot participate in further fusion---introduces nontrivial combinatorial structure. This necessitates generating function techniques to derive the full distributions $P(n,k)$ and Markov chain arguments to compute the expected values in closed form. The agreement between these two independent approaches provides mutual verification of both the sum identities and the Markov chain analysis.
 
-In the FRET settings (Sections 4 and 5), the absence of a blocking constraint means that each adjacent pair contributes independently to the total fluorescence. This permits a direct linearity-of-expectation argument, yielding exact formulas without the need for the full combinatorial machinery.
+In the FRET settings (Sections 4 and 5), the absence of a blocking constraint means that the total fluorescence is a sum of adjacent-pair contributions: one interaction does not consume a protein and prevent another interaction. Thus a direct linearity-of-expectation argument gives the exact expectation. In the two-letter FRET model these adjacent-pair indicators are independent by the bijection in Section~\ref{sec:fret}, while in the Sup35p model they are correlated, as reflected in the variance formula.
 
 The limiting ratios admit clean interpretations under the i.i.d.\ null model. For split-YFP amyloids under random assembly, $R_{\text{SY}}(n) \to 2/3$ means that in a long amyloid composed of equal concentrations of the two halves, approximately two-thirds of the proteins participate in a fluorescent fusion---a high baseline fluorescence yield arising from the alternating tendency of random binary sequences. Introducing Sup35p at equal concentration halves this to $1/3$: the inert Sup35p proteins act as spacers that interrupt potential fusion pairs. For FRET, the ratio $R_{\text{F}}(n) \to 1/2$ reflects the null-model probability that a random adjacent pair is a $\{C,Y\}$ pair, while the drop to $2/9$ with Sup35p reflects the reduced probability $2 \cdot (1/3)^2$ of such a pair when three protein types compete for each position. The variance formulas in Section~\ref{sec:variance-radius} turn these baselines into finite-$n$ null-model fluctuation scales, so experimentally measured fluorescence ratios can be compared against both the expected value and the size of random fluctuations under the i.i.d.\ model.
 
