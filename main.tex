@@ -167,7 +167,11 @@ Now, for $k \ge 1$, the number of distinct amyloids of length $n$ with $k$ fluor
 The zero-fluorescence case is $\cA(n,0) = 2$, corresponding to the two constant amyloids $AA\cdots A$ and $BB\cdots B$.
 Throughout, binomial coefficients with lower index outside the usual range are interpreted as zero; nevertheless the displayed formula for $\cA(n,k)$ is stated for $k \ge 1$, with $k=0$ handled separately.
 
-To see this, we have two cases, where we fix $k = 5$ for the sake of example: 
+To justify the formula, fix an admissible 01 pattern $f$ with $k$ ones. Once $s_1$ is chosen, every later protein is determined except immediately after a $1$ in the 01 pattern: if $f_i=1$, then $s_i$ is forced to be the opposite of $s_{i-1}$; if $f_i=0$ and $f_{i-1}=0$, then $s_i$ is forced to equal $s_{i-1}$; if $f_i=0$ and $f_{i-1}=1$, then $s_i$ is free because the previous protein has already been consumed by a fusion. Thus a fixed pattern ending in $0$ has $2^{k+1}$ realizing amyloids (the initial choice, plus one free choice after each of the $k$ ones), while a fixed pattern ending in $1$ has $2^k$ realizing amyloids.
+
+It remains only to count admissible 01 patterns by their final digit. Patterns ending in $0$ are obtained by appending a zero to a length-$(n-1)$ admissible pattern with $k$ ones, giving $N(n-1,k)$ choices. Patterns ending in $1$ must have $f_{n-1}=0$, and deleting the final $01$ leaves a length-$(n-2)$ admissible pattern with $k-1$ ones, giving $N(n-2,k-1)$ choices. Multiplying by the fixed-pattern counts proves the displayed formula.
+
+For example, when $k = 5$ the two cases have the following degrees of freedom:
 
 \textbf{01 pattern ends with a 0}
 
@@ -244,7 +248,7 @@ Using the substitution $j = k - 1$,
 \[
 S_1(n) = \sum_{j \ge 0} (j+1)\, 2^{j+1} \binom{n - j - 2}{j}
 \]
-Since all terms are non-negative for $x > 0$, we may interchange the order of summation. Applying (\ref{eq:binom-ogf}) with a shift $n \mapsto n - 2$:
+Working as a formal power series, we may interchange the order of summation termwise. Applying (\ref{eq:binom-ogf}) with a shift $n \mapsto n - 2$:
 \[
 G_1(x) = \sum_{j \ge 0}(j+1)\, 2^{j+1} \cdot \frac{x^{2j+2}}{(1-x)^{j+1}}
 = \frac{2x^2}{1-x} \sum_{j \ge 0} (j+1) \left( \frac{2x^2}{1-x} \right)^j
@@ -425,7 +429,7 @@ where the rows index the from-state $(p, q)$ and the columns the to-state. From 
 \[
 F(z, w) := \sum_{n \ge 0} \sum_{k \ge 0} \cA(n, k)\, w^k z^n
 \]
-(with $\cA(0, 0) := 1$ by convention) satisfies $F = 1 + z(2, 1) (I - z M(w))^{-1} (1, 1)^T$, which evaluates to
+(where in this section $\cA(n,k)$ counts amyloids over $\{A,B,S\}$, and $\cA(0, 0) := 1$ by convention) satisfies $F = 1 + z(2, 1) (I - z M(w))^{-1} (1, 1)^T$, which evaluates to
 \begin{equation}\label{eq:s3-bivar-gf}
 F(z, w) = \frac{1 + z}{1 - 2z - (1 + 2w)\,z^2}.
 \end{equation}
@@ -659,7 +663,7 @@ Our pattern becomes $\{C,Y,S \}^*$ where $C$ represents CFP, $Y$ represents YFP,
 
 \subsection{Probability of $k$ total yellow fluorescence in length $n$ amyloid}
 
-The block-decomposition approach used for Section~\ref{subsec:s3-dist} does not transfer cleanly to this setting. The reason is that, unlike split-YFP fusion, FRET allows consecutive 1s in the 01 pattern (a YFP sandwiched between two CFPs fluoresces twice), so each block has the form $0^+ 1^+$ rather than $0^+ 1$. The last protein of a $1^+$ run is always in $\{C, Y\}$, and the first protein of the next block must form $f = 0$ with it---hence must match it or be S, only 2 choices among $\{C, Y, S\}$. This boundary coupling between blocks prevents a clean product factorization of the form $\prod a_{\phi_i, \psi_i} \cdot b_q$: such a factorization would overcount by treating block boundaries as independent. We therefore derive the joint generating function by a transfer-matrix argument directly, which naturally tracks the rightmost protein type.
+The block-decomposition approach used for Section~\ref{subsec:s3-dist} does not transfer cleanly to this setting. The reason is that, unlike split-YFP fusion, FRET allows consecutive 1s in the 01 pattern (a YFP sandwiched between two CFPs fluoresces twice), so each block has the form $0^+ 1^+$ rather than $0^+ 1$. The last protein of a $1^+$ run is always in $\{C, Y\}$, and the first protein of the next block must form $f = 0$ with it---hence must match it or be S, only 2 choices among $\{C, Y, S\}$. This boundary coupling means a block decomposition would need to carry boundary-state information; the transfer matrix is the simpler way to track the rightmost protein type.
 
 \paragraph{Bivariate generating function.} Lump $\{C, Y\}$ into a single state (justified by the $C \leftrightarrow Y$ symmetry of the model under equal concentrations), and track two states by the rightmost protein type:
 \begin{itemize}
@@ -808,7 +812,7 @@ Thus, for large $n$, the standard deviations of the ratio statistics scale as $O
 \operatorname{Var}(R_{\text{F}}(n)) \sim \frac{1}{4n}, \quad
 \operatorname{Var}(R_{\text{F},S}(n)) \sim \frac{2}{9n}.
 \]
-These finite-$n$ variances provide approximate confidence bands for testing observed fluorescence ratios against the i.i.d.\ null model; for short amyloids, the exact distributions $P(n,k)$ should be used directly.
+These finite-$n$ variances characterize the scale of random fluctuations under the i.i.d.\ null model. For short amyloids, the exact distributions $P(n,k)$ should be used directly; for experimental ensembles of many fibrils, the relevant uncertainty also depends on the sampling design and the number of fibrils measured.
 
 The nearest-neighbor FRET assumption can also be relaxed at the level of expected value. Suppose a YFP can receive FRET from CFPs within distance $r$ along the amyloid, with additive unit contribution from each CFP--YFP pair in this window. Let $p_C$ and $p_Y$ be the probabilities of CFP and YFP, and set $m=\min(r,n-1)$. There are $n-d$ unordered pairs at distance $d$, each contributing in expectation $2p_Cp_Y$. Hence
 \[
@@ -849,7 +853,7 @@ Equivalently, this is the specialization $\beta = 1 - \alpha$ of the Section~\re
 \frac{d}{d\alpha}\left(\frac{2\alpha(1-\alpha)}{1-\alpha(1-\alpha)}\right)
 = \frac{2(1-2\alpha)}{(1-\alpha(1-\alpha))^2},
 \]
-so the only interior critical point is $\alpha=1/2$, and the endpoints have zero fluorescence. Numerically, at $\alpha = 1/4$ the limit is $2 \cdot \tfrac{3}{16} / \tfrac{13}{16} = 6/13 \approx 0.462$, in agreement with Monte Carlo simulation (see \texttt{split\_yfp\_unequal\_simulation.py}); the naive two-state Markov chain would instead use $4\alpha(1-\alpha)/(1+2\alpha(1-\alpha))$, giving $6/11 \approx 0.545$ at $\alpha = 1/4$, which fails the simulation check at every $\alpha \neq 1/2$.
+so the only interior critical point is $\alpha=1/2$, and the endpoints have zero fluorescence. Numerically, at $\alpha = 1/4$ the limit is $2 \cdot \tfrac{3}{16} / \tfrac{13}{16} = 6/13 \approx 0.462$, in agreement with Monte Carlo simulation (see \texttt{split\_yfp\_unequal\_simulation.py}). A naive two-state chain would wrongly lump $p_A$ and $p_B$ into a single unfused state and assign fusion probability $d=2\alpha(1-\alpha)$ from that lumped state, giving the ratio $2d/(1+d)=4\alpha(1-\alpha)/(1+2\alpha(1-\alpha))$; at $\alpha = 1/4$ this is $6/11 \approx 0.545$. The two-state lumping is harmless at $\alpha=1/2$, where the A and B sub-states are symmetric, but it fails the simulation check at every $\alpha \neq 1/2$.
 
 \subsection{Split-YFP with Sup35p at unequal concentrations}\label{subsec:unequal-sup35}
 Now suppose proteins A, B, S appear with probabilities $\alpha$, $\beta$, and $1 - \alpha - \beta$ respectively. We define three Markov states: $p_A$ (rightmost is A, unfused), $p_B$ (rightmost is B, unfused), and $q$ (rightmost is S, or fused). The transitions are:
@@ -863,6 +867,7 @@ Solving the balance equations $\pi_A = \alpha\pi_A + \alpha\pi_q$, $\pi_B = \bet
 \lim_{n \to \infty} R_{\text{SY}}(n) = 2e = \frac{2\alpha\beta(2 - \alpha - \beta)}{1 - \alpha\beta}
 \]
 which reduces to $1/3$ when $\alpha = \beta = 1/3$ (and to $2/3$ when $\alpha = \beta = 1/2$, recovering the no-Sup35p case).
+The same simulation script also checks this unequal-Sup35p limit for representative $(\alpha,\beta)$ pairs.
 
 \subsection{FRET with unequal concentrations}
 In the FRET setting with $P(C) = p_C$, $P(Y) = p_Y = 1 - p_C$, linearity of expectation gives $R_{\text{F}}(n) \to 2p_C p_Y$ directly, and with Sup35p at concentration $p_S$ (where $p_C + p_Y + p_S = 1$) the limit is likewise $R_{\text{F}}(n) \to 2p_C p_Y$. These generalizations would allow the model to be calibrated to experimental concentration ratios.
