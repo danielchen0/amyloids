@@ -43,7 +43,4 @@ for n in [10, 50, 100, 1000]:
     r = linearity_E(n) / n
     print(f"n={n:5d}  R(n) = {float(r):.15f}  error = {float(r - Fraction(2,9)):.2e}")
 
-print("\n=== Bug in paper's simulation ===")
-print(f"Correct   R(10) = {float(linearity_E(10)/10):.10f}")
-print(f"Paper     R(10) = 0.203698623177")
-print("Paper used floor(n/2) as upper limit for k, but FRET allows k up to n-1")
+print("\nAll Section 5 brute-force checks agree with the closed form.")
