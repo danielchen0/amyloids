@@ -167,7 +167,7 @@ Now, for $k \ge 1$, the number of distinct amyloids of length $n$ with $k$ fluor
 The zero-fluorescence case is $\cA(n,0) = 2$, corresponding to the two constant amyloids $AA\cdots A$ and $BB\cdots B$.
 Throughout, binomial coefficients with lower index outside the usual range are interpreted as zero; nevertheless the displayed formula for $\cA(n,k)$ is stated for $k \ge 1$, with $k=0$ handled separately.
 
-To justify the formula, fix an admissible 01 pattern $f$ with $k$ ones. Once $s_1$ is chosen, every later protein is determined except immediately after a $1$ in the 01 pattern: if $f_i=1$, then $s_i$ is forced to be the opposite of $s_{i-1}$; if $f_i=0$ and $f_{i-1}=0$, then $s_i$ is forced to equal $s_{i-1}$; if $f_i=0$ and $f_{i-1}=1$, then $s_i$ is free because the previous protein has already been consumed by a fusion. Thus a fixed pattern ending in $0$ has $2^{k+1}$ realizing amyloids (the initial choice, plus one free choice after each of the $k$ ones), while a fixed pattern ending in $1$ has $2^k$ realizing amyloids.
+To justify the formula, fix an admissible 01 pattern $f$ with $k$ ones. Once $s_1$ is chosen, every later protein is determined except immediately after a $1$ in the 01 pattern: if $f_i=1$, then $s_i$ is forced to be the opposite of $s_{i-1}$; if $f_i=0$ and $f_{i-1}=0$, then $s_i$ is forced to equal $s_{i-1}$; if $f_i=0$ and $f_{i-1}=1$, then $s_i$ is free because the previous protein has already been consumed by a fusion. Thus a fixed pattern ending in $0$ has $2^{k+1}$ realizing amyloids (the initial choice, plus one free choice immediately after each of the $k$ ones, all of which have successors), while a fixed pattern ending in $1$ has $2^k$ realizing amyloids.
 
 It remains only to count admissible 01 patterns by their final digit. Patterns ending in $0$ are obtained by appending a zero to a length-$(n-1)$ admissible pattern with $k$ ones, giving $N(n-1,k)$ choices. Patterns ending in $1$ must have $f_{n-1}=0$, and deleting the final $01$ leaves a length-$(n-2)$ admissible pattern with $k-1$ ones, giving $N(n-2,k-1)$ choices. Multiplying by the fixed-pattern counts proves the displayed formula.
 
@@ -425,11 +425,16 @@ The transitions, weighted by $z$ for length and $w$ for each fluorescing site pr
 \[
 M(w) = \begin{pmatrix} 1 & 1 + w \\ 2 & 1 \end{pmatrix},
 \]
-where the rows index the from-state $(p, q)$ and the columns the to-state. From $p$ (say rightmost is A, unfused): next protein A yields one new amyloid ending in $p$ (weight $1$); next protein B fuses and yields one amyloid ending in $q$ (weight $w$, $+1$ fluorescence); next protein S yields one amyloid ending in $q$ (weight $1$). From $q$: either A or B sends us to $p$ (weight $2$ for two letters), and S sends us back to $q$ (weight $1$). By the A--B symmetry the two unfused sub-states merge consistently. Starting with the count vector $(2, 1)$ at $n = 1$ (two amyloids of length 1 in state $p$, namely A and B; one in state $q$, namely S), the joint generating function
+where the rows index the from-state $(p, q)$ and the columns the to-state. From $p$ (say rightmost is A, unfused): next protein A yields one new amyloid ending in $p$ (weight $1$); next protein B fuses and yields one amyloid ending in $q$ (weight $w$, $+1$ fluorescence); next protein S yields one amyloid ending in $q$ (weight $1$). From $q$: either A or B sends us to $p$ (weight $2$ for two letters), and S sends us back to $q$ (weight $1$). By the A--B symmetry the two unfused sub-states merge consistently. For $n \ge 1$, the row vector of length-$n$ weighted counts is $(2,1)M(w)^{n-1}$, where $(2,1)$ is the count vector after the first protein. Hence the joint generating function
 \[
 F(z, w) := \sum_{n \ge 0} \sum_{k \ge 0} \cA(n, k)\, w^k z^n
 \]
-(where in this section $\cA(n,k)$ counts amyloids over $\{A,B,S\}$, and $\cA(0, 0) := 1$ by convention) satisfies $F = 1 + z(2, 1) (I - z M(w))^{-1} (1, 1)^T$, which evaluates to
+(where in this section $\cA(n,k)$ counts amyloids over $\{A,B,S\}$, and $\cA(0, 0) := 1$ by convention) is
+\[
+F = 1 + \sum_{n \ge 1} z^n (2,1)M(w)^{n-1}\binom{1}{1}
+=1 + z(2, 1) (I - z M(w))^{-1} \binom{1}{1},
+\]
+which evaluates to
 \begin{equation}\label{eq:s3-bivar-gf}
 F(z, w) = \frac{1 + z}{1 - 2z - (1 + 2w)\,z^2}.
 \end{equation}
@@ -663,7 +668,7 @@ Our pattern becomes $\{C,Y,S \}^*$ where $C$ represents CFP, $Y$ represents YFP,
 
 \subsection{Probability of $k$ total yellow fluorescence in length $n$ amyloid}
 
-The block-decomposition approach used for Section~\ref{subsec:s3-dist} does not transfer cleanly to this setting. The reason is that, unlike split-YFP fusion, FRET allows consecutive 1s in the 01 pattern (a YFP sandwiched between two CFPs fluoresces twice), so each block has the form $0^+ 1^+$ rather than $0^+ 1$. The last protein of a $1^+$ run is always in $\{C, Y\}$, and the first protein of the next block must form $f = 0$ with it---hence must match it or be S, only 2 choices among $\{C, Y, S\}$. This boundary coupling means a block decomposition would need to carry boundary-state information; the transfer matrix is the simpler way to track the rightmost protein type.
+The block-decomposition approach used for Section~\ref{subsec:s3-dist} does not transfer cleanly to this setting. The reason is that, unlike split-YFP fusion, FRET allows consecutive 1s in the 01 pattern (a YFP sandwiched between two CFPs fluoresces twice), so each block has the form $0^+ 1^+$ rather than $0^+ 1$. The last protein of a $1^+$ run is always in $\{C, Y\}$, and the first protein of the next block must form $f = 0$ with it---hence must match it or be S, only 2 choices among $\{C, Y, S\}$. By contrast, in Section~\ref{subsec:s3-dist}, the protein after a $1$ is already blocked from fusing leftward, so the next protein is free among all three letters. This boundary coupling means a FRET block decomposition would need to carry boundary-state information; the transfer matrix is the simpler way to track the rightmost protein type.
 
 \paragraph{Bivariate generating function.} Lump $\{C, Y\}$ into a single state (justified by the $C \leftrightarrow Y$ symmetry of the model under equal concentrations), and track two states by the rightmost protein type:
 \begin{itemize}
@@ -674,11 +679,11 @@ The weighted transition matrix (rows = from, cols = to; $z$ marks length, $w$ ma
 \[
 M(w) = \begin{pmatrix} 1 + w & 1 \\ 2 & 1 \end{pmatrix}.
 \]
-From $p$ (say rightmost is C): next protein C stays in $p$ with no fluorescence (weight $1$); next protein Y stays in $p$ but produces a fluorescence (weight $w$); next protein S goes to $q$ (weight $1$). By $C \leftrightarrow Y$ symmetry the rightmost-Y case is symmetric. From $q$ (rightmost is S): C and Y carry no fluorescence with S, so next $\in \{C, Y\}$ takes us to $p$ (combined weight $2$), and next $= S$ stays in $q$ (weight $1$). Starting from the count vector $(2, 1)$ at $n = 1$, the joint generating function
+From $p$ (say rightmost is C): next protein C stays in $p$ with no fluorescence (weight $1$); next protein Y stays in $p$ but produces a fluorescence (weight $w$); next protein S goes to $q$ (weight $1$). By $C \leftrightarrow Y$ symmetry the rightmost-Y case is symmetric. From $q$ (rightmost is S): C and Y carry no fluorescence with S, so next $\in \{C, Y\}$ takes us to $p$ (combined weight $2$), and next $= S$ stays in $q$ (weight $1$). For $n \ge 1$, the row vector of length-$n$ weighted counts is $(2,1)M(w)^{n-1}$, so the joint generating function
 \[
 F_{\text{F},S}(z, w) := \sum_{n \ge 0} \sum_{k \ge 0} \cA(n, k)\, w^k z^n
 \]
-(with $\cA(0, 0) := 1$) is
+(with $\cA(0, 0) := 1$) is $1+z(2,1)(I-zM(w))^{-1}\binom{1}{1}$, namely
 \begin{equation}\label{eq:s5-bivar-gf}
 F_{\text{F},S}(z, w) = \frac{1 + (1 - w)\, z}{1 - (2 + w)\, z - (1 - w)\, z^2}.
 \end{equation}
@@ -798,7 +803,7 @@ which yields
 \operatorname{Var}_{\text{F},S}(K_n)=\frac{18n-22}{81},
 \qquad n \ge 2.
 \]
-As a small check, at $n=2$ the split-YFP and FRET-with-Sup35p distributions are both $(7,2)/9$ on $K_2=0,1$, giving variance $14/81$, exactly as the formulas above do. The accompanying script \texttt{verify\_variance.py} also brute-force checks these variance formulas for small $n$.
+As a small check, at $n=2$ the split-YFP-with-Sup35p and FRET-with-Sup35p distributions are both $(7,2)/9$ on $K_2=0,1$, giving variance $14/81$, exactly as the formulas above give. In the no-Sup35p split-YFP case, the $n=2$ distribution is $(1,1)/2$, giving variance $1/4$, again matching the formula. The accompanying script \texttt{verify\_variance.py} also brute-force checks these variance formulas for small $n$.
 
 These formulas turn the expected fluorescence ratios into exact null-model error bars. Since $R_{\text{SY}}(n)=2K_n/n$ in the split-YFP models and $R_{\text{F}}(n)=K_n/n$ in the FRET models,
 \[
@@ -828,6 +833,7 @@ In the equal-concentration FRET+Sup35p case ($p_C=p_Y=1/3$), the nearest-neighbo
 E_2(n)=\frac{2}{9}\bigl((n-1)+(n-2)\bigr)=\frac{4n-6}{9}, \qquad n \ge 3,
 \]
 and $E_2(n)/n \to 4/9$. Computing the full distribution for $r>1$ is substantially harder: adjacent indicators are correlated over a larger window, and a transfer matrix would need to track the last $r$ protein identities rather than only the rightmost state.
+For $n=2$, the value $m=\min(r,n-1)$ is still $1$ even when $r=2$, so the radius-two case collapses to the nearest-neighbor formula until $n \ge 3$.
 
 \section{Generalization to unequal concentrations}\label{sec:unequal}
 
